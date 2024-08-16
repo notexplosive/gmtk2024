@@ -1,0 +1,3 @@
+[submodule "explogine"]
+	path = explogine
+	url = git@github.com:notexplosive/explogine.git
