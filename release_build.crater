@@ -1,0 +1,7 @@
+local dotnet = lib("dotnet")
+
+files.deleteDirectory(".build")
+
+dotnet.publish("GMTK24", ".build")
+
+files.copy("Resource", ".build/Resource")
