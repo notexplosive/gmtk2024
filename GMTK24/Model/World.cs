@@ -1,4 +1,6 @@
-﻿namespace GMTK24.Model;
+﻿using System.Collections.Generic;
+
+namespace GMTK24.Model;
 
 public class World
 {

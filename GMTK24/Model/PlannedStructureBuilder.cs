@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace GMTK24.Model;
 
-public class StructureBuilder
+public class PlannedStructureBuilder
 {
     private readonly HashSet<Cell> _pendingCells = new();
 
-    public StructureBuilder AddCell(int x, int y)
+    public PlannedStructureBuilder AddCell(int x, int y)
     {
         _pendingCells.Add(new Cell(x, y));
         return this;

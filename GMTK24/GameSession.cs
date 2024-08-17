@@ -1,3 +1,4 @@
+using System.Linq;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
@@ -21,7 +22,7 @@ public class GameSession : ISession
     {
         var layoutBuilder = new UiLayoutBuilder();
 
-        var house = new StructureBuilder()
+        var house = new PlannedStructureBuilder()
                 .AddCell(-1, -1)
                 .AddCell(0, -1)
                 .AddCell(1, -1)
@@ -41,7 +42,7 @@ public class GameSession : ISession
                 .BuildPlan(new StructureDrawDescription {TextureName = "house", GraphicTopLeft = new Cell(-1, -1)})
             ;
 
-        var plant = new StructureBuilder()
+        var tree = new PlannedStructureBuilder()
                 .AddCell(0, 2)
                 .AddCell(0, 1)
                 .AddCell(0, 0)
@@ -51,27 +52,20 @@ public class GameSession : ISession
                 .AddCell(-1, -2)
                 .AddCell(-1, -1)
                 .AddCell(1, -1)
-                .BuildPlan(new StructureDrawDescription())
+                .BuildPlan(new StructureDrawDescription{TextureName = "tree", GraphicTopLeft = new Cell(-1, -2)})
             ;
 
-        var platform = new StructureBuilder()
-                .AddCell(1, 0)
-                .AddCell(0, 0)
-                .AddCell(-1, 0)
-                .BuildPlan(new StructureDrawDescription())
-            ;
-
-        var foundation = new StructureBuilder()
-                .AddCell(2, 0)
-                .AddCell(1, 0)
-                .AddCell(0, 0)
-                .AddCell(-1, 0)
+        var platform = new PlannedStructureBuilder()
                 .AddCell(-2, 0)
-                .BuildPlan(new StructureDrawDescription())
+                .AddCell(-1, 0)
+                .AddCell(0, 0)
+                .AddCell(1, 0)
+                .AddCell(2, 0)
+                .BuildPlan(new StructureDrawDescription{TextureName = "platform", GraphicTopLeft = new Cell(-2, 0)})
             ;
 
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(house)));
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(plant)));
+        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(tree)));
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(platform)));
         _ui = layoutBuilder.Build();
 
@@ -81,7 +75,7 @@ public class GameSession : ISession
             screenSize);
         _world = new World();
 
-        _world.MainLayer.AddStructure(new Cell(0, 0), foundation);
+        _world.MainLayer.AddStructure(new Cell(0, 0), platform);
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -150,6 +144,10 @@ public class GameSession : ISession
 
     public void Draw(Painter painter)
     {
+        painter.BeginSpriteBatch();
+        
+        painter.EndSpriteBatch();
+        
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var structure in _world.MainLayer.Structures)
         {
