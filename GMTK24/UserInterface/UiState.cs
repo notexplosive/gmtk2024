@@ -7,23 +7,23 @@ namespace GMTK24.UserInterface;
 public class UiState
 {
     public StructureButton? SelectedButton { get; private set; }
-    public StructureButton? HoveredButton { get; private set; }
+    public IHoverable? HoveredItem { get; private set; }
 
     public void ClearHover()
     {
-        HoveredButton = null;
+        HoveredItem = null;
     }
 
-    public void SetHovered(StructureButton button)
+    public void SetHovered(IHoverable button)
     {
-        HoveredButton = button;
+        HoveredItem = button;
     }
 
     public void SelectHoveredButton()
     {
-        if (HoveredButton != null)
+        if (HoveredItem is StructureButton structureButton)
         {
-            SelectedButton = HoveredButton;
+            SelectedButton = structureButton;
         }
     }
 

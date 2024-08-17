@@ -3,6 +3,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
+using GMTK24.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,12 +12,14 @@ namespace GMTK24.UserInterface;
 public class Ui
 {
     private readonly RectangleF _buttonBackground;
+    private readonly RectangleF _middleArea;
     private readonly List<StructureButton> _buttons = new();
     private readonly List<ResourceTracker> _resourceTrackers = new();
 
-    public Ui(RectangleF buttonBackground)
+    public Ui(RectangleF buttonBackground, RectangleF middleArea)
     {
         _buttonBackground = buttonBackground;
+        _middleArea = middleArea;
     }
 
     public UiState State { get; } = new();
@@ -35,14 +38,14 @@ public class Ui
     {
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
 
-        painter.DrawRectangle(_buttonBackground,
-            new DrawSettings {Color = Color.Yellow.DimmedBy(0.25f), Depth = Depth.Back});
+        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["ui_background"],_buttonBackground,
+            new DrawSettings {SourceRectangle = _buttonBackground.MovedToZero().ToRectangle(), Depth = Depth.Back});
 
         foreach (var button in _buttons)
         {
             var color = Color.White;
             var offset = Vector2.Zero;
-            if (State.HoveredButton == button)
+            if (State.HoveredItem == button)
             {
                 offset = new Vector2(0, -20);
             }
@@ -71,6 +74,12 @@ public class Ui
 
         uiHitTestLayer.AddZone(_buttonBackground, Depth.Back, () => { });
 
+        foreach (var resourceTracker in _resourceTrackers)
+        {
+            uiHitTestLayer.AddZone(resourceTracker.TotalRectangle, Depth.Middle, () => { State.ClearHover(); },
+                () => { State.SetHovered(resourceTracker); });
+        }
+        
         foreach (var button in _buttons)
         {
             uiHitTestLayer.AddZone(button.Rectangle, Depth.Middle, () => { State.ClearHover(); },

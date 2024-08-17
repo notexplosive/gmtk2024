@@ -1,6 +1,7 @@
 {
     "structurePlans": [
-        "plan_farm"
+        "plan_farm",
+        "plan_farm2"
     ],
     "onConstructDelta": [
         {
@@ -18,7 +19,7 @@
     "cost": [
         {
             "resourceName": "Inspiration",
-            "amount": 50
+            "amount": 20
         }
     ]
 }

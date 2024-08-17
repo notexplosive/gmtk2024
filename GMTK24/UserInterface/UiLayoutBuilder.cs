@@ -29,6 +29,8 @@ public class UiLayoutBuilder
 
         var buttonWidth = 256;
         var buttonHeight = 100;
+        
+        var buttonRibbonHeight = buttonHeight + 10;
 
         var layoutBuilder = new LayoutBuilder(new Style(Orientation.Vertical));
 
@@ -43,11 +45,11 @@ public class UiLayoutBuilder
             resourceGroup.Add(L.FillBoth(GetId(resource) + "_text"));
         }
         
-        layoutBuilder.Add(L.FillBoth());
-        
+        layoutBuilder.Add(L.FillBoth("middle-area"));
+
         var buttonRibbonLayoutGroup = layoutBuilder.AddGroup(
             new Style(Alignment: Alignment.Center, PaddingBetweenElements: 20),
-            L.FillHorizontal("button-ribbon", buttonHeight + 10));
+            L.FillHorizontal("button-ribbon", buttonRibbonHeight));
 
         foreach (var buildAction in _buildActions)
         {
@@ -56,7 +58,7 @@ public class UiLayoutBuilder
 
         var result = layoutBuilder.Bake(new Point(1920, 1080));
 
-        var ui = new Ui(result.FindElement("button-ribbon").Rectangle);
+        var ui = new Ui(result.FindElement("button-ribbon").Rectangle, result.FindElement("middle-area").Rectangle);
         foreach (var buildAction in _buildActions)
         {
             ui.AddButton(new StructureButton(result.FindElement(GetId(buildAction)).Rectangle, buildAction));
