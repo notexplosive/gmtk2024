@@ -90,3 +90,13 @@
 #begin engine/pointfree.ttf
 /copy:engine/pointfree.ttf
 
+#begin gmtk/GameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:gmtk/GameFont.spritefont
+
+#begin gmtk/Roboto-Regular.ttf
+/copy:gmtk/Roboto-Regular.ttf
+

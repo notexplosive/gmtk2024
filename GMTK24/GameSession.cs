@@ -20,6 +20,7 @@ public class GameSession : ISession
     private readonly World _world;
     private bool _isPanning;
     private Vector2? _mousePosition;
+    private readonly ErrorMessage _errorMessage;
 
     public GameSession()
     {
@@ -43,6 +44,7 @@ public class GameSession : ISession
         _world = new World();
 
         _world.MainLayer.AddStructureToLayer(new Cell(0, 0), platform);
+        _errorMessage = new(screenSize);
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -75,6 +77,16 @@ public class GameSession : ISession
                         _world.AddStructure(plannedBuildPosition.Value, plannedStructure);
                         _ui.State.IncrementSelectedBlueprint();
                     }
+
+                    if (result == BuildResult.FailedBecauseOfFit)
+                    {
+                        _errorMessage.Display("Not Enough Space");
+                    }
+
+                    if (result == BuildResult.FailedBecauseOfStructure)
+                    {
+                        _errorMessage.Display("Needs More Support");
+                    }
                 }
             }
 
@@ -102,7 +114,7 @@ public class GameSession : ISession
                 }
                 else
                 {
-                    if (_camera.ViewBounds.Width > 192)
+                    if (_camera.ViewBounds.Width > 192*2)
                     {
                         _camera.ZoomInTowards((int) (normalizedScrollDelta * zoomStrength), _mousePosition.Value);
                     }
@@ -192,11 +204,14 @@ public class GameSession : ISession
 
         painter.EndSpriteBatch();
 
+        _errorMessage.Draw(painter);
+        
         _ui.Draw(painter);
     }
 
     public void Update(float dt)
     {
+        _errorMessage.Update(dt);
     }
 
     public event Action? RequestEditorSession;

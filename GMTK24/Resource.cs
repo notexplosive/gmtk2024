@@ -60,6 +60,7 @@ public class ResourceAssets
         Unload(_dynamicTextures);
         Unload(SoundEffects);
         Unload(SoundInstances);
+        Unload(Textures);
     }
 
     public void AddSound(IFileSystem resourceFiles, string path)
