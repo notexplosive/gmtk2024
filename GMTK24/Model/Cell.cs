@@ -20,4 +20,9 @@ public readonly record struct Cell(int X, int Y)
     {
         return new Cell(a.X + b.X, a.Y + b.Y);
     }
+    
+    public static Cell operator -(Cell a, Cell b)
+    {
+        return new Cell(a.X - b.X, a.Y - b.Y);
+    }
 }

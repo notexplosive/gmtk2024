@@ -1,4 +1,3 @@
-using System.Linq;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
@@ -15,8 +14,8 @@ public class GameSession : ISession
     private readonly HoverState _isHovered = new();
     private readonly Ui _ui;
     private readonly World _world;
-    private Vector2? _mousePosition;
     private bool _isPanning;
+    private Vector2? _mousePosition;
 
     public GameSession()
     {
@@ -39,7 +38,13 @@ public class GameSession : ISession
                 .AddCell(0, 2)
                 .AddCell(1, 2)
                 .AddCell(2, 2)
-                .BuildPlan(new StructureDrawDescription {TextureName = "house", GraphicTopLeft = new Cell(-1, -1)})
+                .BuildPlan(
+                    new StructureSettings
+                    {
+                        DrawDescription = new StructureDrawDescription
+                            {TextureName = "house", GraphicTopLeft = new Cell(-1, -1)}
+                    }
+                )
             ;
 
         var tree = new PlannedStructureBuilder()
@@ -52,7 +57,13 @@ public class GameSession : ISession
                 .AddCell(-1, -2)
                 .AddCell(-1, -1)
                 .AddCell(1, -1)
-                .BuildPlan(new StructureDrawDescription{TextureName = "tree", GraphicTopLeft = new Cell(-1, -2)})
+                .BuildPlan(
+                    new StructureSettings
+                    {
+                        DrawDescription = new StructureDrawDescription
+                            {TextureName = "tree", GraphicTopLeft = new Cell(-1, -2)},
+                        ShouldScaffold = false
+                    })
             ;
 
         var platform = new PlannedStructureBuilder()
@@ -61,7 +72,11 @@ public class GameSession : ISession
                 .AddCell(0, 0)
                 .AddCell(1, 0)
                 .AddCell(2, 0)
-                .BuildPlan(new StructureDrawDescription{TextureName = "platform", GraphicTopLeft = new Cell(-2, 0)})
+                .BuildPlan(new StructureSettings
+                {
+                    DrawDescription = new StructureDrawDescription
+                        {TextureName = "platform", GraphicTopLeft = new Cell(-2, 0)}
+                })
             ;
 
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(house)));
@@ -114,9 +129,9 @@ public class GameSession : ISession
                 var normalizedScrollDelta = scrollDelta / 120f;
 
                 var zoomStrength = 20;
-                
+
                 var previousCameraCenter = _camera.CenterPosition;
-                
+
                 if (normalizedScrollDelta < 0)
                 {
                     if (_camera.ViewBounds.Width < 1920)
@@ -144,10 +159,15 @@ public class GameSession : ISession
 
     public void Draw(Painter painter)
     {
-        painter.BeginSpriteBatch();
-        
+        painter.Clear(Color.SkyBlue);
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+        foreach (var scaffoldCell in _world.MainLayer.ScaffoldCells())
+        {
+            DrawScaffold(painter, scaffoldCell);
+        }
+
         painter.EndSpriteBatch();
-        
+
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var structure in _world.MainLayer.Structures)
         {
@@ -188,15 +208,22 @@ public class GameSession : ISession
     {
     }
 
+    private void DrawScaffold(Painter painter, Cell anchorPoint)
+    {
+        var rectangle = new RectangleF(Grid.CellToPixel(anchorPoint), new Vector2(Grid.CellSize));
+        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["scaffold"],
+            rectangle, new DrawSettings {SourceRectangle = rectangle.ToRectangle()});
+    }
+
     private void DrawStructure(Painter painter, Structure structure)
     {
-        if (structure.DrawDescription.TextureName == null)
+        if (structure.Settings.DrawDescription.TextureName == null)
         {
             return;
         }
 
-        var graphicsTopLeft = structure.Center + structure.DrawDescription.GraphicTopLeft;
-        painter.DrawAtPosition(ResourceAssets.Instance.Textures[structure.DrawDescription.TextureName],
+        var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
+        painter.DrawAtPosition(ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName],
             Grid.CellToPixel(graphicsTopLeft), Scale2D.One, new DrawSettings());
     }
 
