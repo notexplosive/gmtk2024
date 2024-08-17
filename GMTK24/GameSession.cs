@@ -29,11 +29,13 @@ public class GameSession : ISession
         var house = ReadPlan("house.json");
         var tree = ReadPlan("tree.json");
         var platform = ReadPlan("platform.json");
+        var platform2 = ReadPlan("platform2.json");
+
         var farm = ReadPlan("farm.json");
 
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {house})));
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {tree})));
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {platform})));
+        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {platform, platform2})));
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {farm})));
         _ui = layoutBuilder.Build();
 
