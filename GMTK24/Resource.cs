@@ -6,6 +6,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.AssetManagement;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GMTK24;
 
@@ -13,7 +14,7 @@ public class ResourceAssets
 {
     private static ResourceAssets? instanceImpl;
     private readonly Dictionary<string, Canvas> _dynamicTextures = new();
-
+    public Dictionary<string, Texture2D> Textures { get; } = new();
     public Dictionary<string, SpriteSheet> Sheets { get; } = new();
     public Dictionary<string, SoundEffectInstance> SoundInstances { get; set; } = new();
     public Dictionary<string, SoundEffect> SoundEffects { get; set; } = new();
@@ -40,6 +41,16 @@ public class ResourceAssets
             foreach (var path in resourceFiles.GetFilesAt(".", "ogg"))
             {
                 AddSound(resourceFiles, path.RemoveFileExtension());
+            }
+        });
+        
+        yield return new VoidLoadEvent("Textures", () =>
+        {
+            foreach (var path in resourceFiles.GetFilesAt(".", "png"))
+            {
+                var imageName = path.RemoveFileExtension();
+                var texture = Texture2D.FromFile(Client.Graphics.Device, Path.Join(resourceFiles.GetCurrentDirectory(), path));
+                Textures.Add(imageName, texture);
             }
         });
     }

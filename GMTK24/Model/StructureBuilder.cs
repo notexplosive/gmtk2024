@@ -12,8 +12,8 @@ public class StructureBuilder
         return this;
     }
 
-    public PlannedStructure BuildPlan()
+    public PlannedStructure BuildPlan(StructureDrawDescription drawDescription)
     {
-        return new PlannedStructure(_pendingCells);
+        return new PlannedStructure(_pendingCells, drawDescription);
     }
 }

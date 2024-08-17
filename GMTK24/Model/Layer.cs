@@ -38,4 +38,9 @@ public class Layer
     {
         return _structures.SelectMany(existingCell => existingCell.OccupiedCells);
     }
+
+    public bool IsOccupiedAt(Cell cell)
+    {
+        return ExistingCells().Contains(cell);
+    }
 }
