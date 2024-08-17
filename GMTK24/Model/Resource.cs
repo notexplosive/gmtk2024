@@ -4,12 +4,12 @@ namespace GMTK24.Model;
 
 public class Resource
 {
-    public Resource(string name)
+    public Resource(string name, int startingAmount = 0)
     {
         Name = name;
         Id = name.GetHashCode();
-        Quantity = 0;
-        Capacity = 0;
+        Quantity = startingAmount;
+        Capacity = startingAmount;
     }
 
     public float Capacity { get; private set; }

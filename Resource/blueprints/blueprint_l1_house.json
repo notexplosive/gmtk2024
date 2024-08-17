@@ -1,6 +1,8 @@
 {
     "structurePlans": [
-        "plan_house"
+        "plan_house",
+        "plan_house2",
+        "plan_house3"
     ],
     "onConstructDelta": [
         {
@@ -17,6 +19,16 @@
             "resourceName": "Inspiration",
             "amount": 10,
             "affectCapacity": true
+        }
+    ],
+    "cost": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 25
+        },
+        {
+            "resourceName": "Food",
+            "amount": 1
         }
     ]
 }

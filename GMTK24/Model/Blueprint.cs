@@ -20,8 +20,12 @@ public class Blueprint
     [JsonProperty("onSecondDelta")]
     public List<ResourceDelta> OnSecondDelta { get; set; } = new();
 
+    [JsonProperty("cost")]
+    public List<ResourceDelta> Cost { get; set; } = new();
+    
     [JsonIgnore]
     public List<StructurePlan> Plans { get; } = new();
+
 
     public int Id()
     {

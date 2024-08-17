@@ -43,9 +43,10 @@ public class Inventory
         return _resources;
     }
 
-    public void AddResource(Resource resource)
+    public Resource AddResource(Resource resource)
     {
         _resources.Add(resource);
+        return resource;
     }
 
     public void ResourceUpdate(float dt)
@@ -65,5 +66,20 @@ public class Inventory
             food.Consume(foodCostOfOnePerson);
             population.Add(1);
         }
+    }
+
+    public bool CanAfford(List<ResourceDelta> costs)
+    {
+        foreach (var cost in costs)
+        {
+            var resource = GetResource(cost.ResourceName);
+
+            if (resource.Quantity < cost.Amount)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

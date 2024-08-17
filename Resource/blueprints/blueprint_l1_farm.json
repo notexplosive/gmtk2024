@@ -14,5 +14,11 @@
             "resourceName": "Food",
             "amount": 1
         }
+    ],
+    "cost": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 50
+        }
     ]
 }

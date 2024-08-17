@@ -8,10 +8,15 @@ public class World
     public Layer DecorationLayer = new();
     public Layer MainLayer = new();
 
-    public BuildResult CanBuild(Cell centerCell, StructurePlan plan)
+    public BuildResult CanBuild(Cell centerCell, StructurePlan plan, Inventory inventory, Blueprint plannedBlueprint)
     {
         var placingLayer = DeducePlacingLayer(plan);
 
+        if (!inventory.CanAfford(plannedBlueprint.Cost))
+        {
+            return BuildResult.FailedBecauseOfCost;
+        }
+        
         if (!placingLayer.CanFit(centerCell, plan))
         {
             return BuildResult.FailedBecauseOfFit;

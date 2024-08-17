@@ -2,5 +2,11 @@
     "structurePlans": [
         "plan_platform",
         "plan_platform2"
+    ],
+    "cost": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 10
+        }
     ]
 }

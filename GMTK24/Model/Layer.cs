@@ -8,7 +8,8 @@ public enum BuildResult
 {
     Success,
     FailedBecauseOfFit,
-    FailedBecauseOfStructure
+    FailedBecauseOfStructure,
+    FailedBecauseOfCost
 }
 
 public class Layer
