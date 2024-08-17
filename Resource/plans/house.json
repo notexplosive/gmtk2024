@@ -7,7 +7,9 @@
         "Y": -3
       }
     },
-    "createsScaffold": true
+    "createsScaffold": true,
+    "providesSupport": true,
+    "requiredSupports": 3
   },
   "cells": [
     {

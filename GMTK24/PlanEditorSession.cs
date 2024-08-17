@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
@@ -19,8 +20,6 @@ public class PlanEditorSession : ISession
     private Cell? _hoveredCell;
     private int _planIndex;
 
-    private PlannedStructure CurrentPlan => _plans[_planIndex].Item2;
-    
     public PlanEditorSession()
     {
         ReadPlans();
@@ -32,13 +31,15 @@ public class PlanEditorSession : ISession
             screenSize);
     }
 
+    private PlannedStructure CurrentPlan => _plans[_planIndex].Item2;
+
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
         if (input.Keyboard.GetButton(Keys.Escape).WasPressed)
         {
             RequestPlayMode?.Invoke();
         }
-        
+
         if (input.Keyboard.GetButton(Keys.Left).WasPressed)
         {
             _planIndex--;
@@ -101,34 +102,68 @@ public class PlanEditorSession : ISession
             }
         }
 
-        if (input.Keyboard.GetButton(Keys.W).WasPressed)
+        if (input.Keyboard.Modifiers.Shift)
         {
-            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(0, -1);
-            SaveCurrent();
+            if (input.Keyboard.GetButton(Keys.W).WasPressed)
+            {
+                CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(0, -1);
+                SaveCurrent();
+            }
+
+            if (input.Keyboard.GetButton(Keys.A).WasPressed)
+            {
+                CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(-1, 0);
+                SaveCurrent();
+            }
+
+            if (input.Keyboard.GetButton(Keys.D).WasPressed)
+            {
+                CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(1, 0);
+                SaveCurrent();
+            }
+
+            if (input.Keyboard.GetButton(Keys.S).WasPressed)
+            {
+                CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(0, 1);
+                SaveCurrent();
+            }
         }
-        
-        if (input.Keyboard.GetButton(Keys.A).WasPressed)
+
+        if (input.Keyboard.Modifiers.None)
         {
-            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(-1, 0);
-            SaveCurrent();
-        }
-        
-        if (input.Keyboard.GetButton(Keys.D).WasPressed)
-        {
-            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(1, 0);
-            SaveCurrent();
-        }
-        
-        if (input.Keyboard.GetButton(Keys.S).WasPressed)
-        {
-            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(0, 1);
-            SaveCurrent();
-        }
-        
-        if (input.Keyboard.GetButton(Keys.Q).WasPressed)
-        {
-            CurrentPlan.Settings.CreatesScaffold = !CurrentPlan.Settings.CreatesScaffold; 
-            SaveCurrent();
+            if (input.Keyboard.GetButton(Keys.Q).WasPressed)
+            {
+                CurrentPlan.Settings.CreatesScaffold = !CurrentPlan.Settings.CreatesScaffold;
+                SaveCurrent();
+            }
+
+            if (input.Keyboard.GetButton(Keys.W).WasPressed)
+            {
+                CurrentPlan.Settings.ProvidesSupport = !CurrentPlan.Settings.ProvidesSupport;
+                SaveCurrent();
+            }
+            
+            if (input.Keyboard.GetButton(Keys.E).WasPressed)
+            {
+                var nextLayerInt = (int) CurrentPlan.Settings.StructureLayer;
+                nextLayerInt++;
+                nextLayerInt %= Enum.GetValues<StructureLayer>().Length;
+                
+                CurrentPlan.Settings.StructureLayer = (StructureLayer)nextLayerInt;
+                SaveCurrent();
+            }
+            
+            if (input.Keyboard.GetButton(Keys.OemPlus).WasPressed)
+            {
+                CurrentPlan.Settings.RequiredSupports++;
+                SaveCurrent();
+            }
+            
+            if (input.Keyboard.GetButton(Keys.OemMinus).WasPressed)
+            {
+                CurrentPlan.Settings.RequiredSupports--;
+                SaveCurrent();
+            }
         }
     }
 
@@ -146,9 +181,10 @@ public class PlanEditorSession : ISession
 
             if (CurrentPlan.ScaffoldAnchorPoints.Contains(cell))
             {
-                painter.DrawRectangle(rectangle.Inflated(-2,-2), new DrawSettings {Color = Color.White, Depth = Depth.Middle - 1});
+                painter.DrawRectangle(rectangle.Inflated(-2, -2),
+                    new DrawSettings {Color = Color.White, Depth = Depth.Middle - 1});
             }
-            
+
             if (CurrentPlan.Cells.Contains(cell))
             {
                 var color = Color.Orange;
@@ -157,7 +193,8 @@ public class PlanEditorSession : ISession
                     color = Color.Red;
                 }
 
-                painter.DrawRectangle(rectangle, new DrawSettings {Color = color.WithMultipliedOpacity(0.5f), Depth = Depth.Middle});
+                painter.DrawRectangle(rectangle,
+                    new DrawSettings {Color = color.WithMultipliedOpacity(0.5f), Depth = Depth.Middle});
             }
 
             if (_hoveredCell == cell)
@@ -173,10 +210,16 @@ public class PlanEditorSession : ISession
         var bigFont = 128;
         painter.DrawStringAtPosition(Client.Assets.GetFont("engine/console-font", bigFont), _plans[_planIndex].Item1,
             new Vector2(0, 1080 - bigFont), new DrawSettings());
-        
-        var smallFont = 32;
-        painter.DrawStringAtPosition(Client.Assets.GetFont("engine/console-font", smallFont), $"(Q){nameof(CurrentPlan.Settings.CreatesScaffold)}={CurrentPlan.Settings.CreatesScaffold}",
-            new Vector2(0, 1080 - bigFont - smallFont), new DrawSettings());
+
+        var messageBuilder = new StringBuilder();
+        messageBuilder.AppendLine($"(Q){nameof(CurrentPlan.Settings.CreatesScaffold)}={CurrentPlan.Settings.CreatesScaffold}");
+        messageBuilder.AppendLine($"(W){nameof(CurrentPlan.Settings.ProvidesSupport)}={CurrentPlan.Settings.ProvidesSupport}");
+        messageBuilder.AppendLine($"(E){nameof(CurrentPlan.Settings.StructureLayer)}={CurrentPlan.Settings.StructureLayer}");
+        messageBuilder.AppendLine($"(+/-){nameof(CurrentPlan.Settings.RequiredSupports)}={CurrentPlan.Settings.RequiredSupports}");
+        var message = messageBuilder.ToString();
+        var smallFont = Client.Assets.GetFont("engine/console-font", 32);
+        painter.DrawStringAtPosition(smallFont, message,
+            new Vector2(0, 1080 - bigFont - smallFont.MeasureString(message).Y), new DrawSettings());
 
         painter.EndSpriteBatch();
     }
@@ -215,7 +258,7 @@ public class PlanEditorSession : ISession
         {
             cells.Add(Cell.Origin);
         }
-        
+
         return cells;
     }
 

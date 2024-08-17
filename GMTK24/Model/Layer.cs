@@ -3,34 +3,66 @@ using System.Linq;
 
 namespace GMTK24.Model;
 
+public enum BuildResult
+{
+    Success,
+    FailedBecauseOfFit,
+    FailedBecauseOfStructure
+}
+
 public class Layer
 {
     private readonly List<Structure> _structures = new();
+    private readonly Dictionary<Cell, Structure> _cellToStructure = new();
     private List<Cell>? _scaffoldCache;
-    private Dictionary<Cell, Structure> _cellToStructure = new();
 
     public IEnumerable<Structure> Structures => _structures;
 
-    public bool AddStructure(Cell centerCell, PlannedStructure plan)
+    public BuildResult CanBuild(Cell centerCell, PlannedStructure plan)
     {
-        if(CanFit(centerCell, plan))
+        if (!CanFit(centerCell, plan))
         {
-            var realStructure = plan.BuildReal(centerCell);
-            _structures.Add(realStructure);
-            _scaffoldCache = null;
-
-            foreach (var cell in realStructure.OccupiedCells)
-            {
-                _cellToStructure.Add(cell, realStructure);
-            }
-
-            return true;
+            return BuildResult.FailedBecauseOfFit;
         }
 
-        return false;
+        if (!IsStructurallySupported(centerCell, plan))
+        {
+            return BuildResult.FailedBecauseOfStructure;
+        }
+
+        return BuildResult.Success;
     }
 
-    public bool CanFit(Cell centerCell, PlannedStructure plan)
+    public void AddStructure(Cell centerCell, PlannedStructure plan)
+    {
+        var realStructure = plan.BuildReal(centerCell);
+        _structures.Add(realStructure);
+        _scaffoldCache = null;
+
+        foreach (var cell in realStructure.OccupiedCells)
+        {
+            _cellToStructure.Add(cell, realStructure);
+        }
+    }
+
+    private bool IsStructurallySupported(Cell centerCell, PlannedStructure plan)
+    {
+        var structure = plan.BuildReal(centerCell);
+        var actualSupports = 0;
+
+        foreach (var bottomCell in structure.BottomCells())
+        {
+            var belowCell = bottomCell + new Cell(0, 1);
+            if (GetStructureAt(belowCell)?.Settings.ProvidesSupport == true)
+            {
+                actualSupports++;
+            }
+        }
+
+        return plan.Settings.RequiredSupports <= actualSupports;
+    }
+
+    private bool CanFit(Cell centerCell, PlannedStructure plan)
     {
         var structure = plan.BuildReal(centerCell);
         foreach (var newCell in structure.OccupiedCells)
@@ -72,7 +104,7 @@ public class Layer
 
     private IEnumerable<Cell> GenerateScaffoldCells()
     {
-        foreach (var structure in _structures.Where(a=>a.Settings.CreatesScaffold))
+        foreach (var structure in _structures.Where(a => a.Settings.CreatesScaffold))
         {
             foreach (var startingAnchorPoint in structure.ScaffoldAnchorPoints)
             {
@@ -101,6 +133,7 @@ public class Layer
         {
             _scaffoldCache = GenerateScaffoldCells().ToList();
         }
+
         return _scaffoldCache;
     }
 }

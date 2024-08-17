@@ -8,6 +8,7 @@ using ExplogineMonoGame.Input;
 using GMTK24.Model;
 using GMTK24.UserInterface;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
 
 namespace GMTK24;
@@ -20,6 +21,8 @@ public class GameSession : ISession
     private readonly World _world;
     private bool _isPanning;
     private Vector2? _mousePosition;
+    
+    public event Action? RequestEditorSession;
 
     public GameSession()
     {
@@ -28,10 +31,12 @@ public class GameSession : ISession
         var house = ReadPlan("house.json");
         var tree =  ReadPlan("tree.json");
         var platform = ReadPlan("platform.json");
+        var farm = ReadPlan("farm.json");
 
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {house})));
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {tree})));
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {platform})));
+        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {farm})));
         _ui = layoutBuilder.Build();
 
         var screenSize = new Point(1920, 1080);
@@ -61,6 +66,11 @@ public class GameSession : ISession
         var worldLayer = hitTestStack.AddLayer(_camera.ScreenToCanvas, Depth.Back);
         worldLayer.AddZone(_camera.ViewBounds, Depth.Back, _isHovered);
 
+        if (input.Keyboard.GetButton(Keys.Escape).WasPressed && Client.Debug.IsPassiveOrActive)
+        {
+            RequestEditorSession?.Invoke();
+        }
+
         if (_isHovered)
         {
             _mousePosition = input.Mouse.Position(hitTestStack.WorldMatrix * _camera.ScreenToCanvas);
@@ -74,10 +84,11 @@ public class GameSession : ISession
 
                 if (plannedBuildPosition.HasValue && plannedStructure != null)
                 {
-                    var success = _world.MainLayer.AddStructure(plannedBuildPosition.Value, plannedStructure);
+                    var result = _world.MainLayer.CanBuild(plannedBuildPosition.Value, plannedStructure);
 
-                    if (success)
+                    if (result == BuildResult.Success)
                     {
+                        _world.MainLayer.AddStructure(plannedBuildPosition.Value, plannedStructure);
                         _ui.State.IncrementSelectedBlueprint();
                     }
                 }
@@ -97,8 +108,6 @@ public class GameSession : ISession
                 var normalizedScrollDelta = scrollDelta / 120f;
 
                 var zoomStrength = 20;
-
-                var previousCameraCenter = _camera.CenterPosition;
 
                 if (normalizedScrollDelta < 0)
                 {
@@ -149,14 +158,30 @@ public class GameSession : ISession
         if (_mousePosition.HasValue && !_isPanning)
         {
             var buildPosition = GetPlannedBuildPosition();
-            var structure = GetPlannedStructure();
+            var plannedStructure = GetPlannedStructure();
 
-            if (structure != null && buildPosition.HasValue)
+            if (plannedStructure != null && buildPosition.HasValue)
             {
-                foreach (var cell in structure.BuildReal(buildPosition.Value).OccupiedCells)
+                var realStructure = plannedStructure.BuildReal(buildPosition.Value);
+                var defaultColor = Color.Green;
+
+                var buildResult = _world.MainLayer.CanBuild(buildPosition.Value, plannedStructure);
+
+                if (buildResult == BuildResult.FailedBecauseOfFit)
+                {
+                    defaultColor = Color.Yellow;
+                }
+
+                if (buildResult == BuildResult.FailedBecauseOfStructure)
+                {
+                    defaultColor = Color.Black;
+                }
+                
+                foreach (var cell in realStructure.OccupiedCells)
                 {
                     var rectangle = Grid.CellToPixelRectangle(cell);
-                    var color = Color.Yellow;
+
+                    var color = defaultColor;
                     if (_world.MainLayer.IsOccupiedAt(cell))
                     {
                         color = Color.OrangeRed;

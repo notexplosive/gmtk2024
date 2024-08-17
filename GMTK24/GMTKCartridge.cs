@@ -20,20 +20,27 @@ public class GMTKCartridge : BasicGameCartridge
 
     public override void OnCartridgeStarted()
     {
-        _session = new GameSession();
+        SwitchToPlayMode();
 
         if (Client.Args.GetValue<bool>("editor"))
         {
-            var planEditorSession = new PlanEditorSession();
-            planEditorSession.RequestPlayMode += SwitchToPlayMode;
-            _session = planEditorSession;
+            SwitchToEditor();
         }
 
     }
 
+    private void SwitchToEditor()
+    {
+        var planEditorSession = new PlanEditorSession();
+        planEditorSession.RequestPlayMode += SwitchToPlayMode;
+        _session = planEditorSession;
+    }
+
     private void SwitchToPlayMode()
     {
-        _session = new GameSession();
+        var gameSession = new GameSession();
+        gameSession.RequestEditorSession += SwitchToEditor;
+        _session = gameSession;
     }
 
     public override void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)

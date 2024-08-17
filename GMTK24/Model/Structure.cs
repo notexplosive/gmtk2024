@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GMTK24.Model;
 
@@ -36,4 +38,10 @@ public class Structure
     public IEnumerable<Cell> OccupiedCells => _occupiedWorldSpace;
     public IEnumerable<Cell> ScaffoldAnchorPoints => _scaffoldAnchorPoints;
     public Cell Center { get; }
+
+    public IEnumerable<Cell> BottomCells()
+    {
+        var bottomY = OccupiedCells.MaxBy(a => a.Y).Y;
+        return OccupiedCells.Where(a => a.Y == bottomY);
+    }
 }

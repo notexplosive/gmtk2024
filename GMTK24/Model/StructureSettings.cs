@@ -10,4 +10,13 @@ public class StructureSettings
 
     [JsonProperty("createsScaffold")]
     public bool CreatesScaffold { get; set; } = true;
+
+    [JsonProperty("providesSupport")]
+    public bool ProvidesSupport { get; set; } = true;
+
+    [JsonProperty("requiredSupports")]
+    public int RequiredSupports { get; set; } = 1;
+    
+    [JsonProperty("layer")]
+    public StructureLayer StructureLayer { get; set; } = StructureLayer.Main;
 }
