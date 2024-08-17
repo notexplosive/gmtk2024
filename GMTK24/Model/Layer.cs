@@ -70,7 +70,7 @@ public class Layer
 
     private IEnumerable<Cell> GenerateScaffoldCells()
     {
-        foreach (var structure in _structures.Where(a=>a.Settings.ShouldScaffold))
+        foreach (var structure in _structures.Where(a=>a.Settings.CreatesScaffold))
         {
             foreach (var startingAnchorPoint in structure.ScaffoldAnchorPoints)
             {
@@ -78,7 +78,7 @@ public class Layer
                 while (anchorPoint.Y < 0)
                 {
                     var foundStructure = GetStructureAt(anchorPoint);
-                    if (foundStructure == null || !foundStructure.Settings.ShouldScaffold)
+                    if (foundStructure == null || !foundStructure.Settings.CreatesScaffold)
                     {
                         yield return anchorPoint;
                     }

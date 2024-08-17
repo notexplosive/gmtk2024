@@ -10,7 +10,7 @@ namespace GMTK24;
 
 public class GMTKCartridge : BasicGameCartridge
 {
-    private ISession? _gameSession;
+    private ISession? _session;
 
     public GMTKCartridge(IRuntime runtime) : base(runtime)
     {
@@ -20,26 +20,33 @@ public class GMTKCartridge : BasicGameCartridge
 
     public override void OnCartridgeStarted()
     {
-        _gameSession = new GameSession();
+        _session = new GameSession();
+
+        if (Client.Args.GetValue<bool>("editor"))
+        {
+            _session = new PlanEditorSession();
+        }
+
     }
 
     public override void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
-        _gameSession?.UpdateInput(input, hitTestStack);
+        _session?.UpdateInput(input, hitTestStack);
     }
 
     public override void Update(float dt)
     {
-        _gameSession?.Update(dt);
+        _session?.Update(dt);
     }
 
     public override void Draw(Painter painter)
     {
-        _gameSession?.Draw(painter);
+        _session?.Draw(painter);
     }
 
     public override void AddCommandLineParameters(CommandLineParametersWriter parameters)
     {
+        parameters.RegisterParameter<bool>("editor");
     }
 
     public override void OnHotReload()

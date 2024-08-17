@@ -1,31 +1,39 @@
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace GMTK24.Model;
 
+[JsonObject(MemberSerialization.OptIn)]
 public class PlannedStructure
 {
-    private readonly StructureSettings _settings;
-    private readonly HashSet<Cell> _pendingCells;
-    private readonly HashSet<Cell> _scaffoldAnchorPoints = new();
+    [field: JsonProperty("settings")]
+    public StructureSettings Settings { get; init; }
 
-    public PlannedStructure(HashSet<Cell> pendingCells, StructureSettings settings)
+    [field: JsonProperty("cells")]
+    public HashSet<Cell> PendingCells { get; init; }
+
+    [JsonProperty("scaffoldAnchors")]
+    public HashSet<Cell> ScaffoldAnchorPoints { get; init; } = new();
+
+    [JsonConstructor]
+    public PlannedStructure(HashSet<Cell> cells, StructureSettings settings)
     {
-        _pendingCells = pendingCells;
-        _settings = settings;
+        PendingCells = cells;
+        Settings = settings;
 
-        var leftX = _pendingCells.MinBy(a => a.X).X;
-        var rightX = _pendingCells.MaxBy(a => a.X).X;
+        var leftX = PendingCells.MinBy(a => a.X).X;
+        var rightX = PendingCells.MaxBy(a => a.X).X;
 
-        var bottomLeft = _pendingCells.Where(a => a.X == leftX).MaxBy(a => a.Y);
-        var bottomRight = _pendingCells.Where(a => a.X == rightX).MaxBy(a => a.Y);
+        var bottomLeft = PendingCells.Where(a => a.X == leftX).MaxBy(a => a.Y);
+        var bottomRight = PendingCells.Where(a => a.X == rightX).MaxBy(a => a.Y);
 
-        _scaffoldAnchorPoints.Add(bottomLeft + new Cell(0, 1));
-        _scaffoldAnchorPoints.Add(bottomRight + new Cell(0, 1));
+        ScaffoldAnchorPoints.Add(bottomLeft + new Cell(0, 1));
+        ScaffoldAnchorPoints.Add(bottomRight + new Cell(0, 1));
     }
 
     public Structure BuildReal(Cell centerCell)
     {
-        return new Structure(centerCell, _pendingCells, _scaffoldAnchorPoints, _settings);
+        return new Structure(centerCell, PendingCells, ScaffoldAnchorPoints, Settings);
     }
 }

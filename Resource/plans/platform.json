@@ -1,0 +1,44 @@
+{
+  "settings": {
+    "drawDescription": {
+      "textureName": "platform",
+      "graphicsTopLeft": {
+        "X": -2,
+        "Y": 0
+      }
+    },
+    "createsScaffold": true
+  },
+  "cells": [
+    {
+      "X": -2,
+      "Y": 0
+    },
+    {
+      "X": -1,
+      "Y": 0
+    },
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": 1,
+      "Y": 0
+    },
+    {
+      "X": 2,
+      "Y": 0
+    }
+  ],
+  "scaffoldAnchors": [
+    {
+      "X": -2,
+      "Y": 1
+    },
+    {
+      "X": 2,
+      "Y": 1
+    }
+  ]
+}

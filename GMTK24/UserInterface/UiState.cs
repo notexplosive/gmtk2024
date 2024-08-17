@@ -1,3 +1,4 @@
+using ExplogineMonoGame;
 using GMTK24.Model;
 
 namespace GMTK24.UserInterface;
@@ -32,6 +33,17 @@ public class UiState
             return null;
         }
 
-        return SelectedButton.BuildAction.Blueprint.NextStructure();
+        return SelectedButton.BuildAction.Blueprint.CurrentStructure();
+    }
+
+    public void IncrementSelectedBlueprint()
+    {
+        if (SelectedButton == null)
+        {
+            Client.Debug.LogError("Attempted to increment structure when none was selected");
+            return;
+        }
+        
+        SelectedButton.BuildAction.Blueprint.IncrementStructure();
     }
 }

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Nodes;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
@@ -5,6 +8,7 @@ using ExplogineMonoGame.Input;
 using GMTK24.Model;
 using GMTK24.UserInterface;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 
 namespace GMTK24;
 
@@ -21,67 +25,15 @@ public class GameSession : ISession
     {
         var layoutBuilder = new UiLayoutBuilder();
 
-        var house = new PlannedStructureBuilder()
-                .AddCell(-1, -1)
-                .AddCell(0, -1)
-                .AddCell(1, -1)
-                .AddCell(2, -1)
-                .AddCell(-1, 0)
-                .AddCell(0, 0)
-                .AddCell(1, 0)
-                .AddCell(2, 0)
-                .AddCell(-1, 1)
-                .AddCell(0, 1)
-                .AddCell(1, 1)
-                .AddCell(2, 1)
-                .AddCell(-1, 2)
-                .AddCell(0, 2)
-                .AddCell(1, 2)
-                .AddCell(2, 2)
-                .BuildPlan(
-                    new StructureSettings
-                    {
-                        DrawDescription = new StructureDrawDescription
-                            {TextureName = "house", GraphicTopLeft = new Cell(-1, -1)}
-                    }
-                )
-            ;
+        var house = ReadPlan("house.json");
+        var house2 = ReadPlan("house2.json");
+        var house3 = ReadPlan("house3.json");
+        var tree =  ReadPlan("tree.json");
+        var platform = ReadPlan("platform.json");
 
-        var tree = new PlannedStructureBuilder()
-                .AddCell(0, 2)
-                .AddCell(0, 1)
-                .AddCell(0, 0)
-                .AddCell(0, -1)
-                .AddCell(0, -2)
-                .AddCell(1, -2)
-                .AddCell(-1, -2)
-                .AddCell(-1, -1)
-                .AddCell(1, -1)
-                .BuildPlan(
-                    new StructureSettings
-                    {
-                        DrawDescription = new StructureDrawDescription
-                            {TextureName = "tree", GraphicTopLeft = new Cell(-1, -2)},
-                        ShouldScaffold = false
-                    })
-            ;
-
-        var platform = new PlannedStructureBuilder()
-                .AddCell(-2, 0)
-                .AddCell(-1, 0)
-                .AddCell(0, 0)
-                .AddCell(1, 0)
-                .AddCell(2, 0)
-                .BuildPlan(new StructureSettings
-                {
-                    DrawDescription = new StructureDrawDescription
-                        {TextureName = "platform", GraphicTopLeft = new Cell(-2, 0)}
-                })
-            ;
-
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(house)));
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(tree)));
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(platform)));
+        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {house, house2, house3})));
+        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {tree})));
+        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {platform})));
         _ui = layoutBuilder.Build();
 
         var screenSize = new Point(1920, 1080);
@@ -91,6 +43,19 @@ public class GameSession : ISession
         _world = new World();
 
         _world.MainLayer.AddStructure(new Cell(0, 0), platform);
+    }
+
+    private static PlannedStructure ReadPlan(string planFileName)
+    {
+        var planFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource/plans");
+        var result = JsonConvert.DeserializeObject<PlannedStructure>(planFiles.ReadFile(planFileName));
+
+        if (result == null)
+        {
+            throw new Exception($"Deserialize failed for {planFileName}");
+        }
+
+        return result;
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -112,6 +77,7 @@ public class GameSession : ISession
                 if (plannedBuildPosition.HasValue && plannedStructure != null)
                 {
                     _world.MainLayer.AddStructure(plannedBuildPosition.Value, plannedStructure);
+                    _ui.State.IncrementSelectedBlueprint();
                 }
             }
 
@@ -187,7 +153,7 @@ public class GameSession : ISession
             {
                 foreach (var cell in structure.BuildReal(buildPosition.Value).OccupiedCells)
                 {
-                    var rectangle = new RectangleF(Grid.CellToPixel(cell), new Vector2(Grid.CellSize));
+                    var rectangle = Grid.CellToPixelRectangle(cell);
                     var color = Color.Yellow;
                     if (_world.MainLayer.IsOccupiedAt(cell))
                     {
@@ -215,7 +181,7 @@ public class GameSession : ISession
             rectangle, new DrawSettings {SourceRectangle = rectangle.ToRectangle()});
     }
 
-    private void DrawStructure(Painter painter, Structure structure)
+    public static void DrawStructure(Painter painter, Structure structure)
     {
         if (structure.Settings.DrawDescription.TextureName == null)
         {

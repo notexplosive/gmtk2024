@@ -1,4 +1,5 @@
 using System;
+using ExplogineMonoGame.Data;
 using GMTK24.Model;
 using Microsoft.Xna.Framework;
 
@@ -27,5 +28,10 @@ public static class Grid
     public static Vector2 CellToPixel(Cell gridPosition)
     {
         return gridPosition.ToVector2() * CellSize;
+    }
+
+    public static RectangleF CellToPixelRectangle(Cell cell)
+    {
+        return new RectangleF(Grid.CellToPixel(cell), new Vector2(Grid.CellSize));
     }
 }

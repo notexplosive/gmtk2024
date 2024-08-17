@@ -1,7 +1,15 @@
 local dotnet = lib("dotnet")
+local butler = lib("butler")
 
 files.deleteDirectory(".build")
 
 dotnet.publish("GMTK24", ".build")
 
 files.copy("Resource", ".build/Resource")
+for i, pdbFile in ipairs(files.list(".build", true, "pdb")) do
+    files.delete(pdbFile)
+end
+
+butler.login()
+
+butler.push(".build", "notexplosive", "gmtk24", "main")
