@@ -15,6 +15,7 @@ public class Layer
     private readonly List<Structure> _structures = new();
     private readonly Dictionary<Cell, Structure> _cellToStructure = new();
     private List<Cell>? _scaffoldCache;
+    private List<Cell>? _supportedCache;
 
     public IEnumerable<Structure> Structures => _structures;
     
@@ -23,6 +24,7 @@ public class Layer
         var realStructure = plan.BuildReal(centerCell);
         _structures.Add(realStructure);
         _scaffoldCache = null;
+        _supportedCache = null;
 
         foreach (var cell in realStructure.OccupiedCells)
         {
@@ -38,7 +40,7 @@ public class Layer
         foreach (var bottomCell in structure.BottomCells())
         {
             var belowCell = bottomCell + new Cell(0, 1);
-            if (GetStructureAt(belowCell)?.Settings.ProvidesSupport == true)
+            if (SupportedCells().Contains(belowCell))
             {
                 actualSupports++;
             }
@@ -111,6 +113,17 @@ public class Layer
             }
         }
     }
+    
+    private IEnumerable<Cell> GenerateSupportedCells()
+    {
+        foreach (var structure in _structures.Where(a => a.Settings.ProvidesSupport))
+        {
+            foreach (var x in structure.OccupiedCells.DistinctBy(a => a.X).Select(a=>a.X))
+            {
+                yield return structure.OccupiedCells.Where(a => a.X == x).MinBy(a=>a.Y);
+            }
+        }
+    }
 
     public IEnumerable<Cell> ScaffoldCells()
     {
@@ -120,5 +133,15 @@ public class Layer
         }
 
         return _scaffoldCache;
+    }
+    
+    public IEnumerable<Cell> SupportedCells()
+    {
+        if (_supportedCache == null)
+        {
+            _supportedCache = GenerateSupportedCells().ToList();
+        }
+
+        return _supportedCache;
     }
 }

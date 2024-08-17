@@ -9,7 +9,7 @@
     },
     "createsScaffold": false,
     "providesSupport": false,
-    "requiredSupports": 1,
+    "requiredSupports": 3,
     "layer": 1
   },
   "cells": [
@@ -18,24 +18,12 @@
       "Y": 0
     },
     {
-      "X": 0,
-      "Y": -1
-    },
-    {
       "X": 1,
       "Y": 0
     },
     {
       "X": -1,
       "Y": 0
-    },
-    {
-      "X": 0,
-      "Y": -2
-    },
-    {
-      "X": 0,
-      "Y": -3
     }
   ],
   "scaffoldAnchors": []

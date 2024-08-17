@@ -230,7 +230,7 @@ public class GameSession : ISession
 
         var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
         painter.DrawAtPosition(ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName],
-            Grid.CellToPixel(graphicsTopLeft), Scale2D.One, new DrawSettings());
+            Grid.CellToPixel(graphicsTopLeft), Scale2D.One, new DrawSettings{Depth = Depth.Front - structure.Center.Y});
     }
 
     private Cell? GetPlannedBuildPosition()
