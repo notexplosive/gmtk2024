@@ -43,7 +43,7 @@ public class GameSession : ISession
         _ui = uiBuilder.Build();
 
         var screenSize = new Point(1920, 1080);
-        var zoomLevel = 0.25f;
+        var zoomLevel = 0.5f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
         _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"), new Blueprint());
