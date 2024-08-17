@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
+using GMTK24.Model;
 using Newtonsoft.Json;
 
-namespace GMTK24.Model;
+namespace GMTK24.Config;
 
-public class PlannedStructure
+public class StructurePlan
 {
     [JsonProperty("settings")]
-    public StructureSettings Settings { get; init; } = new();
+    public PlanSettings Settings { get; init; } = new();
 
     [JsonProperty("cells")]
     public HashSet<Cell> Cells { get; init; } = new();

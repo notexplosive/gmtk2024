@@ -4,6 +4,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
+using GMTK24.Config;
 using GMTK24.Model;
 using GMTK24.UserInterface;
 using Microsoft.Xna.Framework;
@@ -15,12 +16,12 @@ namespace GMTK24;
 public class GameSession : ISession
 {
     private readonly Camera _camera;
+    private readonly ErrorMessage _errorMessage;
     private readonly HoverState _isHovered = new();
     private readonly Ui _ui;
     private readonly World _world;
     private bool _isPanning;
     private Vector2? _mousePosition;
-    private readonly ErrorMessage _errorMessage;
 
     public GameSession()
     {
@@ -30,13 +31,15 @@ public class GameSession : ISession
         var tree = ReadPlan("tree.json");
         var platform = ReadPlan("platform.json");
         var platform2 = ReadPlan("platform2.json");
-
         var farm = ReadPlan("farm.json");
 
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {house})));
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {tree})));
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {platform, platform2})));
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {farm})));
+        layoutBuilder.AddResource(new Resource("Inspiration"));
+        layoutBuilder.AddResource(new Resource("Food"));
+
+        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {house}));
+        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {tree}));
+        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {platform, platform2}));
+        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {farm}));
         _ui = layoutBuilder.Build();
 
         var screenSize = new Point(1920, 1080);
@@ -44,9 +47,8 @@ public class GameSession : ISession
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
         _world = new World();
-
         _world.MainLayer.AddStructureToLayer(new Cell(0, 0), platform);
-        _errorMessage = new(screenSize);
+        _errorMessage = new ErrorMessage(screenSize);
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -116,7 +118,7 @@ public class GameSession : ISession
                 }
                 else
                 {
-                    if (_camera.ViewBounds.Width > 192*2)
+                    if (_camera.ViewBounds.Width > 192 * 2)
                     {
                         _camera.ZoomInTowards((int) (normalizedScrollDelta * zoomStrength), _mousePosition.Value);
                     }
@@ -207,7 +209,7 @@ public class GameSession : ISession
         painter.EndSpriteBatch();
 
         _errorMessage.Draw(painter);
-        
+
         _ui.Draw(painter);
     }
 
@@ -218,10 +220,10 @@ public class GameSession : ISession
 
     public event Action? RequestEditorSession;
 
-    private static PlannedStructure ReadPlan(string planFileName)
+    private static StructurePlan ReadPlan(string planFileName)
     {
         var planFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource/plans");
-        var result = JsonConvert.DeserializeObject<PlannedStructure>(planFiles.ReadFile(planFileName));
+        var result = JsonConvert.DeserializeObject<StructurePlan>(planFiles.ReadFile(planFileName));
 
         if (result == null)
         {
@@ -247,7 +249,8 @@ public class GameSession : ISession
 
         var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
         painter.DrawAtPosition(ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName],
-            Grid.CellToPixel(graphicsTopLeft), Scale2D.One, new DrawSettings{Depth = Depth.Front - structure.Center.Y});
+            Grid.CellToPixel(graphicsTopLeft), Scale2D.One,
+            new DrawSettings {Depth = Depth.Front - structure.Center.Y});
     }
 
     private Cell? GetPlannedBuildPosition()
@@ -260,7 +263,7 @@ public class GameSession : ISession
         return Grid.PixelToCell(_mousePosition.Value);
     }
 
-    private PlannedStructure? GetPlannedStructure()
+    private StructurePlan? GetPlannedStructure()
     {
         return _ui.State.CurrentStructure();
     }

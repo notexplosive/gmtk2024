@@ -1,11 +1,13 @@
-﻿namespace GMTK24.Model;
+﻿using GMTK24.Config;
+
+namespace GMTK24.Model;
 
 public class World
 {
     public Layer DecorationLayer = new();
     public Layer MainLayer = new();
 
-    public BuildResult CanBuild(Cell centerCell, PlannedStructure plan)
+    public BuildResult CanBuild(Cell centerCell, StructurePlan plan)
     {
         var placingLayer = DeducePlacingLayer(plan);
 
@@ -22,7 +24,7 @@ public class World
         return BuildResult.Success;
     }
 
-    private Layer DeducePlacingLayer(PlannedStructure plan)
+    private Layer DeducePlacingLayer(StructurePlan plan)
     {
         var placingLayer = MainLayer;
 
@@ -34,7 +36,7 @@ public class World
         return placingLayer;
     }
 
-    public void AddStructure(Cell centerCell, PlannedStructure plan)
+    public void AddStructure(Cell centerCell, StructurePlan plan)
     {
         DeducePlacingLayer(plan).AddStructureToLayer(centerCell, plan);
     }

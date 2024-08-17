@@ -6,6 +6,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
+using GMTK24.Config;
 using GMTK24.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -16,7 +17,7 @@ namespace GMTK24;
 public class PlanEditorSession : ISession
 {
     private readonly Camera _camera;
-    private readonly List<Tuple<string, PlannedStructure>> _plans = new();
+    private readonly List<Tuple<string, StructurePlan>> _plans = new();
     private Cell? _hoveredCell;
     private int _planIndex;
 
@@ -31,7 +32,7 @@ public class PlanEditorSession : ISession
             screenSize);
     }
 
-    private PlannedStructure CurrentPlan => _plans[_planIndex].Item2;
+    private StructurePlan CurrentPlan => _plans[_planIndex].Item2;
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
@@ -268,10 +269,10 @@ public class PlanEditorSession : ISession
         var planFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource/Plans");
         foreach (var fileName in planFiles.GetFilesAt("."))
         {
-            var result = JsonConvert.DeserializeObject<PlannedStructure>(planFiles.ReadFile(fileName));
+            var result = JsonConvert.DeserializeObject<StructurePlan>(planFiles.ReadFile(fileName));
             if (result != null)
             {
-                _plans.Add(new Tuple<string, PlannedStructure>(fileName, result));
+                _plans.Add(new Tuple<string, StructurePlan>(fileName, result));
             }
         }
     }

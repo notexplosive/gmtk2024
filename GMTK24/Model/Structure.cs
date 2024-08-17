@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GMTK24.Config;
 
 namespace GMTK24.Model;
 
 public class Structure
 {
-    public StructureSettings Settings { get; }
+    public PlanSettings Settings { get; }
 
     /// <summary>
     ///     Occupied Cells in the world
@@ -19,7 +20,7 @@ public class Structure
     ///     Use builder instead!
     /// </summary>
     public Structure(Cell worldCenter, HashSet<Cell> localCells, IEnumerable<Cell> localAnchorPoints,
-        StructureSettings settings)
+        PlanSettings settings)
     {
         Settings = settings;
         foreach (var localCell in localCells)

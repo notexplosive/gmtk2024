@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GMTK24.Config;
 
 namespace GMTK24.Model;
 
@@ -19,7 +20,7 @@ public class Layer
 
     public IEnumerable<Structure> Structures => _structures;
     
-    public void AddStructureToLayer(Cell centerCell, PlannedStructure plan)
+    public void AddStructureToLayer(Cell centerCell, StructurePlan plan)
     {
         var realStructure = plan.BuildReal(centerCell);
         _structures.Add(realStructure);
@@ -32,7 +33,7 @@ public class Layer
         }
     }
 
-    public bool IsStructurallySupported(Cell centerCell, PlannedStructure plan)
+    public bool IsStructurallySupported(Cell centerCell, StructurePlan plan)
     {
         var structure = plan.BuildReal(centerCell);
         var actualSupports = 0;
@@ -49,7 +50,7 @@ public class Layer
         return plan.Settings.RequiredSupports <= actualSupports;
     }
 
-    public bool CanFit(Cell centerCell, PlannedStructure plan)
+    public bool CanFit(Cell centerCell, StructurePlan plan)
     {
         var structure = plan.BuildReal(centerCell);
         foreach (var newCell in structure.OccupiedCells)

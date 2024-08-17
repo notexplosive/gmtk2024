@@ -1,20 +1,16 @@
 using ExplogineMonoGame.Data;
+using GMTK24.Model;
 
 namespace GMTK24.UserInterface;
 
 public class StructureButton
 {
-    public BuildAction BuildAction { get; }
+    public Blueprint Blueprint { get; }
     public RectangleF Rectangle { get; }
 
-    public StructureButton(RectangleF rectangle, BuildAction buildAction)
+    public StructureButton(RectangleF rectangle, Blueprint blueprint)
     {
-        BuildAction = buildAction;
+        Blueprint = blueprint;
         Rectangle = rectangle;
-    }
-
-    public void OnPress()
-    {
-        
     }
 }

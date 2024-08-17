@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using ExplogineCore.Data;
+using GMTK24.Config;
 
 namespace GMTK24.Model;
 
 public class Blueprint
 {
-    private readonly List<PlannedStructure> _structures;
+    private readonly List<StructurePlan> _structures;
     private static int idPool;
     private int _structureIndex;
     private readonly Noise _noise;
 
-    public Blueprint(List<PlannedStructure> structure)
+    public Blueprint(List<StructurePlan> structure)
     {
         _structures = structure;
         Id = idPool++;
@@ -19,7 +20,7 @@ public class Blueprint
 
     public int Id { get; }
 
-    public PlannedStructure CurrentStructure()
+    public StructurePlan CurrentStructure()
     {
         return _structures[_noise.PositiveIntAt(_structureIndex, _structures.Count)];
     }

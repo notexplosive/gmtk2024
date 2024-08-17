@@ -1,9 +1,10 @@
+using GMTK24.Model;
 using Newtonsoft.Json;
 
-namespace GMTK24.Model;
+namespace GMTK24.Config;
 
 [JsonObject(MemberSerialization.OptIn)]
-public class StructureSettings
+public class PlanSettings
 {
     [JsonProperty("drawDescription")]
     public StructureDrawDescription DrawDescription { get; set; } = new();
@@ -16,7 +17,7 @@ public class StructureSettings
 
     [JsonProperty("requiredSupports")]
     public int RequiredSupports { get; set; } = 1;
-    
+
     [JsonProperty("layer")]
     public StructureLayer StructureLayer { get; set; } = StructureLayer.Main;
 }
