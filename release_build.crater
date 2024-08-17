@@ -6,6 +6,9 @@ files.deleteDirectory(".build")
 dotnet.publish("GMTK24", ".build")
 
 files.copy("Resource", ".build/Resource")
+
+files.copy("HelperScripts", ".build")
+
 for i, pdbFile in ipairs(files.list(".build", true, "pdb")) do
     files.delete(pdbFile)
 end

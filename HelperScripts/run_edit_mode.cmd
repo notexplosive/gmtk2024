@@ -1,0 +1,1 @@
+GMTK24.exe --debug --editor --skipsnapshot
