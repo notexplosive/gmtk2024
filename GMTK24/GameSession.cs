@@ -19,30 +19,36 @@ public class GameSession : ISession
     private readonly ErrorMessage _errorMessage;
     private readonly HoverState _isHovered = new();
     private readonly Ui _ui;
-    private readonly World _world;
+    private readonly World _world = new();
     private bool _isPanning;
     private Vector2? _mousePosition;
+    private Inventory _inventory = new();
 
     public GameSession()
     {
-        var layoutBuilder = new UiLayoutBuilder();
+        var uiBuilder = new UiLayoutBuilder();
 
-        layoutBuilder.AddResource(new Resource("Inspiration"));
-        layoutBuilder.AddResource(new Resource("Food"));
+        _inventory.AddResource(new Resource("Population"));
+        _inventory.AddResource(new Resource("Inspiration"));
+        _inventory.AddResource(new Resource("Food"));
+        foreach (var resource in _inventory.AllResources())
+        {
+            uiBuilder.AddResource(resource);
+        }
+        
 
         var blueprintFolder = Client.Debug.RepoFileSystem.GetDirectory("Resource/blueprints");
-        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_house"));
-        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_platform"));
-        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_tree"));
-        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_farm"));
-        _ui = layoutBuilder.Build();
+        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_house"));
+        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_platform"));
+        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_farm"));
+        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_tree"));
+        _ui = uiBuilder.Build();
 
         var screenSize = new Point(1920, 1080);
         var zoomLevel = 0.25f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
-        _world = new World();
-        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_platform"));
+        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_platform"), new Blueprint());
         _errorMessage = new ErrorMessage(screenSize);
     }
 
@@ -66,15 +72,17 @@ public class GameSession : ISession
 
                 var plannedBuildPosition = GetPlannedBuildPosition();
                 var plannedStructure = GetPlannedStructure();
+                var plannedBlueprint = GetPlannedBlueprint();
 
-                if (plannedBuildPosition.HasValue && plannedStructure != null)
+                if (plannedBuildPosition.HasValue && plannedStructure != null && plannedBlueprint != null)
                 {
                     var result = _world.CanBuild(plannedBuildPosition.Value, plannedStructure);
 
                     if (result == BuildResult.Success)
                     {
-                        _world.AddStructure(plannedBuildPosition.Value, plannedStructure);
+                        _world.AddStructure(plannedBuildPosition.Value, plannedStructure, plannedBlueprint);
                         _ui.State.IncrementSelectedBlueprint();
+                        _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.OnConstructDelta);
                     }
 
                     if (result == BuildResult.FailedBecauseOfFit)
@@ -162,10 +170,11 @@ public class GameSession : ISession
         {
             var buildPosition = GetPlannedBuildPosition();
             var plannedStructure = GetPlannedStructure();
+            var plannedBlueprint = GetPlannedBlueprint();
 
-            if (plannedStructure != null && buildPosition.HasValue)
+            if (plannedStructure != null && buildPosition.HasValue && plannedBlueprint != null)
             {
-                var realStructure = plannedStructure.BuildReal(buildPosition.Value);
+                var realStructure = plannedStructure.BuildReal(buildPosition.Value, plannedBlueprint);
                 var defaultColor = Color.Green;
 
                 var buildResult = _world.CanBuild(buildPosition.Value, plannedStructure);
@@ -211,6 +220,13 @@ public class GameSession : ISession
     public void Update(float dt)
     {
         _errorMessage.Update(dt);
+        
+        foreach (var structure in _world.AllStructures())
+        {
+            _inventory.ApplyDeltas(structure.Blueprint.OnSecondDelta, dt);
+        }
+        
+        _inventory.ResourceUpdate(dt);
     }
 
     public event Action? RequestEditorSession;
@@ -248,5 +264,10 @@ public class GameSession : ISession
     private StructurePlan? GetPlannedStructure()
     {
         return _ui.State.CurrentStructure();
+    }
+
+    public Blueprint? GetPlannedBlueprint()
+    {
+        return _ui.State.CurrentBlueprint();
     }
 }

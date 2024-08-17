@@ -14,6 +14,12 @@ public class Blueprint
     [JsonProperty("structurePlans")]
     public List<string> PlanNames { get; set; } = new();
 
+    [JsonProperty("onConstructDelta")]
+    public List<ResourceDelta> OnConstructDelta { get; set; } = new();
+    
+    [JsonProperty("onSecondDelta")]
+    public List<ResourceDelta> OnSecondDelta { get; set; } = new();
+
     [JsonIgnore]
     public List<StructurePlan> Plans { get; } = new();
 

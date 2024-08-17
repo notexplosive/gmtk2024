@@ -1,5 +1,18 @@
 {
     "structurePlans": [
         "plan_farm"
+    ],
+    "onConstructDelta": [
+        {
+            "resourceName": "Food",
+            "amount": 4,
+            "affectCapacity": true
+        }
+    ],
+    "onSecondDelta": [
+        {
+            "resourceName": "Food",
+            "amount": 1
+        }
     ]
 }

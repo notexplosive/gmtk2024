@@ -1,4 +1,5 @@
-﻿using GMTK24.Config;
+﻿using System.Collections.Generic;
+using GMTK24.Config;
 
 namespace GMTK24.Model;
 
@@ -36,8 +37,21 @@ public class World
         return placingLayer;
     }
 
-    public void AddStructure(Cell centerCell, StructurePlan plan)
+    public void AddStructure(Cell centerCell, StructurePlan plan, Blueprint blueprint)
     {
-        DeducePlacingLayer(plan).AddStructureToLayer(centerCell, plan);
+        DeducePlacingLayer(plan).AddStructureToLayer(centerCell, plan, blueprint);
+    }
+
+    public IEnumerable<Structure> AllStructures()
+    {
+        foreach (var item in MainLayer.Structures)
+        {
+            yield return item;
+        }
+        
+        foreach (var item in DecorationLayer.Structures)
+        {
+            yield return item;
+        }
     }
 }

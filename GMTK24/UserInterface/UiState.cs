@@ -37,6 +37,16 @@ public class UiState
         return SelectedButton.Blueprint.CurrentStructure();
     }
 
+    public Blueprint? CurrentBlueprint()
+    {
+        if (SelectedButton == null)
+        {
+            return null;
+        }
+        
+        return SelectedButton.Blueprint;
+    }
+
     public void IncrementSelectedBlueprint()
     {
         if (SelectedButton == null)

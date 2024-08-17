@@ -12,7 +12,7 @@ public class UiLayoutBuilder
     private readonly List<Blueprint> _buildActions = new();
     private readonly List<Resource> _resources = new();
 
-    public void AddBuildAction(Blueprint button)
+    public void AddBlueprint(Blueprint button)
     {
         _buildActions.Add(button);
     }

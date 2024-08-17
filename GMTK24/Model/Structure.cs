@@ -8,6 +8,7 @@ namespace GMTK24.Model;
 public class Structure
 {
     public PlanSettings Settings { get; }
+    public Blueprint Blueprint { get; }
 
     /// <summary>
     ///     Occupied Cells in the world
@@ -20,9 +21,10 @@ public class Structure
     ///     Use builder instead!
     /// </summary>
     public Structure(Cell worldCenter, HashSet<Cell> localCells, IEnumerable<Cell> localAnchorPoints,
-        PlanSettings settings)
+        PlanSettings settings, Blueprint blueprint)
     {
         Settings = settings;
+        Blueprint = blueprint;
         foreach (var localCell in localCells)
         {
             _occupiedWorldSpace.Add(worldCenter + localCell);

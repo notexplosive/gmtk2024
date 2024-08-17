@@ -15,8 +15,8 @@ public class StructurePlan
     [JsonProperty("scaffoldAnchors")]
     public HashSet<Cell> ScaffoldAnchorPoints { get; init; } = new();
 
-    public Structure BuildReal(Cell centerCell)
+    public Structure BuildReal(Cell centerCell, Blueprint blueprint)
     {
-        return new Structure(centerCell, Cells, ScaffoldAnchorPoints, Settings);
+        return new Structure(centerCell, Cells, ScaffoldAnchorPoints, Settings, blueprint);
     }
 }

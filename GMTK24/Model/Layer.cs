@@ -20,9 +20,9 @@ public class Layer
 
     public IEnumerable<Structure> Structures => _structures;
     
-    public void AddStructureToLayer(Cell centerCell, StructurePlan plan)
+    public void AddStructureToLayer(Cell centerCell, StructurePlan plan, Blueprint blueprint)
     {
-        var realStructure = plan.BuildReal(centerCell);
+        var realStructure = plan.BuildReal(centerCell, blueprint);
         _structures.Add(realStructure);
         _scaffoldCache = null;
         _supportedCache = null;
@@ -35,7 +35,7 @@ public class Layer
 
     public bool IsStructurallySupported(Cell centerCell, StructurePlan plan)
     {
-        var structure = plan.BuildReal(centerCell);
+        var structure = plan.BuildReal(centerCell, new Blueprint());
         var actualSupports = 0;
 
         foreach (var bottomCell in structure.BottomCells())
@@ -52,7 +52,7 @@ public class Layer
 
     public bool CanFit(Cell centerCell, StructurePlan plan)
     {
-        var structure = plan.BuildReal(centerCell);
+        var structure = plan.BuildReal(centerCell, new Blueprint());
         foreach (var newCell in structure.OccupiedCells)
         {
             foreach (var existingCell in OccupiedCells())
