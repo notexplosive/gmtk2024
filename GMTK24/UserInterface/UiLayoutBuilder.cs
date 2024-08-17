@@ -79,6 +79,6 @@ public class UiLayoutBuilder
 
     private static string GetId(Blueprint blueprint)
     {
-        return blueprint.Id.ToString();
+        return blueprint.Id().ToString();
     }
 }

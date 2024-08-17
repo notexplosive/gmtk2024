@@ -27,19 +27,14 @@ public class GameSession : ISession
     {
         var layoutBuilder = new UiLayoutBuilder();
 
-        var house = ReadPlan("house.json");
-        var tree = ReadPlan("tree.json");
-        var platform = ReadPlan("platform.json");
-        var platform2 = ReadPlan("platform2.json");
-        var farm = ReadPlan("farm.json");
-
         layoutBuilder.AddResource(new Resource("Inspiration"));
         layoutBuilder.AddResource(new Resource("Food"));
 
-        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {house}));
-        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {tree}));
-        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {platform, platform2}));
-        layoutBuilder.AddBuildAction(new Blueprint(new List<StructurePlan> {farm}));
+        var blueprintFolder = Client.Debug.RepoFileSystem.GetDirectory("Resource/blueprints");
+        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_house"));
+        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_platform"));
+        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_tree"));
+        layoutBuilder.AddBuildAction(JsonFileReader.Read<Blueprint>(blueprintFolder,"blueprint_l1_farm"));
         _ui = layoutBuilder.Build();
 
         var screenSize = new Point(1920, 1080);
@@ -47,7 +42,7 @@ public class GameSession : ISession
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
         _world = new World();
-        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), platform);
+        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_platform"));
         _errorMessage = new ErrorMessage(screenSize);
     }
 
@@ -219,19 +214,6 @@ public class GameSession : ISession
     }
 
     public event Action? RequestEditorSession;
-
-    private static StructurePlan ReadPlan(string planFileName)
-    {
-        var planFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource/plans");
-        var result = JsonConvert.DeserializeObject<StructurePlan>(planFiles.ReadFile(planFileName));
-
-        if (result == null)
-        {
-            throw new Exception($"Deserialize failed for {planFileName}");
-        }
-
-        return result;
-    }
 
     private void DrawScaffold(Painter painter, Cell anchorPoint)
     {

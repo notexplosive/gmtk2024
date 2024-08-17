@@ -1,28 +1,54 @@
 using System.Collections.Generic;
 using ExplogineCore.Data;
 using GMTK24.Config;
+using Newtonsoft.Json;
 
 namespace GMTK24.Model;
 
 public class Blueprint
 {
-    private readonly List<StructurePlan> _structures;
     private static int idPool;
+    private int? _id;
     private int _structureIndex;
-    private readonly Noise _noise;
 
-    public Blueprint(List<StructurePlan> structure)
+    [JsonProperty("structurePlans")]
+    public List<string> PlanNames { get; set; } = new();
+
+    [JsonIgnore]
+    public List<StructurePlan> Plans { get; } = new();
+
+    public int Id()
     {
-        _structures = structure;
-        Id = idPool++;
-        _noise = new Noise(Id);
+        if (_id == null)
+        {
+            _id = idPool++;
+        }
+
+        return _id.Value;
     }
 
-    public int Id { get; }
+    private Noise Noise()
+    {
+        return new Noise(Id());
+    }
 
     public StructurePlan CurrentStructure()
     {
-        return _structures[_noise.PositiveIntAt(_structureIndex, _structures.Count)];
+        InitializeStructures();
+        return Plans[Noise().PositiveIntAt(_structureIndex, Plans.Count)];
+    }
+
+    private void InitializeStructures()
+    {
+        if (Plans.Count != 0)
+        {
+            return;
+        }
+
+        foreach (var planName in PlanNames)
+        {
+            Plans.Add(JsonFileReader.ReadPlan(planName));
+        }
     }
 
     public void IncrementStructure()
