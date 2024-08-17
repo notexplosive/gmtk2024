@@ -26,12 +26,10 @@ public class GameSession : ISession
         var layoutBuilder = new UiLayoutBuilder();
 
         var house = ReadPlan("house.json");
-        var house2 = ReadPlan("house2.json");
-        var house3 = ReadPlan("house3.json");
         var tree =  ReadPlan("tree.json");
         var platform = ReadPlan("platform.json");
 
-        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {house, house2, house3})));
+        layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {house})));
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {tree})));
         layoutBuilder.AddBuildAction(new BuildAction(new Blueprint(new List<PlannedStructure> {platform})));
         _ui = layoutBuilder.Build();
@@ -76,8 +74,12 @@ public class GameSession : ISession
 
                 if (plannedBuildPosition.HasValue && plannedStructure != null)
                 {
-                    _world.MainLayer.AddStructure(plannedBuildPosition.Value, plannedStructure);
-                    _ui.State.IncrementSelectedBlueprint();
+                    var success = _world.MainLayer.AddStructure(plannedBuildPosition.Value, plannedStructure);
+
+                    if (success)
+                    {
+                        _ui.State.IncrementSelectedBlueprint();
+                    }
                 }
             }
 
@@ -157,10 +159,10 @@ public class GameSession : ISession
                     var color = Color.Yellow;
                     if (_world.MainLayer.IsOccupiedAt(cell))
                     {
-                        color = Color.Red;
+                        color = Color.OrangeRed;
                     }
 
-                    painter.DrawRectangle(rectangle, new DrawSettings {Color = color});
+                    painter.DrawRectangle(rectangle, new DrawSettings {Color = color.WithMultipliedOpacity(0.5f)});
                 }
             }
         }

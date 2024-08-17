@@ -7,7 +7,7 @@ namespace GMTK24;
 
 public static class Grid
 {
-    public static int CellSize => 16;
+    public static int CellSize => 25;
 
     public static Vector2 SnapToGrid(Vector2 pixelPosition)
     {

@@ -11,7 +11,7 @@ public class Layer
 
     public IEnumerable<Structure> Structures => _structures;
 
-    public void AddStructure(Cell centerCell, PlannedStructure plan)
+    public bool AddStructure(Cell centerCell, PlannedStructure plan)
     {
         if(CanFit(centerCell, plan))
         {
@@ -23,9 +23,11 @@ public class Layer
             {
                 _cellToStructure.Add(cell, realStructure);
             }
+
+            return true;
         }
 
-        
+        return false;
     }
 
     public bool CanFit(Cell centerCell, PlannedStructure plan)
