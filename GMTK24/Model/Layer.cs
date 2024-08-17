@@ -17,23 +17,8 @@ public class Layer
     private List<Cell>? _scaffoldCache;
 
     public IEnumerable<Structure> Structures => _structures;
-
-    public BuildResult CanBuild(Cell centerCell, PlannedStructure plan)
-    {
-        if (!CanFit(centerCell, plan))
-        {
-            return BuildResult.FailedBecauseOfFit;
-        }
-
-        if (!IsStructurallySupported(centerCell, plan))
-        {
-            return BuildResult.FailedBecauseOfStructure;
-        }
-
-        return BuildResult.Success;
-    }
-
-    public void AddStructure(Cell centerCell, PlannedStructure plan)
+    
+    public void AddStructureToLayer(Cell centerCell, PlannedStructure plan)
     {
         var realStructure = plan.BuildReal(centerCell);
         _structures.Add(realStructure);
@@ -45,7 +30,7 @@ public class Layer
         }
     }
 
-    private bool IsStructurallySupported(Cell centerCell, PlannedStructure plan)
+    public bool IsStructurallySupported(Cell centerCell, PlannedStructure plan)
     {
         var structure = plan.BuildReal(centerCell);
         var actualSupports = 0;
@@ -62,7 +47,7 @@ public class Layer
         return plan.Settings.RequiredSupports <= actualSupports;
     }
 
-    private bool CanFit(Cell centerCell, PlannedStructure plan)
+    public bool CanFit(Cell centerCell, PlannedStructure plan)
     {
         var structure = plan.BuildReal(centerCell);
         foreach (var newCell in structure.OccupiedCells)

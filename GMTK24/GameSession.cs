@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Nodes;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
@@ -21,15 +20,13 @@ public class GameSession : ISession
     private readonly World _world;
     private bool _isPanning;
     private Vector2? _mousePosition;
-    
-    public event Action? RequestEditorSession;
 
     public GameSession()
     {
         var layoutBuilder = new UiLayoutBuilder();
 
         var house = ReadPlan("house.json");
-        var tree =  ReadPlan("tree.json");
+        var tree = ReadPlan("tree.json");
         var platform = ReadPlan("platform.json");
         var farm = ReadPlan("farm.json");
 
@@ -45,20 +42,7 @@ public class GameSession : ISession
             screenSize);
         _world = new World();
 
-        _world.MainLayer.AddStructure(new Cell(0, 0), platform);
-    }
-
-    private static PlannedStructure ReadPlan(string planFileName)
-    {
-        var planFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource/plans");
-        var result = JsonConvert.DeserializeObject<PlannedStructure>(planFiles.ReadFile(planFileName));
-
-        if (result == null)
-        {
-            throw new Exception($"Deserialize failed for {planFileName}");
-        }
-
-        return result;
+        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), platform);
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -84,11 +68,11 @@ public class GameSession : ISession
 
                 if (plannedBuildPosition.HasValue && plannedStructure != null)
                 {
-                    var result = _world.MainLayer.CanBuild(plannedBuildPosition.Value, plannedStructure);
+                    var result = _world.CanBuild(plannedBuildPosition.Value, plannedStructure);
 
                     if (result == BuildResult.Success)
                     {
-                        _world.MainLayer.AddStructure(plannedBuildPosition.Value, plannedStructure);
+                        _world.AddStructure(plannedBuildPosition.Value, plannedStructure);
                         _ui.State.IncrementSelectedBlueprint();
                     }
                 }
@@ -154,6 +138,14 @@ public class GameSession : ISession
         painter.EndSpriteBatch();
 
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
+        foreach (var structure in _world.DecorationLayer.Structures)
+        {
+            DrawStructure(painter, structure);
+        }
+
+        painter.EndSpriteBatch();
+
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
 
         if (_mousePosition.HasValue && !_isPanning)
         {
@@ -165,7 +157,7 @@ public class GameSession : ISession
                 var realStructure = plannedStructure.BuildReal(buildPosition.Value);
                 var defaultColor = Color.Green;
 
-                var buildResult = _world.MainLayer.CanBuild(buildPosition.Value, plannedStructure);
+                var buildResult = _world.CanBuild(buildPosition.Value, plannedStructure);
 
                 if (buildResult == BuildResult.FailedBecauseOfFit)
                 {
@@ -176,13 +168,19 @@ public class GameSession : ISession
                 {
                     defaultColor = Color.Black;
                 }
-                
+
+                var placingLayer = _world.MainLayer;
+                if (plannedStructure.Settings.StructureLayer == StructureLayer.Decoration)
+                {
+                    placingLayer = _world.DecorationLayer;
+                }
+
                 foreach (var cell in realStructure.OccupiedCells)
                 {
                     var rectangle = Grid.CellToPixelRectangle(cell);
 
                     var color = defaultColor;
-                    if (_world.MainLayer.IsOccupiedAt(cell))
+                    if (placingLayer.IsOccupiedAt(cell))
                     {
                         color = Color.OrangeRed;
                     }
@@ -199,6 +197,21 @@ public class GameSession : ISession
 
     public void Update(float dt)
     {
+    }
+
+    public event Action? RequestEditorSession;
+
+    private static PlannedStructure ReadPlan(string planFileName)
+    {
+        var planFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource/plans");
+        var result = JsonConvert.DeserializeObject<PlannedStructure>(planFiles.ReadFile(planFileName));
+
+        if (result == null)
+        {
+            throw new Exception($"Deserialize failed for {planFileName}");
+        }
+
+        return result;
     }
 
     private void DrawScaffold(Painter painter, Cell anchorPoint)
