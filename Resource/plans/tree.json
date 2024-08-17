@@ -1,5 +1,5 @@
 {
-  "Settings": {
+  "settings": {
     "drawDescription": {
       "textureName": "tree",
       "graphicsTopLeft": {
@@ -7,28 +7,12 @@
         "Y": -4
       }
     },
-    "createsScaffold": true
+    "createsScaffold": false
   },
-  "PendingCells": [
+  "cells": [
     {
       "X": 0,
       "Y": 0
-    },
-    {
-      "X": -1,
-      "Y": -4
-    },
-    {
-      "X": 1,
-      "Y": -4
-    },
-    {
-      "X": 0,
-      "Y": -4
-    },
-    {
-      "X": 0,
-      "Y": -3
     },
     {
       "X": 0,
@@ -37,16 +21,15 @@
     {
       "X": 0,
       "Y": -2
-    }
-  ],
-  "scaffoldAnchors": [
-    {
-      "X": -2,
-      "Y": 1
     },
     {
-      "X": 2,
-      "Y": 1
+      "X": 0,
+      "Y": -3
+    },
+    {
+      "X": 0,
+      "Y": -4
     }
-  ]
+  ],
+  "scaffoldAnchors": []
 }

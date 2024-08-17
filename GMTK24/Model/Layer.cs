@@ -74,7 +74,7 @@ public class Layer
         {
             foreach (var startingAnchorPoint in structure.ScaffoldAnchorPoints)
             {
-                var anchorPoint = startingAnchorPoint;
+                var anchorPoint = startingAnchorPoint + new Cell(0, 1);
                 while (anchorPoint.Y < 0)
                 {
                     var foundStructure = GetStructureAt(anchorPoint);

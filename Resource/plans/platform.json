@@ -1,5 +1,5 @@
 {
-  "Settings": {
+  "settings": {
     "drawDescription": {
       "textureName": "platform",
       "graphicsTopLeft": {
@@ -9,17 +9,9 @@
     },
     "createsScaffold": true
   },
-  "PendingCells": [
+  "cells": [
     {
       "X": 0,
-      "Y": 0
-    },
-    {
-      "X": 1,
-      "Y": 0
-    },
-    {
-      "X": 2,
       "Y": 0
     },
     {
@@ -27,18 +19,26 @@
       "Y": 0
     },
     {
+      "X": 1,
+      "Y": 0
+    },
+    {
       "X": -2,
+      "Y": 0
+    },
+    {
+      "X": 2,
       "Y": 0
     }
   ],
   "scaffoldAnchors": [
     {
-      "X": -2,
-      "Y": 1
+      "X": 2,
+      "Y": 0
     },
     {
-      "X": 2,
-      "Y": 1
+      "X": -2,
+      "Y": 0
     }
   ]
 }

@@ -34,6 +34,11 @@ public class PlanEditorSession : ISession
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
+        if (input.Keyboard.GetButton(Keys.Escape).WasPressed)
+        {
+            RequestPlayMode?.Invoke();
+        }
+        
         if (input.Keyboard.GetButton(Keys.Left).WasPressed)
         {
             _planIndex--;
@@ -73,10 +78,23 @@ public class PlanEditorSession : ISession
             if (_hoveredCell.HasValue)
             {
                 // Toggle cell
-                var currentPlan = CurrentPlan;
-                if (!currentPlan.PendingCells.Add(_hoveredCell.Value))
+                if (!CurrentPlan.Cells.Add(_hoveredCell.Value))
                 {
-                    currentPlan.PendingCells.Remove(_hoveredCell.Value);
+                    CurrentPlan.Cells.Remove(_hoveredCell.Value);
+                }
+
+                SaveCurrent();
+            }
+        }
+
+        if (input.Mouse.GetButton(MouseButton.Right).WasPressed)
+        {
+            if (_hoveredCell.HasValue)
+            {
+                // Toggle cell
+                if (!CurrentPlan.ScaffoldAnchorPoints.Add(_hoveredCell.Value))
+                {
+                    CurrentPlan.ScaffoldAnchorPoints.Remove(_hoveredCell.Value);
                 }
 
                 SaveCurrent();
@@ -106,6 +124,12 @@ public class PlanEditorSession : ISession
             CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(0, 1);
             SaveCurrent();
         }
+        
+        if (input.Keyboard.GetButton(Keys.Q).WasPressed)
+        {
+            CurrentPlan.Settings.CreatesScaffold = !CurrentPlan.Settings.CreatesScaffold; 
+            SaveCurrent();
+        }
     }
 
     public void Draw(Painter painter)
@@ -120,7 +144,12 @@ public class PlanEditorSession : ISession
         {
             var rectangle = Grid.CellToPixelRectangle(cell).Inflated(-1, -1);
 
-            if (CurrentPlan.PendingCells.Contains(cell))
+            if (CurrentPlan.ScaffoldAnchorPoints.Contains(cell))
+            {
+                painter.DrawRectangle(rectangle.Inflated(-2,-2), new DrawSettings {Color = Color.White, Depth = Depth.Middle - 1});
+            }
+            
+            if (CurrentPlan.Cells.Contains(cell))
             {
                 var color = Color.Orange;
                 if (cell == Cell.Origin)
@@ -128,7 +157,7 @@ public class PlanEditorSession : ISession
                     color = Color.Red;
                 }
 
-                painter.DrawRectangle(rectangle, new DrawSettings {Color = color.WithMultipliedOpacity(0.5f)});
+                painter.DrawRectangle(rectangle, new DrawSettings {Color = color.WithMultipliedOpacity(0.5f), Depth = Depth.Middle});
             }
 
             if (_hoveredCell == cell)
@@ -141,9 +170,13 @@ public class PlanEditorSession : ISession
 
         painter.BeginSpriteBatch();
 
-        var fontSize = 128;
-        painter.DrawStringAtPosition(Client.Assets.GetFont("engine/console-font", fontSize), _plans[_planIndex].Item1,
-            new Vector2(0, 1080 - fontSize), new DrawSettings());
+        var bigFont = 128;
+        painter.DrawStringAtPosition(Client.Assets.GetFont("engine/console-font", bigFont), _plans[_planIndex].Item1,
+            new Vector2(0, 1080 - bigFont), new DrawSettings());
+        
+        var smallFont = 32;
+        painter.DrawStringAtPosition(Client.Assets.GetFont("engine/console-font", smallFont), $"(Q){nameof(CurrentPlan.Settings.CreatesScaffold)}={CurrentPlan.Settings.CreatesScaffold}",
+            new Vector2(0, 1080 - bigFont - smallFont), new DrawSettings());
 
         painter.EndSpriteBatch();
     }
@@ -161,7 +194,9 @@ public class PlanEditorSession : ISession
 
     private HashSet<Cell> GetAllCellsExtended()
     {
-        var cells = new HashSet<Cell>(CurrentPlan.PendingCells);
+        var cells = new HashSet<Cell>(CurrentPlan.Cells);
+
+        cells = cells.Concat(CurrentPlan.ScaffoldAnchorPoints).ToHashSet();
 
         foreach (var cell in cells.ToList())
         {
@@ -197,4 +232,6 @@ public class PlanEditorSession : ISession
             }
         }
     }
+
+    public event Action? RequestPlayMode;
 }
