@@ -6,8 +6,8 @@ namespace GMTK24.Model;
 public class StructureSettings
 {
     [JsonProperty("drawDescription")]
-    public StructureDrawDescription DrawDescription { get; init; } = new();
+    public StructureDrawDescription DrawDescription { get; set; } = new();
 
     [JsonProperty("createsScaffold")]
-    public bool CreatesScaffold { get; init; } = true;
+    public bool CreatesScaffold { get; set; } = true;
 }

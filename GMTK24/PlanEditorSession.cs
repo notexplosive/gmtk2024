@@ -19,6 +19,8 @@ public class PlanEditorSession : ISession
     private Cell? _hoveredCell;
     private int _planIndex;
 
+    private PlannedStructure CurrentPlan => _plans[_planIndex].Item2;
+    
     public PlanEditorSession()
     {
         ReadPlans();
@@ -71,20 +73,45 @@ public class PlanEditorSession : ISession
             if (_hoveredCell.HasValue)
             {
                 // Toggle cell
-                if (!_plans[_planIndex].Item2.PendingCells.Add(_hoveredCell.Value))
+                var currentPlan = CurrentPlan;
+                if (!currentPlan.PendingCells.Add(_hoveredCell.Value))
                 {
-                    _plans[_planIndex].Item2.PendingCells.Remove(_hoveredCell.Value);
+                    currentPlan.PendingCells.Remove(_hoveredCell.Value);
                 }
 
                 SaveCurrent();
             }
+        }
+
+        if (input.Keyboard.GetButton(Keys.W).WasPressed)
+        {
+            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(0, -1);
+            SaveCurrent();
+        }
+        
+        if (input.Keyboard.GetButton(Keys.A).WasPressed)
+        {
+            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(-1, 0);
+            SaveCurrent();
+        }
+        
+        if (input.Keyboard.GetButton(Keys.D).WasPressed)
+        {
+            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(1, 0);
+            SaveCurrent();
+        }
+        
+        if (input.Keyboard.GetButton(Keys.S).WasPressed)
+        {
+            CurrentPlan.Settings.DrawDescription.GraphicTopLeft += new Cell(0, 1);
+            SaveCurrent();
         }
     }
 
     public void Draw(Painter painter)
     {
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
-        GameSession.DrawStructure(painter, _plans[_planIndex].Item2.BuildReal(Cell.Origin));
+        GameSession.DrawStructure(painter, CurrentPlan.BuildReal(Cell.Origin));
         painter.EndSpriteBatch();
 
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
@@ -93,7 +120,7 @@ public class PlanEditorSession : ISession
         {
             var rectangle = Grid.CellToPixelRectangle(cell).Inflated(-1, -1);
 
-            if (_plans[_planIndex].Item2.PendingCells.Contains(cell))
+            if (CurrentPlan.PendingCells.Contains(cell))
             {
                 var color = Color.Orange;
                 if (cell == Cell.Origin)
@@ -129,12 +156,12 @@ public class PlanEditorSession : ISession
     {
         var planFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource/Plans");
         var currentPlan = _plans[_planIndex];
-        planFiles.WriteToFile(currentPlan.Item1, JsonConvert.SerializeObject(currentPlan.Item2));
+        planFiles.WriteToFile(currentPlan.Item1, JsonConvert.SerializeObject(currentPlan.Item2, Formatting.Indented));
     }
 
     private HashSet<Cell> GetAllCellsExtended()
     {
-        var cells = new HashSet<Cell>(_plans[_planIndex].Item2.PendingCells);
+        var cells = new HashSet<Cell>(CurrentPlan.PendingCells);
 
         foreach (var cell in cells.ToList())
         {
@@ -149,6 +176,11 @@ public class PlanEditorSession : ISession
             cells.Add(cell + new Cell(-1, 1));
         }
 
+        if (cells.Count == 0)
+        {
+            cells.Add(Cell.Origin);
+        }
+        
         return cells;
     }
 

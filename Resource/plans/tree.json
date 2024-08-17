@@ -1,44 +1,52 @@
 {
-    "settings": {
-        "drawDescription": {
-            "textureName": "tree",
-            "graphicsTopLeft": {
-                "X": -2,
-                "Y": 0
-            }
-        },
-        "createsScaffold": true
+  "Settings": {
+    "drawDescription": {
+      "textureName": "tree",
+      "graphicsTopLeft": {
+        "X": -1,
+        "Y": -4
+      }
     },
-    "cells": [
-        {
-            "X": -2,
-            "Y": 0
-        },
-        {
-            "X": -1,
-            "Y": 0
-        },
-        {
-            "X": 0,
-            "Y": 0
-        },
-        {
-            "X": 1,
-            "Y": 0
-        },
-        {
-            "X": 2,
-            "Y": 0
-        }
-    ],
-    "scaffoldAnchors": [
-        {
-            "X": -2,
-            "Y": 1
-        },
-        {
-            "X": 2,
-            "Y": 1
-        }
-    ]
+    "createsScaffold": true
+  },
+  "PendingCells": [
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": -1,
+      "Y": -4
+    },
+    {
+      "X": 1,
+      "Y": -4
+    },
+    {
+      "X": 0,
+      "Y": -4
+    },
+    {
+      "X": 0,
+      "Y": -3
+    },
+    {
+      "X": 0,
+      "Y": -1
+    },
+    {
+      "X": 0,
+      "Y": -2
+    }
+  ],
+  "scaffoldAnchors": [
+    {
+      "X": -2,
+      "Y": 1
+    },
+    {
+      "X": 2,
+      "Y": 1
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 {
-  "settings": {
+  "Settings": {
     "drawDescription": {
       "textureName": "platform",
       "graphicsTopLeft": {
@@ -9,15 +9,7 @@
     },
     "createsScaffold": true
   },
-  "cells": [
-    {
-      "X": -2,
-      "Y": 0
-    },
-    {
-      "X": -1,
-      "Y": 0
-    },
+  "PendingCells": [
     {
       "X": 0,
       "Y": 0
@@ -28,6 +20,14 @@
     },
     {
       "X": 2,
+      "Y": 0
+    },
+    {
+      "X": -1,
+      "Y": 0
+    },
+    {
+      "X": -2,
       "Y": 0
     }
   ],

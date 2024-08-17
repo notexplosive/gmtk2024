@@ -6,8 +6,8 @@ namespace GMTK24.Model;
 public class StructureDrawDescription
 {
     [JsonProperty("textureName")]
-    public string? TextureName { get; init; }
+    public string? TextureName { get; set; }
     
     [JsonProperty("graphicsTopLeft")]
-    public Cell GraphicTopLeft { get; init; }
+    public Cell GraphicTopLeft { get; set; }
 }
