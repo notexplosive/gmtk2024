@@ -3,5 +3,21 @@
         "plan_decoration"
     ],
     "title": "Decor",
-    "description": "Provides Social over time."
+    "description": "Provides #Social over time.\nCan share space with other structures.",
+    "onSecondDelta": [
+        {
+            "resourceName": "Social",
+            "amount": 1
+        }
+    ],
+    "cost": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 100
+        },
+        {
+            "resourceName": "Food",
+            "amount": 20
+        }
+    ],
 }

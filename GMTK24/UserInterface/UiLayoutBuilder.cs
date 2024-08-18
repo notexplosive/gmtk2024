@@ -24,19 +24,19 @@ public class UiLayoutBuilder
 
     public Ui Build(Point screenSize)
     {
-        var resourceWidth = 300;
-        var resourceHeight = 80;
+        var resourceWidth = 250;
+        var resourceHeight = 40;
 
-        var buttonWidth = 256;
-        var buttonHeight = 100;
+        var buttonWidth = 150;
+        var buttonHeight = 60;
         
-        var buttonRibbonHeight = buttonHeight + 10;
+        var buttonRibbonHeight = 110;
 
         var layoutBuilder = new LayoutBuilder(new Style(Orientation.Vertical));
 
         var topGroup = layoutBuilder.AddGroup(new Style(Margin: new Vector2(20)), L.FillHorizontal(resourceHeight));
         
-        topGroup.Add(L.FixedElement("rules-button",resourceHeight,resourceHeight));
+        topGroup.Add(L.FixedElement("top-corner",0,0));
         
         var resourcesLayoutGroup = topGroup.AddGroup(
             new Style(Alignment: Alignment.TopCenter, PaddingBetweenElements: 20),
@@ -50,11 +50,13 @@ public class UiLayoutBuilder
         }
         
         layoutBuilder.Add(L.FillBoth("middle-area"));
-
+        
         var buttonRibbonLayoutGroup = layoutBuilder.AddGroup(
             new Style(Alignment: Alignment.Center, PaddingBetweenElements: 20),
             L.FillHorizontal("button-ribbon", buttonRibbonHeight));
 
+        buttonRibbonLayoutGroup.Add(L.FixedElement("rules-button",resourceHeight,resourceHeight));
+        
         foreach (var buildAction in _buildActions)
         {
             buttonRibbonLayoutGroup.Add(L.FixedElement(GetId(buildAction), buttonWidth, buttonHeight));
@@ -65,7 +67,7 @@ public class UiLayoutBuilder
         var ui = new Ui(
             result.FindElement("button-ribbon").Rectangle,
             result.FindElement("middle-area").Rectangle,
-            result.FindElement("rules-button").Rectangle
+            result.FindElement("top-corner").Rectangle.TopLeft
             );
         foreach (var buildAction in _buildActions)
         {

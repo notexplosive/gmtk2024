@@ -8,7 +8,7 @@ public class UiState
 {
     public StructureButton? SelectedButton { get; private set; }
     public IHoverable? HoveredItem { get; private set; }
-    
+
     public void ClearHover()
     {
         HoveredItem = null;

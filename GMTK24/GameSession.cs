@@ -34,13 +34,14 @@ public class GameSession : ISession
         _inventory.AddResource(new Resource("resource_icon_population", "Population"));
         _inventory.AddResource(new Resource("resource_icon_inspiration", "Inspiration", 75));
         _inventory.AddResource(new Resource("resource_icon_food", "Food", 5));
+        _inventory.AddResource(new Resource("resource_icon_social", "Social"));
 
         _inventory.AddRule(new ConvertResourceRule("Food", 10, "Population", 1));
         _inventory.AddRule(new GenerateResourcePerSecondRule("Population", "Inspiration"));
         
         _rulesOverlay =
             new FormattedTextOverlay(
-                FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 80), Color.White, _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
+                FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 50), Color.White, _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
 
         foreach (var resource in _inventory.AllResources())
         {
@@ -250,7 +251,7 @@ public class GameSession : ISession
 
         _errorMessage.Draw(painter);
 
-        _ui.Draw(painter);
+        _ui.Draw(painter, _inventory);
 
         _currentOverlay?.Draw(painter, _screenSize);
     }
