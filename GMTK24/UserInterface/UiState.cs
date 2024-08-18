@@ -21,7 +21,7 @@ public class UiState
 
     public void SelectHoveredButton()
     {
-        if (HoveredItem is StructureButton structureButton)
+        if (HoveredItem is StructureButton structureButton && !structureButton.IsLocked)
         {
             SelectedButton = structureButton;
         }

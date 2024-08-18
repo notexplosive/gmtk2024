@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
@@ -13,15 +14,15 @@ namespace GMTK24.UserInterface;
 
 public class Ui
 {
-    private readonly RectangleF _buttonStartingBackground;
     private readonly List<StructureButton> _buttons = new();
+    private readonly RectangleF _buttonStartingBackground;
+
+    private readonly TweenableFloat _fadeOutAmount = new(1);
+    private readonly HoverState _isRulesHovered = new();
     private readonly RectangleF _middleArea;
     private readonly List<ResourceTracker> _resourceTrackers = new();
     private readonly Vector2 _rulesCorner;
-    private readonly HoverState _isRulesHovered = new();
-    public TweenableFloat FadeOutAmount { get; } = new(1);
-
-    public event Action? RequestRules;
+    private readonly SequenceTween _uiTween = new();
 
     public Ui(RectangleF buttonStartingBackground, RectangleF middleArea, Vector2 rulesCorner)
     {
@@ -31,6 +32,11 @@ public class Ui
     }
 
     public UiState State { get; } = new();
+
+    public RectangleF ButtonBackground =>
+        _buttonStartingBackground.Moved(FadeOffsetPixels());
+
+    public event Action? RequestRules;
 
     public void AddButton(StructureButton structureButton)
     {
@@ -42,12 +48,9 @@ public class Ui
         _resourceTrackers.Add(tracker);
     }
 
-    public RectangleF ButtonBackground =>
-        _buttonStartingBackground.Moved(FadeOffsetPixels());
-
     private Vector2 FadeOffsetPixels()
     {
-        return new Vector2(0,_buttonStartingBackground.Height * FadeOutAmount);
+        return new Vector2(0, _buttonStartingBackground.Height * _fadeOutAmount);
     }
 
     public void Draw(Painter painter, Inventory inventory)
@@ -61,6 +64,12 @@ public class Ui
         {
             var color = Color.White;
             var offset = Vector2.Zero + FadeOffsetPixels();
+
+            if (button.IsLocked)
+            {
+                color = Color.Gray;
+            }
+            
             if (State.HoveredItem == button)
             {
                 offset = new Vector2(0, -20);
@@ -80,10 +89,11 @@ public class Ui
             painter.DrawRectangle(textRectangle, new DrawSettings {Color = Color.White, Depth = Depth.Back});
 
             var iconName = resourceTracker.Resource.IconName;
-            
+
             if (iconName != null)
             {
-                painter.DrawAtPosition(ResourceAssets.Instance.Textures[iconName], resourceTracker.IconRectangle.Center + -FadeOffsetPixels(),
+                painter.DrawAtPosition(ResourceAssets.Instance.Textures[iconName],
+                    resourceTracker.IconRectangle.Center + -FadeOffsetPixels(),
                     Scale2D.One, new DrawSettings {Origin = DrawOrigin.Center, Depth = Depth.Middle});
             }
 
@@ -103,23 +113,24 @@ public class Ui
             var titleRectangleNormalized = titleFont.MeasureString(tooltipContent.Title).ToRectangleF();
 
             var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
-            
+
             var tooltipBodyText = ApplyIcons(inventory, tooltipContent.Body);
             var tooltipCostText = ApplyIcons(inventory, tooltipContent.Cost);
-            
+
             var bodyTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipBodyText,
                 GameplayConstants.FormattedTextParser);
-            
+
             var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipCostText,
                 GameplayConstants.FormattedTextParser);
-            
+
             var tooltipCostRectangleNormalized = costTextFormatted.MaxNeededSize().ToRectangleF()
                 .Moved(titleRectangleNormalized.Size.JustX());
-            
+
             var bodyRectangleNormalized = bodyTextFormatted.MaxNeededSize().ToRectangleF()
                 .Moved(titleRectangleNormalized.Size.JustY());
 
-            var tooltipSize = RectangleF.Union(titleRectangleNormalized, RectangleF.Union(bodyRectangleNormalized, tooltipCostRectangleNormalized)).Size + new Vector2(50, 0);
+            var tooltipSize = RectangleF.Union(titleRectangleNormalized,
+                RectangleF.Union(bodyRectangleNormalized, tooltipCostRectangleNormalized)).Size + new Vector2(50, 0);
 
             var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -20),
                 tooltipSize + new Vector2(25), Alignment.BottomCenter);
@@ -143,21 +154,24 @@ public class Ui
                 new LineDrawSettings {Depth = 190, Color = Color.White, Thickness = 2});
             painter.DrawStringWithinRectangle(titleFont, tooltipContent.Title, titleRectangle, Alignment.TopLeft,
                 new DrawSettings {Depth = 100});
-            
-            painter.DrawFormattedStringWithinRectangle(bodyTextFormatted, bodyRectangle, Alignment.TopLeft, new DrawSettings());
-            painter.DrawFormattedStringWithinRectangle(costTextFormatted, costRectangle, Alignment.TopLeft, new DrawSettings());
+
+            painter.DrawFormattedStringWithinRectangle(bodyTextFormatted, bodyRectangle, Alignment.TopLeft,
+                new DrawSettings());
+            painter.DrawFormattedStringWithinRectangle(costTextFormatted, costRectangle, Alignment.TopLeft,
+                new DrawSettings());
         }
 
-        painter.DrawAtPosition(ResourceAssets.Instance.Textures["icon_help"], _rulesCorner, Scale2D.One, new DrawSettings());
+        painter.DrawAtPosition(ResourceAssets.Instance.Textures["icon_help"], _rulesCorner, Scale2D.One,
+            new DrawSettings());
 
         painter.EndSpriteBatch();
     }
 
-    private static string ApplyIcons(Inventory inventory, string tooltipContentBody)
+    public static string ApplyIcons(Inventory inventory, string tooltipContentBody, float scale = 1f)
     {
         foreach (var resource in inventory.AllResources())
         {
-            tooltipContentBody = tooltipContentBody.Replace($"#{resource.Name}", resource.InlineTextIcon());
+            tooltipContentBody = tooltipContentBody.Replace($"#{resource.Name}", resource.InlineTextIcon(scale));
         }
 
         return tooltipContentBody;
@@ -175,7 +189,9 @@ public class Ui
                 () => { State.SetHovered(button); });
         }
 
-        uiHitTestLayer.AddZone(new RectangleF(_rulesCorner,ResourceAssets.Instance.Textures["icon_help"].Bounds.Size.ToVector2()), Depth.Middle, _isRulesHovered);
+        uiHitTestLayer.AddZone(
+            new RectangleF(_rulesCorner, ResourceAssets.Instance.Textures["icon_help"].Bounds.Size.ToVector2()),
+            Depth.Middle, _isRulesHovered);
 
         if (input.Mouse.GetButton(MouseButton.Left).WasPressed)
         {
@@ -186,5 +202,30 @@ public class Ui
 
             State.SelectHoveredButton();
         }
+    }
+
+    public void FadeIn()
+    {
+        _uiTween.Add(_fadeOutAmount.TweenTo(0f, 0.25f, Ease.Linear));
+    }
+
+    public void FadeOut()
+    {
+        _uiTween.Add(_fadeOutAmount.TweenTo(1f, 0.25f, Ease.Linear));
+    }
+
+    public void Update(float dt)
+    {
+        _uiTween.Update(dt);
+    }
+
+    public Blueprint GetBlueprint(string blueprintName)
+    {
+        foreach (var button in _buttons.Where(button => button.BlueprintName == blueprintName))
+        {
+            return button.Blueprint;
+        }
+
+        throw new Exception($"No blueprint found {blueprintName}");
     }
 }

@@ -210,7 +210,7 @@ public class PlanEditorSession : ISession
 
         var bigFont = 128;
         painter.DrawStringAtPosition(Client.Assets.GetFont("engine/console-font", bigFont), _plans[_planIndex].Item1,
-            new Vector2(0,  - bigFont), new DrawSettings());
+            new Vector2(0,  _screenSize.Y - bigFont), new DrawSettings());
 
         var messageBuilder = new StringBuilder();
         messageBuilder.AppendLine($"(Q){nameof(CurrentPlan.Settings.CreatesScaffold)}={CurrentPlan.Settings.CreatesScaffold}");

@@ -1,20 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExTween;
+using GMTK24.Model;
+using GMTK24.UserInterface;
+using Microsoft.Xna.Framework;
 
 namespace GMTK24;
 
 public class DialogueOverlay : Overlay
 {
+    private readonly Inventory _inventory;
     private readonly List<DialoguePage> _pages;
+    private readonly Action? _onClose;
     private int _pageIndex;
     private DialoguePage? _currentPage;
 
-    public DialogueOverlay(List<DialoguePage> pages)
+    public DialogueOverlay(Inventory inventory,List<DialoguePage> pages, Action? onClose = null)
     {
+        _inventory = inventory;
         _pages = pages;
+        _onClose = onClose;
+        if (_pages.Count == 0)
+        {
+            _pages.Add(new DialoguePage(){Text = "..."});
+        }
         _currentPage = _pages.First();
     }
     
@@ -25,6 +37,7 @@ public class DialogueOverlay : Overlay
         
         if (!_pages.IsValidIndex(_pageIndex))
         {
+            _onClose?.Invoke();
             Close();
             return;
         }
@@ -43,7 +56,10 @@ public class DialogueOverlay : Overlay
     {
         if (_currentPage != null)
         {
-            painter.DrawStringWithinRectangle(_currentPage.DialogueSpeaker.Font, _currentPage.Text, rectangle, Alignment.Center, new DrawSettings
+            var formattedText = FormattedText.FromFormatString(_currentPage.DialogueSpeaker.Font, Color.White,
+                Ui.ApplyIcons(_inventory, _currentPage.Text, 3),
+                GameplayConstants.FormattedTextParser);
+            painter.DrawFormattedStringWithinRectangle(formattedText, rectangle, Alignment.Center, new DrawSettings
             {
                 Color = _currentPage.DialogueSpeaker.Color.WithMultipliedOpacity(ContentOpacity)
             });

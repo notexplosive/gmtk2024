@@ -9,12 +9,16 @@ namespace GMTK24.UserInterface;
 
 public class StructureButton : IHoverable
 {
-    public StructureButton(RectangleF rectangle, Blueprint blueprint)
+    public StructureButton(RectangleF rectangle, string blueprintName, Blueprint blueprint, bool isLocked)
     {
+        BlueprintName = blueprintName;
+        IsLocked = isLocked;
         Blueprint = blueprint;
         Rectangle = rectangle;
     }
 
+    public string BlueprintName { get; }
+    public bool IsLocked { get; }
     public Blueprint Blueprint { get; }
     public RectangleF Rectangle { get; }
 
@@ -26,7 +30,7 @@ public class StructureButton : IHoverable
         {
             costString = "Free";
         }
-        
+
         return new TooltipContent
         {
             Title = Blueprint.Title,

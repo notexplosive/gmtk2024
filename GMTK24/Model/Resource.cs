@@ -28,15 +28,13 @@ public class Resource
         {
             return $"{(int) Quantity} / {Capacity}";
         }
-        else
-        {
-            return $"{(int) Quantity}";
-        }
+
+        return $"{(int) Quantity}";
     }
 
-    public string InlineTextIcon()
+    public string InlineTextIcon(float scale = 1f)
     {
-        return $"[resourceTexture({IconName})]";
+        return $"[resourceTexture({IconName},{scale})]";
     }
 
     public void Add(float delta)

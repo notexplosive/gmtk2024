@@ -1,0 +1,94 @@
+{
+    "levels": [
+        {
+            "blueprints": [
+                {
+                    "name": "blueprint_l0_house"
+                },
+                {
+                    "name": "blueprint_l0_farm",
+                    "isLocked": true
+                }
+            ],
+            "completionCriteria": {
+                "buildStructures": {
+                    "blueprint": "blueprint_l0_house",
+                    "targetQuantity": 3
+                }
+            }
+        },
+        {
+            "introDialogue": [
+                "We are a village, soon we will be a town.",
+                "Homes create #Population and #Inspiration.",
+                "We need more #Food to build more homes."
+            ],
+            "blueprints": [
+                {
+                    "name": "blueprint_l0_house"
+                },
+                {
+                    "name": "blueprint_l0_farm"
+                }
+            ],
+            "completionCriteria": {
+                "getResource": {
+                    "resource": "Population",
+                    "targetQuantity": 10
+                }
+            }
+        },
+        {
+            "introDialogue": [
+                "We are a town.",
+                "Soon we will be a city.",
+                "We need more space to expand."
+            ],
+            "blueprints": [
+                {
+                    "name": "blueprint_l1_house"
+                },
+                {
+                    "name": "blueprint_l1_farm"
+                },
+                {
+                    "name": "blueprint_l1_platform"
+                }
+            ],
+            "completionCriteria": {
+                "getResource": {
+                    "resource": "Population",
+                    "targetQuantity": 40
+                }
+            }
+        },
+        {
+            "introDialogue": [
+                "We are a city, soon we will be glorious.",
+                "With enough #Inspiration we can build something truly special.",
+                "...a monument to this great city."
+            ],
+            "blueprints": [
+                {
+                    "name": "blueprint_l1_house"
+                },
+                {
+                    "name": "blueprint_l1_farm"
+                },
+                {
+                    "name": "blueprint_l1_platform"
+                },
+                {
+                    "name": "blueprint_l1_decoration"
+                }
+            ],
+            "completionCriteria": {
+                "getResource": {
+                    // todo: require monument
+                    "resource": "Population",
+                    "targetQuantity": 800
+                }
+            }
+        }
+    ]
+}

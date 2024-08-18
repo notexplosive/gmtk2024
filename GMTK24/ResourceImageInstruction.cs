@@ -8,12 +8,21 @@ namespace GMTK24;
 public class ResourceImageInstruction : Instruction
 {
     private readonly Texture2D? _texture;
+    private readonly float _scale = 1f;
 
     public ResourceImageInstruction(string[] args)
     {
         if (args.IsValidIndex(0))
         {
             _texture = ResourceAssets.Instance.Textures[args[0]];
+        }
+        
+        if (args.IsValidIndex(1))
+        {
+            if (float.TryParse(args[1], out var result))
+            {
+                _scale = result;
+            }
         }
     }
 
@@ -26,7 +35,7 @@ public class ResourceImageInstruction : Instruction
                 return Vector2.Zero;
             }
             
-            return _texture.Bounds.Size.ToVector2();
+            return _texture.Bounds.Size.ToVector2() * _scale;
         }
 
         return new FormattedText.FragmentDrawable((painter, position, drawSettings) =>

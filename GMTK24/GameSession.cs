@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
-using ExTween;
 using GMTK24.Config;
 using GMTK24.Model;
 using GMTK24.UserInterface;
@@ -19,47 +19,33 @@ public class GameSession : ISession
     private readonly ErrorMessage _errorMessage;
     private readonly Inventory _inventory = new();
     private readonly HoverState _isHovered = new();
+    private readonly List<Level> _levels;
     private readonly FormattedTextOverlay _rulesOverlay;
     private readonly Point _screenSize;
-    private readonly Ui _ui;
-    private readonly SequenceTween _uiTween = new();
     private readonly World _world = new();
+    private int? _currentLevelIndex;
+    private Objective? _currentObjective;
     private Overlay? _currentOverlay;
     private bool _isPanning;
     private Vector2? _mousePosition;
+    private Ui? _ui;
 
     public GameSession(Point screenSize)
     {
         _screenSize = screenSize;
-        var uiBuilder = new UiLayoutBuilder();
 
         _inventory.AddResource(new Resource("resource_icon_population", "Population", false));
         _inventory.AddResource(new Resource("resource_icon_inspiration", "Inspiration", true, 75));
         _inventory.AddResource(new Resource("resource_icon_food", "Food", false, 15));
-        // _inventory.AddResource(new Resource("resource_icon_social", "Social", false));
 
-        // _inventory.AddRule(new GenerateCatalystResourcePassive("Population", "Inspiration", 1));
-        // _inventory.AddRule(new ConvertResourceRule("Food", 10, "Population", 1));
-        // _inventory.AddRule(new ConvertResourceCatalystRule("Population", 1, "Food", 10, "Inspiration"));
+        _levels = JsonFileReader.Read<LevelSequence>(Client.Debug.RepoFileSystem.GetDirectory("Resource"), "levels")
+            .Levels;
+        StartNextLevel();
 
         _rulesOverlay =
             new FormattedTextOverlay(
                 FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 50), Color.White,
                     _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
-
-        foreach (var resource in _inventory.AllResources())
-        {
-            uiBuilder.AddResource(resource);
-        }
-
-        var blueprintFolder = Client.Debug.RepoFileSystem.GetDirectory("Resource/blueprints");
-        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_house"));
-        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_platform"));
-        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_farm"));
-        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_decoration"));
-        _ui = uiBuilder.Build(screenSize);
-
-        _ui.RequestRules += ShowRules;
 
         var zoomLevel = 0.5f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
@@ -67,18 +53,6 @@ public class GameSession : ISession
         _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"),
             new Blueprint());
         _errorMessage = new ErrorMessage(screenSize);
-
-        OpenOverlay(new DialogueOverlay(new List<DialoguePage>
-        {
-            new()
-            {
-                Text = "Hello!"
-            },
-            new()
-            {
-                Text = "Goodbye!"
-            }
-        }));
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -90,9 +64,10 @@ public class GameSession : ISession
             if (_currentOverlay.IsClosed)
             {
                 _currentOverlay = null;
-                _uiTween.Add(_ui.FadeOutAmount.TweenTo(0f, 0.25f, Ease.Linear));
+                _ui?.FadeIn();
             }
 
+            _isHovered.Unset();
             return;
         }
 
@@ -124,9 +99,17 @@ public class GameSession : ISession
                     if (result == BuildResult.Success)
                     {
                         _world.AddStructure(plannedBuildPosition.Value, plannedStructure, plannedBlueprint);
-                        _ui.State.IncrementSelectedBlueprint();
-                        _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.OnConstructDelta);
-                        _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.Cost, -1);
+                        if (_ui != null)
+                        {
+                            _ui.State.IncrementSelectedBlueprint();
+                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.OnConstructDelta);
+                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.Cost, -1);
+
+                            if (_currentObjective?.IsComplete(_ui, _inventory, _world) == true)
+                            {
+                                StartNextLevel();
+                            }
+                        }
                     }
 
                     if (result == BuildResult.FailedBecauseOfFit)
@@ -170,7 +153,7 @@ public class GameSession : ISession
                 }
                 else
                 {
-                    if (_camera.ViewBounds.Width > _screenSize.X / 10 * 2)
+                    if (_camera.ViewBounds.Width > (float) _screenSize.X / 10 * 2)
                     {
                         _camera.ZoomInTowards((int) (normalizedScrollDelta * zoomStrength), _mousePosition.Value);
                     }
@@ -183,7 +166,7 @@ public class GameSession : ISession
             _isPanning = false;
         }
 
-        _ui.UpdateInput(input, hitTestStack);
+        _ui?.UpdateInput(input, hitTestStack);
     }
 
     public void Draw(Painter painter)
@@ -215,7 +198,7 @@ public class GameSession : ISession
 
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
 
-        if (_mousePosition.HasValue && !_isPanning)
+        if (_mousePosition.HasValue && !_isPanning && _isHovered)
         {
             var buildPosition = GetPlannedBuildPosition();
             var plannedStructure = GetPlannedStructure();
@@ -268,14 +251,14 @@ public class GameSession : ISession
 
         _errorMessage.Draw(painter);
 
-        _ui.Draw(painter, _inventory);
+        _ui?.Draw(painter, _inventory);
 
         _currentOverlay?.Draw(painter, _screenSize);
     }
 
     public void Update(float dt)
     {
-        _uiTween.Update(dt);
+        _ui?.Update(dt);
 
         if (_currentOverlay != null)
         {
@@ -292,6 +275,67 @@ public class GameSession : ISession
         _inventory.ResourceUpdate(dt);
     }
 
+    private void StartNextLevel()
+    {
+        if (_currentLevelIndex == null)
+        {
+            _currentLevelIndex = 0;
+        }
+        else
+        {
+            _currentLevelIndex = _currentLevelIndex.Value + 1;
+        }
+
+        if (!_levels.IsValidIndex(_currentLevelIndex.Value))
+        {
+            WinGame();
+            return;
+        }
+
+        var level = _levels[_currentLevelIndex.Value];
+        var uiBuilder = new UiLayoutBuilder();
+
+        foreach (var resource in _inventory.AllResources())
+        {
+            uiBuilder.AddResource(resource);
+        }
+
+        var blueprintFolder = Client.Debug.RepoFileSystem.GetDirectory("Resource/blueprints");
+        foreach (var levelBlueprint in level.Blueprints)
+        {
+            var blueprint = JsonFileReader.Read<Blueprint>(blueprintFolder, levelBlueprint.Name);
+            uiBuilder.AddBlueprint(levelBlueprint.Name, blueprint, levelBlueprint.IsLocked);
+        }
+
+        _currentObjective = new Objective(level.CompletionCriteria);
+
+        if (level.IntroDialogue.Count > 0)
+        {
+            OpenOverlay(new DialogueOverlay(_inventory,
+                level.IntroDialogue.Select(text => new DialoguePage {Text = text}).ToList(), () =>
+                {
+                    _ui = BuildUi(uiBuilder);
+                }));
+        }
+        else
+        {
+            _ui = BuildUi(uiBuilder);
+            _ui.FadeIn();
+        }
+    }
+
+    private Ui BuildUi(UiLayoutBuilder uiBuilder)
+    {
+        var ui = uiBuilder.Build(_screenSize);
+        ui.RequestRules += ShowRules;
+        return ui;
+    }
+
+    private void WinGame()
+    {
+        Client.Debug.Log("You win!");
+    }
+
     private void ShowRules()
     {
         OpenOverlay(_rulesOverlay);
@@ -301,7 +345,7 @@ public class GameSession : ISession
     {
         newOverlay.Reset();
         _currentOverlay = newOverlay;
-        _uiTween.Add(_ui.FadeOutAmount.TweenTo(1f, 0.25f, Ease.Linear));
+        _ui?.FadeOut();
     }
 
     public event Action? RequestEditorSession;
@@ -360,11 +404,11 @@ public class GameSession : ISession
 
     private StructurePlan? GetPlannedStructure()
     {
-        return _ui.State.CurrentStructure();
+        return _ui?.State.CurrentStructure();
     }
 
     public Blueprint? GetPlannedBlueprint()
     {
-        return _ui.State.CurrentBlueprint();
+        return _ui?.State.CurrentBlueprint();
     }
 }
