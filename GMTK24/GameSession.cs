@@ -285,11 +285,32 @@ public class GameSession : ISession
 
     public event Action? RequestEditorSession;
 
-    private void DrawScaffold(Painter painter, Cell anchorPoint)
+    private void DrawScaffold(Painter painter, ScaffoldCell scaffoldCell)
     {
-        var rectangle = new RectangleF(Grid.CellToPixel(anchorPoint), new Vector2(Grid.CellSize));
-        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["scaffold"],
-            rectangle, new DrawSettings {SourceRectangle = rectangle.ToRectangle()});
+        var rectangle = new RectangleF(Grid.CellToPixel(scaffoldCell.Cell), new Vector2(Grid.CellSize));
+
+        var texture = ResourceAssets.Instance.Textures["LVL01_PILLAR"];
+
+        if (scaffoldCell.PointType == ScaffoldPointType.Middle)
+        {
+            var sourceRectangle = rectangle.ToRectangle();
+            sourceRectangle.Location = new Point(0, sourceRectangle.Location.Y);
+            painter.DrawAsRectangle(texture,
+                rectangle, new DrawSettings {SourceRectangle = sourceRectangle});
+        }
+        else
+        {
+            if (scaffoldCell.PointType == ScaffoldPointType.Bottom)
+            {
+                texture = ResourceAssets.Instance.Textures["LVL01_PILLAR_BookEndBottom"];
+            }
+        
+            if (scaffoldCell.PointType == ScaffoldPointType.Top)
+            {
+                texture = ResourceAssets.Instance.Textures["LVL01_PILLAR_BookEndTop"];
+            }
+            painter.DrawAsRectangle(texture, rectangle, new DrawSettings());
+        }
     }
 
     public static void DrawStructure(Painter painter, Structure structure)

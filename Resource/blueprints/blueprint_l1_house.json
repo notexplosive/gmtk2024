@@ -2,7 +2,8 @@
     "structurePlans": [
         "plan_house",
         "plan_house2",
-        "plan_house3"
+        "plan_house3",
+        "plan_house4"
     ],
     "onConstructDelta": [
         {

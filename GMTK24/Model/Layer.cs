@@ -14,13 +14,13 @@ public enum BuildResult
 
 public class Layer
 {
-    private readonly List<Structure> _structures = new();
     private readonly Dictionary<Cell, Structure> _cellToStructure = new();
-    private List<Cell>? _scaffoldCache;
+    private readonly List<Structure> _structures = new();
+    private List<ScaffoldCell>? _scaffoldCache;
     private List<Cell>? _supportedCache;
 
     public IEnumerable<Structure> Structures => _structures;
-    
+
     public void AddStructureToLayer(Cell centerCell, StructurePlan plan, Blueprint blueprint)
     {
         var realStructure = plan.BuildReal(centerCell, blueprint);
@@ -80,18 +80,10 @@ public class Layer
 
     public Structure? GetStructureAt(Cell cell)
     {
-        foreach (var (structureCell, structure) in _cellToStructure)
-        {
-            if (structureCell == cell)
-            {
-                return structure;
-            }
-        }
-
-        return null;
+        return _cellToStructure.GetValueOrDefault(cell);
     }
 
-    private IEnumerable<Cell> GenerateScaffoldCells()
+    private IEnumerable<ScaffoldCell> GenerateScaffoldCells()
     {
         foreach (var structure in _structures.Where(a => a.Settings.CreatesScaffold))
         {
@@ -103,7 +95,22 @@ public class Layer
                     var foundStructure = GetStructureAt(anchorPoint);
                     if (foundStructure == null || !foundStructure.Settings.CreatesScaffold)
                     {
-                        yield return anchorPoint;
+                        var foundStructureBelow = GetStructureAt(anchorPoint + new Cell(0, 1));
+                        var foundStructureAbove = GetStructureAt(anchorPoint + new Cell(0, -1));
+
+                        var type = ScaffoldPointType.Middle;
+                        
+                        if (foundStructureBelow != null)
+                        {
+                            type = ScaffoldPointType.Bottom;
+                        }
+
+                        if (foundStructureAbove != null)
+                        {
+                            type = ScaffoldPointType.Top;
+                        }
+                        
+                        yield return new ScaffoldCell(anchorPoint, type);
                     }
                     else
                     {
@@ -115,19 +122,19 @@ public class Layer
             }
         }
     }
-    
+
     private IEnumerable<Cell> GenerateSupportedCells()
     {
         foreach (var structure in _structures.Where(a => a.Settings.ProvidesSupport))
         {
-            foreach (var x in structure.OccupiedCells.DistinctBy(a => a.X).Select(a=>a.X))
+            foreach (var x in structure.OccupiedCells.DistinctBy(a => a.X).Select(a => a.X))
             {
-                yield return structure.OccupiedCells.Where(a => a.X == x).MinBy(a=>a.Y);
+                yield return structure.OccupiedCells.Where(a => a.X == x).MinBy(a => a.Y);
             }
         }
     }
 
-    public IEnumerable<Cell> ScaffoldCells()
+    public IEnumerable<ScaffoldCell> ScaffoldCells()
     {
         if (_scaffoldCache == null)
         {
@@ -136,7 +143,7 @@ public class Layer
 
         return _scaffoldCache;
     }
-    
+
     public IEnumerable<Cell> SupportedCells()
     {
         if (_supportedCache == null)
