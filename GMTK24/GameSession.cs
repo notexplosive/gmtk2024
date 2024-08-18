@@ -28,9 +28,9 @@ public class GameSession : ISession
         _screenSize = screenSize;
         var uiBuilder = new UiLayoutBuilder();
 
-        _inventory.AddResource(new Resource("Population"));
-        _inventory.AddResource(new Resource("Inspiration", 75));
-        _inventory.AddResource(new Resource("Food", 5));
+        _inventory.AddResource(new Resource("resource_icon_population","Population"));
+        _inventory.AddResource(new Resource("resource_icon_inspiration","Inspiration", 75));
+        _inventory.AddResource(new Resource("resource_icon_food","Food", 5));
 
         foreach (var resource in _inventory.AllResources())
         {

@@ -9,7 +9,7 @@
     },
     "createsScaffold": false,
     "providesSupport": false,
-    "requiredSupports": 3,
+    "requiredSupports": 2,
     "layer": 1
   },
   "cells": [

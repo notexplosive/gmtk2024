@@ -61,8 +61,16 @@ public class Ui
         {
             painter.DrawRectangle(resourceTracker.TextRectangle,
                 new DrawSettings {Color = Color.White, Depth = Depth.Back});
+
+            var iconName = resourceTracker.Resource.IconName;
+            
             painter.DrawRectangle(resourceTracker.IconRectangle,
-                new DrawSettings {Color = Color.DarkBlue, Depth = Depth.Back - 1});
+                new DrawSettings {Color = Color.Green.DimmedBy(0.3f), Depth = Depth.Back - 1});
+            if (iconName != null)
+            {
+                painter.DrawAtPosition(ResourceAssets.Instance.Textures[iconName], resourceTracker.IconRectangle.Center, Scale2D.One, new DrawSettings{Origin = DrawOrigin.Center, Depth = Depth.Middle});
+            }
+
             painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 50),
                 resourceTracker.Resource.Status(), resourceTracker.TextRectangle, Alignment.Center,
                 new DrawSettings {Color = Color.Black});
@@ -77,24 +85,33 @@ public class Ui
 
             var titleFont = Client.Assets.GetFont("gmtk/GameFont", 64);
             var titleRectangleNormalized = titleFont.MeasureString(tooltipContent.Title).ToRectangleF();
-            
+
             var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
-            var bodyRectangleNormalized = bodyFont.MeasureString(tooltipContent.Body).ToRectangleF().Moved(titleRectangleNormalized.Size.JustY());
+            var bodyRectangleNormalized = bodyFont.MeasureString(tooltipContent.Body).ToRectangleF()
+                .Moved(titleRectangleNormalized.Size.JustY());
 
             var tooltipSize = RectangleF.Union(titleRectangleNormalized, bodyRectangleNormalized).Size;
 
-            var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -20), tooltipSize + new Vector2(25), Alignment.BottomCenter);
-            
-            var tooltipRectangle = RectangleF.FromSizeAlignedWithin(paddedTooltipRectangle, tooltipSize, Alignment.Center);
+            var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -20),
+                tooltipSize + new Vector2(25), Alignment.BottomCenter);
+
+            var tooltipRectangle =
+                RectangleF.FromSizeAlignedWithin(paddedTooltipRectangle, tooltipSize, Alignment.Center);
             var titleRectangle =
-                RectangleF.FromSizeAlignedWithin(tooltipRectangle, titleRectangleNormalized.Size + new Vector2(1), Alignment.TopLeft);
+                RectangleF.FromSizeAlignedWithin(tooltipRectangle, titleRectangleNormalized.Size + new Vector2(1),
+                    Alignment.TopLeft);
             var bodyRectangle =
-                RectangleF.FromSizeAlignedWithin(tooltipRectangle, bodyRectangleNormalized.Size + new Vector2(1), Alignment.BottomLeft);
-            
-            painter.DrawRectangle(paddedTooltipRectangle, new DrawSettings{Depth = 200, Color = Color.DarkBlue.DimmedBy(0.25f).WithMultipliedOpacity(0.75f)});
-            painter.DrawLineRectangle(paddedTooltipRectangle, new LineDrawSettings{Depth = 190, Color = Color.White, Thickness = 2});
-            painter.DrawStringWithinRectangle(titleFont, tooltipContent.Title, titleRectangle, Alignment.TopLeft, new DrawSettings{Depth = 100});
-            painter.DrawStringWithinRectangle(bodyFont, tooltipContent.Body, bodyRectangle, Alignment.TopLeft, new DrawSettings{Depth = 100});
+                RectangleF.FromSizeAlignedWithin(tooltipRectangle, bodyRectangleNormalized.Size + new Vector2(1),
+                    Alignment.BottomLeft);
+
+            painter.DrawRectangle(paddedTooltipRectangle,
+                new DrawSettings {Depth = 200, Color = Color.DarkBlue.DimmedBy(0.25f).WithMultipliedOpacity(0.75f)});
+            painter.DrawLineRectangle(paddedTooltipRectangle,
+                new LineDrawSettings {Depth = 190, Color = Color.White, Thickness = 2});
+            painter.DrawStringWithinRectangle(titleFont, tooltipContent.Title, titleRectangle, Alignment.TopLeft,
+                new DrawSettings {Depth = 100});
+            painter.DrawStringWithinRectangle(bodyFont, tooltipContent.Body, bodyRectangle, Alignment.TopLeft,
+                new DrawSettings {Depth = 100});
         }
 
         painter.EndSpriteBatch();

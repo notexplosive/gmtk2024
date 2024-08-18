@@ -4,14 +4,16 @@ namespace GMTK24.Model;
 
 public class Resource
 {
-    public Resource(string name, int startingAmount = 0)
+    public Resource(string? iconName, string name, int startingAmount = 0)
     {
+        IconName = iconName;
         Name = name;
         Id = name.GetHashCode();
         Quantity = startingAmount;
         Capacity = startingAmount;
     }
 
+    public string? IconName { get; }
     public float Capacity { get; private set; }
     public float Quantity { get; private set; }
     public int Id { get; }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection.Metadata;
 using ExplogineMonoGame;
 using GMTK24.Config;
 
@@ -33,7 +32,7 @@ public class Inventory
         if (foundResource == null)
         {
             Client.Debug.LogWarning($"No resource found called {name}");
-            return new Resource(name);
+            return new Resource(null, name);
         }
 
         return foundResource;
@@ -55,7 +54,7 @@ public class Inventory
         var population = GetResource("Population");
         var inspiration = GetResource("Inspiration");
         var food = GetResource("Food");
-        
+
         var populationSeconds = population.Quantity * dt;
 
         inspiration.Add(populationSeconds);
