@@ -25,6 +25,11 @@ public class Resource
         return $"{(int) Quantity} / {Capacity}";
     }
 
+    public string InlineTextIcon()
+    {
+        return $"[resourceTexture({IconName})]";
+    }
+
     public void Add(float delta)
     {
         Quantity = Math.Clamp(Quantity + delta, 0, Capacity);

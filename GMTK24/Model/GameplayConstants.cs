@@ -1,6 +1,16 @@
-﻿namespace GMTK24.Model;
+﻿using ExplogineMonoGame.TextFormatting;
+
+namespace GMTK24.Model;
 
 public static class GameplayConstants
 {
-    public static int FoodCostOfOnePerson => 10;
+    public static FormattedTextParser FormattedTextParser
+    {
+        get
+        {
+            var formattedTextParser = new FormattedTextParser();
+            formattedTextParser.AddCommand("resourceTexture", new Command(args => new ResourceImageInstruction(args)));
+            return formattedTextParser;
+        }
+    }
 }

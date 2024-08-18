@@ -34,10 +34,14 @@ public class UiLayoutBuilder
 
         var layoutBuilder = new LayoutBuilder(new Style(Orientation.Vertical));
 
-        var resourcesLayoutGroup = layoutBuilder.AddGroup(
-            new Style(Alignment: Alignment.Center, PaddingBetweenElements: 20),
-            L.FillHorizontal("resource-ribbon", resourceHeight + 10));
-
+        var topGroup = layoutBuilder.AddGroup(new Style(Margin: new Vector2(20)), L.FillHorizontal(resourceHeight));
+        
+        topGroup.Add(L.FixedElement("rules-button",resourceHeight,resourceHeight));
+        
+        var resourcesLayoutGroup = topGroup.AddGroup(
+            new Style(Alignment: Alignment.TopCenter, PaddingBetweenElements: 20),
+            L.FillBoth("resource-ribbon"));
+        
         foreach (var resource in _resources)
         {
             var resourceGroup = resourcesLayoutGroup.AddGroup(new Style(), L.FixedElement(GetId(resource), resourceWidth, resourceHeight));
@@ -58,7 +62,11 @@ public class UiLayoutBuilder
 
         var result = layoutBuilder.Bake(screenSize);
 
-        var ui = new Ui(result.FindElement("button-ribbon").Rectangle, result.FindElement("middle-area").Rectangle);
+        var ui = new Ui(
+            result.FindElement("button-ribbon").Rectangle,
+            result.FindElement("middle-area").Rectangle,
+            result.FindElement("rules-button").Rectangle
+            );
         foreach (var buildAction in _buildActions)
         {
             ui.AddButton(new StructureButton(result.FindElement(GetId(buildAction)).Rectangle, buildAction));

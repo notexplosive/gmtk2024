@@ -3,6 +3,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
+using ExplogineMonoGame.TextFormatting;
 using GMTK24.Config;
 using GMTK24.Model;
 using GMTK24.UserInterface;
@@ -15,22 +16,31 @@ public class GameSession : ISession
 {
     private readonly Camera _camera;
     private readonly ErrorMessage _errorMessage;
+    private readonly Inventory _inventory = new();
     private readonly HoverState _isHovered = new();
+    private readonly FormattedTextOverlay _rulesOverlay;
+    private readonly Point _screenSize;
     private readonly Ui _ui;
     private readonly World _world = new();
-    private readonly Inventory _inventory = new();
+    private Overlay? _currentOverlay;
     private bool _isPanning;
     private Vector2? _mousePosition;
-    private Point _screenSize;
 
     public GameSession(Point screenSize)
     {
         _screenSize = screenSize;
         var uiBuilder = new UiLayoutBuilder();
 
-        _inventory.AddResource(new Resource("resource_icon_population","Population"));
-        _inventory.AddResource(new Resource("resource_icon_inspiration","Inspiration", 75));
-        _inventory.AddResource(new Resource("resource_icon_food","Food", 5));
+        _inventory.AddResource(new Resource("resource_icon_population", "Population"));
+        _inventory.AddResource(new Resource("resource_icon_inspiration", "Inspiration", 75));
+        _inventory.AddResource(new Resource("resource_icon_food", "Food", 5));
+
+        _inventory.AddRule(new ConvertResourceRule("Food", 10, "Population", 1));
+        _inventory.AddRule(new GenerateResourcePerSecondRule("Population", "Inspiration"));
+        
+        _rulesOverlay =
+            new FormattedTextOverlay(
+                FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 80), Color.White, _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
 
         foreach (var resource in _inventory.AllResources())
         {
@@ -44,15 +54,30 @@ public class GameSession : ISession
         uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_decoration"));
         _ui = uiBuilder.Build(screenSize);
 
+        _ui.RequestRules += ShowRules;
+
         var zoomLevel = 0.5f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
-        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"), new Blueprint());
+        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"),
+            new Blueprint());
         _errorMessage = new ErrorMessage(screenSize);
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
+        if (_currentOverlay != null)
+        {
+            _currentOverlay.UpdateInput(input, hitTestStack, _screenSize);
+
+            if (_currentOverlay.IsClosed)
+            {
+                _currentOverlay = null;
+            }
+
+            return;
+        }
+
         var worldLayer = hitTestStack.AddLayer(_camera.ScreenToCanvas, Depth.Back);
         worldLayer.AddZone(_camera.ViewBounds, Depth.Back, _isHovered);
 
@@ -75,7 +100,8 @@ public class GameSession : ISession
 
                 if (plannedBuildPosition.HasValue && plannedStructure != null && plannedBlueprint != null)
                 {
-                    var result = _world.CanBuild(plannedBuildPosition.Value, plannedStructure, _inventory, plannedBlueprint);
+                    var result = _world.CanBuild(plannedBuildPosition.Value, plannedStructure, _inventory,
+                        plannedBlueprint);
 
                     if (result == BuildResult.Success)
                     {
@@ -94,7 +120,7 @@ public class GameSession : ISession
                     {
                         _errorMessage.Display("Needs Structural Support");
                     }
-                    
+
                     if (result == BuildResult.FailedBecauseOfCost)
                     {
                         _errorMessage.Display("More Resources Required");
@@ -188,7 +214,7 @@ public class GameSession : ISession
                 {
                     defaultColor = Color.White;
                 }
-                
+
                 if (buildResult == BuildResult.FailedBecauseOfFit)
                 {
                     defaultColor = Color.Yellow;
@@ -225,10 +251,17 @@ public class GameSession : ISession
         _errorMessage.Draw(painter);
 
         _ui.Draw(painter);
+
+        _currentOverlay?.Draw(painter, _screenSize);
     }
 
     public void Update(float dt)
     {
+        if (_currentOverlay != null)
+        {
+            _currentOverlay.Update(dt);
+        }
+
         _errorMessage.Update(dt);
 
         foreach (var structure in _world.AllStructures())
@@ -237,6 +270,17 @@ public class GameSession : ISession
         }
 
         _inventory.ResourceUpdate(dt);
+    }
+
+    private void ShowRules()
+    {
+        SetCurrentOverlay(_rulesOverlay);
+    }
+
+    private void SetCurrentOverlay(Overlay newOverlay)
+    {
+        newOverlay.Reset();
+        _currentOverlay = newOverlay;
     }
 
     public event Action? RequestEditorSession;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using ExplogineMonoGame;
 using GMTK24.Config;
 
@@ -7,6 +8,7 @@ namespace GMTK24.Model;
 public class Inventory
 {
     private readonly List<Resource> _resources = new();
+    private readonly List<InventoryRule> _rules = new();
 
     public void ApplyDeltas(List<ResourceDelta> deltas, float factor = 1f)
     {
@@ -25,7 +27,7 @@ public class Inventory
         }
     }
 
-    private Resource GetResource(string name)
+    public Resource GetResource(string name)
     {
         var foundResource = _resources.Find(a => a.Name == name);
 
@@ -51,18 +53,9 @@ public class Inventory
 
     public void ResourceUpdate(float dt)
     {
-        var population = GetResource("Population");
-        var inspiration = GetResource("Inspiration");
-        var food = GetResource("Food");
-
-        var populationSeconds = population.Quantity * dt;
-
-        inspiration.Add(populationSeconds);
-
-        if (food.Quantity > GameplayConstants.FoodCostOfOnePerson && !population.IsAtCapacity)
+        foreach (var rule in _rules)
         {
-            food.Consume(GameplayConstants.FoodCostOfOnePerson);
-            population.Add(1);
+            rule.Run(this, dt);
         }
     }
 
@@ -80,4 +73,33 @@ public class Inventory
 
         return true;
     }
+
+    public string DisplayRules()
+    {
+        var stringBuilder = new StringBuilder();
+
+        foreach (var rule in Rules())
+        {
+            stringBuilder.AppendLine($"- {rule.Description(this)}");
+        }
+
+        return stringBuilder.ToString();
+    }
+
+    public void AddRule(InventoryRule convertResourceRule)
+    {
+        _rules.Add(convertResourceRule);
+    }
+
+    public IEnumerable<InventoryRule> Rules()
+    {
+        return _rules;
+    } 
+}
+
+public abstract class InventoryRule
+{
+    public abstract void Run(Inventory inventory, float dt);
+
+    public abstract string Description(Inventory inventory);
 }

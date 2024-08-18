@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
@@ -14,11 +15,16 @@ public class Ui
     private readonly List<StructureButton> _buttons = new();
     private readonly RectangleF _middleArea;
     private readonly List<ResourceTracker> _resourceTrackers = new();
+    private readonly RectangleF _rulesRectangle;
+    private readonly HoverState _isRulesHovered = new();
+    
+    public event Action? RequestRules;
 
-    public Ui(RectangleF buttonBackground, RectangleF middleArea)
+    public Ui(RectangleF buttonBackground, RectangleF middleArea, RectangleF rulesRectangle)
     {
         _buttonBackground = buttonBackground;
         _middleArea = middleArea;
+        _rulesRectangle = rulesRectangle;
     }
 
     public UiState State { get; } = new();
@@ -63,15 +69,16 @@ public class Ui
                 new DrawSettings {Color = Color.White, Depth = Depth.Back});
 
             var iconName = resourceTracker.Resource.IconName;
-            
+
             painter.DrawRectangle(resourceTracker.IconRectangle,
                 new DrawSettings {Color = Color.Green.DimmedBy(0.3f), Depth = Depth.Back - 1});
             if (iconName != null)
             {
-                painter.DrawAtPosition(ResourceAssets.Instance.Textures[iconName], resourceTracker.IconRectangle.Center, Scale2D.One, new DrawSettings{Origin = DrawOrigin.Center, Depth = Depth.Middle});
+                painter.DrawAtPosition(ResourceAssets.Instance.Textures[iconName], resourceTracker.IconRectangle.Center,
+                    Scale2D.One, new DrawSettings {Origin = DrawOrigin.Center, Depth = Depth.Middle});
             }
 
-            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 50),
+            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 35),
                 resourceTracker.Resource.Status(), resourceTracker.TextRectangle, Alignment.Center,
                 new DrawSettings {Color = Color.Black});
         }
@@ -114,6 +121,8 @@ public class Ui
                 new DrawSettings {Depth = 100});
         }
 
+        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["icon_help"], _rulesRectangle, new DrawSettings());
+
         painter.EndSpriteBatch();
     }
 
@@ -129,8 +138,15 @@ public class Ui
                 () => { State.SetHovered(button); });
         }
 
+        uiHitTestLayer.AddZone(_rulesRectangle, Depth.Middle, _isRulesHovered);
+
         if (input.Mouse.GetButton(MouseButton.Left).WasPressed)
         {
+            if (_isRulesHovered)
+            {
+                RequestRules?.Invoke();
+            }
+
             State.SelectHoveredButton();
         }
     }
