@@ -88,7 +88,7 @@ public class Ui
             var textRectangle = resourceTracker.TextRectangle.Moved(-FadeOffsetPixels());
             painter.DrawRectangle(textRectangle, new DrawSettings {Color = Color.White, Depth = Depth.Back});
 
-            var iconName = resourceTracker.Resource.IconName;
+            var iconName = resourceTracker.Resource.IconNameWithBacker;
 
             if (iconName != null)
             {

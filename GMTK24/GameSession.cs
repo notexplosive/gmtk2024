@@ -34,9 +34,9 @@ public class GameSession : ISession
     {
         _screenSize = screenSize;
 
-        _inventory.AddResource(new Resource("resource_icon_population", "Population", false));
-        _inventory.AddResource(new Resource("resource_icon_inspiration", "Inspiration", true, 75));
-        _inventory.AddResource(new Resource("resource_icon_food", "Food", false, 15));
+        _inventory.AddResource(new Resource("ICONS_Social", "ICONS_Social00", "Population", false));
+        _inventory.AddResource(new Resource("ICONS_Insp", "ICONS_Insp00", "Inspiration", true, 75));
+        _inventory.AddResource(new Resource("ICONS_Food", "ICONS_Food00", "Food", false, 15));
 
         _levels = JsonFileReader.Read<LevelSequence>(Client.Debug.RepoFileSystem.GetDirectory("Resource"), "levels")
             .Levels;
@@ -312,10 +312,8 @@ public class GameSession : ISession
         if (level.IntroDialogue.Count > 0)
         {
             OpenOverlay(new DialogueOverlay(_inventory,
-                level.IntroDialogue.Select(text => new DialoguePage {Text = text}).ToList(), () =>
-                {
-                    _ui = BuildUi(uiBuilder);
-                }));
+                level.IntroDialogue.Select(text => new DialoguePage {Text = text}).ToList(),
+                () => { _ui = BuildUi(uiBuilder); }));
         }
         else
         {

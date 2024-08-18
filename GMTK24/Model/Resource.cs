@@ -4,9 +4,10 @@ namespace GMTK24.Model;
 
 public class Resource
 {
-    public Resource(string? iconName, string name, bool hasCapacity, int startingAmount = 0)
+    public Resource(string? iconNameWithBacker, string? iconNameNoBacker, string name, bool hasCapacity, int startingAmount = 0)
     {
-        IconName = iconName;
+        IconNameWithBacker = iconNameWithBacker;
+        IconNameNoBacker = iconNameNoBacker;
         Name = name;
         HasCapacity = hasCapacity;
         Id = name.GetHashCode();
@@ -14,7 +15,8 @@ public class Resource
         Capacity = startingAmount;
     }
 
-    public string? IconName { get; }
+    public string? IconNameWithBacker { get; set; }
+    public string? IconNameNoBacker { get; }
     public float Capacity { get; private set; }
     public float Quantity { get; private set; }
     public int Id { get; }
@@ -34,7 +36,7 @@ public class Resource
 
     public string InlineTextIcon(float scale = 1f)
     {
-        return $"[resourceTexture({IconName},{scale})]";
+        return $"[resourceTexture({IconNameNoBacker},{scale})]";
     }
 
     public void Add(float delta)

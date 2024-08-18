@@ -34,7 +34,7 @@ public class Inventory
         if (foundResource == null)
         {
             Client.Debug.LogWarning($"No resource found called {name}");
-            return new Resource(null, name, false);
+            return new Resource(null, null, name, false);
         }
 
         return foundResource;
@@ -94,7 +94,7 @@ public class Inventory
     public IEnumerable<InventoryRule> Rules()
     {
         return _rules;
-    } 
+    }
 }
 
 public abstract class InventoryRule
