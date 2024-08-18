@@ -8,30 +8,26 @@
     "onConstructDelta": [
         {
             "resourceName": "Population",
-            "amount": 3,
-            "affectCapacity": true
-        },
-        {
-            "resourceName": "Population",
-            "amount": 1,
-            "affectCapacity": false
+            "amount": 3
         },
         {
             "resourceName": "Inspiration",
-            "amount": 10,
+            "amount": 50,
             "affectCapacity": true
+        }
+    ],
+    "onSecondDelta": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 1
         }
     ],
     "cost": [
         {
-            "resourceName": "Inspiration",
-            "amount": 25
-        },
-        {
             "resourceName": "Food",
-            "amount": 1
+            "amount": 5
         }
     ],
     "title": "House",
-    "description": "Increases #Population Capacity."
+    "description": "Increases #Population and increases max #Inspiration.\nGenerates #Inspiration over time."
 }

@@ -3,21 +3,24 @@
         "plan_decoration"
     ],
     "title": "Decor",
-    "description": "Provides #Social over time.\nCan share space with other structures.",
-    "onSecondDelta": [
-        {
-            "resourceName": "Social",
-            "amount": 1
-        }
-    ],
+    "description": "Increases max #Inspiration significantly\nQuickly generates #Inspiration over time.\nCan share space with other structures.",
     "cost": [
-        {
-            "resourceName": "Inspiration",
-            "amount": 100
-        },
         {
             "resourceName": "Food",
             "amount": 20
         }
     ],
+    "onConstructDelta": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 100,
+            "affectCapacity": true
+        }
+    ],
+    "onSecondsDelta": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 3
+        }
+    ]
 }

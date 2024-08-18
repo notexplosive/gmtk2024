@@ -4,10 +4,11 @@ namespace GMTK24.Model;
 
 public class Resource
 {
-    public Resource(string? iconName, string name, int startingAmount = 0)
+    public Resource(string? iconName, string name, bool hasCapacity, int startingAmount = 0)
     {
         IconName = iconName;
         Name = name;
+        HasCapacity = hasCapacity;
         Id = name.GetHashCode();
         Quantity = startingAmount;
         Capacity = startingAmount;
@@ -18,11 +19,19 @@ public class Resource
     public float Quantity { get; private set; }
     public int Id { get; }
     public string Name { get; }
+    public bool HasCapacity { get; }
     public bool IsAtCapacity => Quantity >= Capacity;
 
     public string Status()
     {
-        return $"{(int) Quantity} / {Capacity}";
+        if (HasCapacity)
+        {
+            return $"{(int) Quantity} / {Capacity}";
+        }
+        else
+        {
+            return $"{(int) Quantity}";
+        }
     }
 
     public string InlineTextIcon()
@@ -32,7 +41,18 @@ public class Resource
 
     public void Add(float delta)
     {
-        Quantity = Math.Clamp(Quantity + delta, 0, Capacity);
+        if (HasCapacity)
+        {
+            Quantity = Math.Clamp(Quantity + delta, 0, Capacity);
+        }
+        else
+        {
+            Quantity += delta;
+            if (Quantity <= 0)
+            {
+                Quantity = 0;
+            }
+        }
     }
 
     public void AddCapacity(float delta)
@@ -40,7 +60,7 @@ public class Resource
         Capacity += delta;
     }
 
-    public void Consume(int amount)
+    public void Consume(float amount)
     {
         Add(-amount);
     }

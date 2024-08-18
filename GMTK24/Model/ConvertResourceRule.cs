@@ -2,28 +2,32 @@ namespace GMTK24.Model;
 
 public class ConvertResourceRule : InventoryRule
 {
-    private readonly string _ingredientResourceName;
     private readonly int _amountOfIngredient;
-    private readonly string _resultResourceName;
     private readonly int _amountOfResult;
+    private readonly string _ingredientResourceName;
+    private readonly string _resultResourceName;
 
-    public ConvertResourceRule(string ingredientResourceName, int amountOfIngredient, string resultResourceName, int amountOfResult)
+    public ConvertResourceRule(string ingredientResourceName, int amountOfIngredient, string resultResourceName,
+        int amountOfResult)
     {
         _ingredientResourceName = ingredientResourceName;
         _amountOfIngredient = amountOfIngredient;
         _resultResourceName = resultResourceName;
         _amountOfResult = amountOfResult;
     }
-    
+
     public override void Run(Inventory inventory, float dt)
     {
         var input = inventory.GetResource(_ingredientResourceName);
         var output = inventory.GetResource(_resultResourceName);
 
-        if (input.Quantity >= _amountOfIngredient && !output.IsAtCapacity)
+        var scaledInput = dt * _amountOfIngredient;
+        var scaledOutput = dt * _amountOfResult;
+
+        if (input.Quantity >= scaledInput && !output.IsAtCapacity)
         {
-            input.Consume(_amountOfIngredient);
-            output.Add(_amountOfResult);
+            input.Consume(scaledInput);
+            output.Add(scaledOutput);
         }
     }
 
@@ -33,6 +37,6 @@ public class ConvertResourceRule : InventoryRule
         var output = inventory.GetResource(_resultResourceName);
 
         return
-            $"When you have {_amountOfIngredient}{input.InlineTextIcon()}, it becomes {_amountOfResult}{output.InlineTextIcon()}.";
+            $"Convert {_amountOfIngredient}{input.InlineTextIcon()} to {_amountOfResult}{output.InlineTextIcon()} per second.";
     }
 }

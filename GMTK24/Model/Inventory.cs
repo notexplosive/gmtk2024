@@ -34,7 +34,7 @@ public class Inventory
         if (foundResource == null)
         {
             Client.Debug.LogWarning($"No resource found called {name}");
-            return new Resource(null, name);
+            return new Resource(null, name, false);
         }
 
         return foundResource;

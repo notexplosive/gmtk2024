@@ -4,7 +4,6 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
-using ExplogineMonoGame.TextFormatting;
 using ExTween;
 using GMTK24.Config;
 using GMTK24.Model;
@@ -23,29 +22,31 @@ public class GameSession : ISession
     private readonly FormattedTextOverlay _rulesOverlay;
     private readonly Point _screenSize;
     private readonly Ui _ui;
+    private readonly SequenceTween _uiTween = new();
     private readonly World _world = new();
     private Overlay? _currentOverlay;
     private bool _isPanning;
     private Vector2? _mousePosition;
-    private SequenceTween _uiTween = new();
 
     public GameSession(Point screenSize)
     {
         _screenSize = screenSize;
         var uiBuilder = new UiLayoutBuilder();
 
-        _inventory.AddResource(new Resource("resource_icon_population", "Population"));
-        _inventory.AddResource(new Resource("resource_icon_inspiration", "Inspiration", 75));
-        _inventory.AddResource(new Resource("resource_icon_food", "Food", 5));
-        _inventory.AddResource(new Resource("resource_icon_social", "Social"));
+        _inventory.AddResource(new Resource("resource_icon_population", "Population", false));
+        _inventory.AddResource(new Resource("resource_icon_inspiration", "Inspiration", true, 75));
+        _inventory.AddResource(new Resource("resource_icon_food", "Food", false, 15));
+        // _inventory.AddResource(new Resource("resource_icon_social", "Social", false));
 
-        _inventory.AddRule(new ConvertResourceRule("Food", 10, "Population", 1));
-        _inventory.AddRule(new GenerateResourcePerSecondRule("Population", "Inspiration"));
-        
+        // _inventory.AddRule(new GenerateCatalystResourcePassive("Population", "Inspiration", 1));
+        // _inventory.AddRule(new ConvertResourceRule("Food", 10, "Population", 1));
+        // _inventory.AddRule(new ConvertResourceCatalystRule("Population", 1, "Food", 10, "Inspiration"));
+
         _rulesOverlay =
             new FormattedTextOverlay(
-                FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 50), Color.White, _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
-        
+                FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 50), Color.White,
+                    _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
+
         foreach (var resource in _inventory.AllResources())
         {
             uiBuilder.AddResource(resource);
@@ -66,14 +67,14 @@ public class GameSession : ISession
         _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"),
             new Blueprint());
         _errorMessage = new ErrorMessage(screenSize);
-        
-        OpenOverlay(new DialogueOverlay(new List<DialoguePage>()
+
+        OpenOverlay(new DialogueOverlay(new List<DialoguePage>
         {
-            new DialoguePage()
+            new()
             {
                 Text = "Hello!"
             },
-            new DialoguePage()
+            new()
             {
                 Text = "Goodbye!"
             }
@@ -275,7 +276,7 @@ public class GameSession : ISession
     public void Update(float dt)
     {
         _uiTween.Update(dt);
-        
+
         if (_currentOverlay != null)
         {
             _currentOverlay.Update(dt);
@@ -324,11 +325,12 @@ public class GameSession : ISession
             {
                 texture = ResourceAssets.Instance.Textures["LVL01_PILLAR_BookEndBottom"];
             }
-        
+
             if (scaffoldCell.PointType == ScaffoldPointType.Top)
             {
                 texture = ResourceAssets.Instance.Textures["LVL01_PILLAR_BookEndTop"];
             }
+
             painter.DrawAsRectangle(texture, rectangle, new DrawSettings());
         }
     }
