@@ -13,19 +13,20 @@ public class FormattedTextOverlay : Overlay
     {
         _formattedText = formattedText;
     }
-    
-    protected override void OnContinue()
+
+    protected override void OnContinue(SequenceTween tween)
     {
         Close();
     }
 
     protected override void OnSetupTween(SequenceTween tween)
     {
-        
     }
 
-    protected override void DrawContent(Painter painter, RectangleF rectangle, TweenableFloat textOpacity)
+    protected override void DrawContent(Painter painter, RectangleF rectangle)
     {
-        painter.DrawFormattedStringWithinRectangle(_formattedText, rectangle.Moved(new Vector2(0,50 * 1f/ Ease.QuadFastSlow(textOpacity))), Alignment.TopLeft, new DrawSettings{Color = Color.White.WithMultipliedOpacity(textOpacity)});
+        painter.DrawFormattedStringWithinRectangle(_formattedText,
+            rectangle.Moved(new Vector2(0, 50 * 1f / Ease.QuadFastSlow(ContentOpacity))), Alignment.TopLeft,
+            new DrawSettings {Color = Color.White.WithMultipliedOpacity(ContentOpacity)});
     }
 }

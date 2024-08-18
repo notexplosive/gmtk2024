@@ -4,6 +4,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
+using ExTween;
 using GMTK24.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,18 +13,19 @@ namespace GMTK24.UserInterface;
 
 public class Ui
 {
-    private readonly RectangleF _buttonBackground;
+    private readonly RectangleF _buttonStartingBackground;
     private readonly List<StructureButton> _buttons = new();
     private readonly RectangleF _middleArea;
     private readonly List<ResourceTracker> _resourceTrackers = new();
     private readonly Vector2 _rulesCorner;
     private readonly HoverState _isRulesHovered = new();
-    
+    public TweenableFloat FadeOutAmount { get; } = new(1);
+
     public event Action? RequestRules;
 
-    public Ui(RectangleF buttonBackground, RectangleF middleArea, Vector2 rulesCorner)
+    public Ui(RectangleF buttonStartingBackground, RectangleF middleArea, Vector2 rulesCorner)
     {
-        _buttonBackground = buttonBackground;
+        _buttonStartingBackground = buttonStartingBackground;
         _middleArea = middleArea;
         _rulesCorner = rulesCorner;
     }
@@ -40,17 +42,25 @@ public class Ui
         _resourceTrackers.Add(tracker);
     }
 
+    public RectangleF ButtonBackground =>
+        _buttonStartingBackground.Moved(FadeOffsetPixels());
+
+    private Vector2 FadeOffsetPixels()
+    {
+        return new Vector2(0,_buttonStartingBackground.Height * FadeOutAmount);
+    }
+
     public void Draw(Painter painter, Inventory inventory)
     {
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
 
-        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["ui_background"], _buttonBackground,
-            new DrawSettings {SourceRectangle = _buttonBackground.MovedToZero().ToRectangle(), Depth = Depth.Back});
+        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["ui_background"], ButtonBackground,
+            new DrawSettings {SourceRectangle = ButtonBackground.MovedToZero().ToRectangle(), Depth = Depth.Back});
 
         foreach (var button in _buttons)
         {
             var color = Color.White;
-            var offset = Vector2.Zero;
+            var offset = Vector2.Zero + FadeOffsetPixels();
             if (State.HoveredItem == button)
             {
                 offset = new Vector2(0, -20);
@@ -66,19 +76,19 @@ public class Ui
 
         foreach (var resourceTracker in _resourceTrackers)
         {
-            painter.DrawRectangle(resourceTracker.TextRectangle,
-                new DrawSettings {Color = Color.White, Depth = Depth.Back});
+            var textRectangle = resourceTracker.TextRectangle.Moved(-FadeOffsetPixels());
+            painter.DrawRectangle(textRectangle, new DrawSettings {Color = Color.White, Depth = Depth.Back});
 
             var iconName = resourceTracker.Resource.IconName;
             
             if (iconName != null)
             {
-                painter.DrawAtPosition(ResourceAssets.Instance.Textures[iconName], resourceTracker.IconRectangle.Center,
+                painter.DrawAtPosition(ResourceAssets.Instance.Textures[iconName], resourceTracker.IconRectangle.Center + -FadeOffsetPixels(),
                     Scale2D.One, new DrawSettings {Origin = DrawOrigin.Center, Depth = Depth.Middle});
             }
 
             painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 35),
-                resourceTracker.Resource.Status(), resourceTracker.TextRectangle, Alignment.Center,
+                resourceTracker.Resource.Status(), textRectangle, Alignment.Center,
                 new DrawSettings {Color = Color.Black});
         }
 
@@ -157,7 +167,7 @@ public class Ui
     {
         var uiHitTestLayer = hitTestStack.AddLayer(Matrix.Identity, Depth.Middle - 100);
 
-        uiHitTestLayer.AddZone(_buttonBackground, Depth.Back, () => { });
+        uiHitTestLayer.AddZone(_buttonStartingBackground, Depth.Back, () => { });
 
         foreach (var button in _buttons)
         {

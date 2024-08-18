@@ -9,10 +9,10 @@ namespace GMTK24;
 
 public abstract class Overlay
 {
-    private readonly TweenableFloat _continueOpacity = new(0);
     private readonly HoverState _isHovered = new();
-    private readonly TweenableFloat _scrimOpacity = new(0);
-    private readonly TweenableFloat _textOpacity = new(0);
+    protected readonly TweenableFloat ContinueOpacity = new(0);
+    protected readonly TweenableFloat ScrimOpacity = new(0);
+    protected readonly TweenableFloat ContentOpacity = new(0);
     private readonly SequenceTween _tween = new();
 
     public bool IsClosed { get; private set; }
@@ -23,29 +23,29 @@ public abstract class Overlay
 
         if (_isHovered && input.Mouse.GetButton(MouseButton.Left, true).WasPressed)
         {
-            OnContinue();
+            OnContinue(_tween);
         }
     }
 
-    protected abstract void OnContinue();
+    protected abstract void OnContinue(SequenceTween tween);
 
     public void Reset()
     {
         IsClosed = false;
 
-        _scrimOpacity.Value = 0;
-        _textOpacity.Value = 0;
+        ScrimOpacity.Value = 0;
+        ContentOpacity.Value = 0;
 
         _tween.Clear();
 
         _tween
             .Add(new MultiplexTween()
-                .Add(_scrimOpacity.TweenTo(1f, 0.25f, Ease.Linear))
-                .Add(_textOpacity.TweenTo(1f, 0.25f, Ease.Linear))
+                .Add(ScrimOpacity.TweenTo(1f, 0.25f, Ease.Linear))
+                .Add(ContentOpacity.TweenTo(1f, 0.25f, Ease.Linear))
                 
                 .Add(new SequenceTween()
                     .Add(new WaitSecondsTween(0.5f))
-                    .Add(_continueOpacity.TweenTo(1f, 0.25f, Ease.Linear))
+                    .Add(ContinueOpacity.TweenTo(1f, 0.25f, Ease.Linear))
                 )
             )
             ;
@@ -59,9 +59,9 @@ public abstract class Overlay
 
         _tween
             .Add(new MultiplexTween()
-                .Add(_continueOpacity.TweenTo(0, 0.25f, Ease.Linear))
-                .Add(_textOpacity.TweenTo(0, 0.25f, Ease.Linear))
-                .Add(_scrimOpacity.TweenTo(0, 0.25f, Ease.Linear))
+                .Add(ContinueOpacity.TweenTo(0, 0.25f, Ease.Linear))
+                .Add(ContentOpacity.TweenTo(0, 0.25f, Ease.Linear))
+                .Add(ScrimOpacity.TweenTo(0, 0.25f, Ease.Linear))
             )
             
             .Add(new CallbackTween(() => IsClosed = true));
@@ -81,20 +81,20 @@ public abstract class Overlay
 
         var screenRect = screenSize.ToRectangleF();
         painter.DrawRectangle(screenRect,
-            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f * _scrimOpacity)});
+            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f * ScrimOpacity)});
 
         var contentRectangle = screenRect.Inflated(-100, -100);
-        DrawContent(painter, contentRectangle, _textOpacity);
+        DrawContent(painter, contentRectangle);
 
         var belowContentRectangle =
             new RectangleF(contentRectangle.Left, contentRectangle.Bottom, contentRectangle.Width, 80);
 
         var font = Client.Assets.GetFont("gmtk/GameFont", 45);
         painter.DrawStringWithinRectangle(font, "Click anywhere to continue", belowContentRectangle, Alignment.Center,
-            new DrawSettings {Color = Color.White.WithMultipliedOpacity(_continueOpacity)});
+            new DrawSettings {Color = Color.White.WithMultipliedOpacity(ContinueOpacity)});
 
         painter.EndSpriteBatch();
     }
 
-    protected abstract void DrawContent(Painter painter, RectangleF rectangle, TweenableFloat textOpacity);
+    protected abstract void DrawContent(Painter painter, RectangleF rectangle);
 }

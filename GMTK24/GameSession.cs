@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
 using ExplogineMonoGame.TextFormatting;
+using ExTween;
 using GMTK24.Config;
 using GMTK24.Model;
 using GMTK24.UserInterface;
@@ -25,6 +27,7 @@ public class GameSession : ISession
     private Overlay? _currentOverlay;
     private bool _isPanning;
     private Vector2? _mousePosition;
+    private SequenceTween _uiTween = new();
 
     public GameSession(Point screenSize)
     {
@@ -42,7 +45,7 @@ public class GameSession : ISession
         _rulesOverlay =
             new FormattedTextOverlay(
                 FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 50), Color.White, _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
-
+        
         foreach (var resource in _inventory.AllResources())
         {
             uiBuilder.AddResource(resource);
@@ -63,6 +66,18 @@ public class GameSession : ISession
         _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"),
             new Blueprint());
         _errorMessage = new ErrorMessage(screenSize);
+        
+        OpenOverlay(new DialogueOverlay(new List<DialoguePage>()
+        {
+            new DialoguePage()
+            {
+                Text = "Hello!"
+            },
+            new DialoguePage()
+            {
+                Text = "Goodbye!"
+            }
+        }));
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -74,6 +89,7 @@ public class GameSession : ISession
             if (_currentOverlay.IsClosed)
             {
                 _currentOverlay = null;
+                _uiTween.Add(_ui.FadeOutAmount.TweenTo(0f, 0.25f, Ease.Linear));
             }
 
             return;
@@ -258,6 +274,8 @@ public class GameSession : ISession
 
     public void Update(float dt)
     {
+        _uiTween.Update(dt);
+        
         if (_currentOverlay != null)
         {
             _currentOverlay.Update(dt);
@@ -275,13 +293,14 @@ public class GameSession : ISession
 
     private void ShowRules()
     {
-        SetCurrentOverlay(_rulesOverlay);
+        OpenOverlay(_rulesOverlay);
     }
 
-    private void SetCurrentOverlay(Overlay newOverlay)
+    private void OpenOverlay(Overlay newOverlay)
     {
         newOverlay.Reset();
         _currentOverlay = newOverlay;
+        _uiTween.Add(_ui.FadeOutAmount.TweenTo(1f, 0.25f, Ease.Linear));
     }
 
     public event Action? RequestEditorSession;
