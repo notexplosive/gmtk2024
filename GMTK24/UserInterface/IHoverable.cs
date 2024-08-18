@@ -2,5 +2,5 @@
 
 public interface IHoverable
 {
-    
+    public TooltipContent GetTooltip();
 }

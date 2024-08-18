@@ -16,7 +16,7 @@ public class GMTKCartridge : BasicGameCartridge
     {
     }
 
-    public override CartridgeConfig CartridgeConfig { get; } = new(new Point(1920, 1080), SamplerState.PointWrap);
+    public override CartridgeConfig CartridgeConfig { get; } = new(new Point(1600, 900), SamplerState.PointWrap);
 
     public override void OnCartridgeStarted()
     {
@@ -31,14 +31,14 @@ public class GMTKCartridge : BasicGameCartridge
 
     private void SwitchToEditor()
     {
-        var planEditorSession = new PlanEditorSession();
+        var planEditorSession = new PlanEditorSession(Runtime.Window.RenderResolution);
         planEditorSession.RequestPlayMode += SwitchToPlayMode;
         _session = planEditorSession;
     }
 
     private void SwitchToPlayMode()
     {
-        var gameSession = new GameSession();
+        var gameSession = new GameSession(Runtime.Window.RenderResolution);
         gameSession.RequestEditorSession += SwitchToEditor;
         _session = gameSession;
     }

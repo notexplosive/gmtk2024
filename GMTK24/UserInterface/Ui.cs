@@ -3,7 +3,6 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
-using GMTK24.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,8 +11,8 @@ namespace GMTK24.UserInterface;
 public class Ui
 {
     private readonly RectangleF _buttonBackground;
-    private readonly RectangleF _middleArea;
     private readonly List<StructureButton> _buttons = new();
+    private readonly RectangleF _middleArea;
     private readonly List<ResourceTracker> _resourceTrackers = new();
 
     public Ui(RectangleF buttonBackground, RectangleF middleArea)
@@ -28,7 +27,7 @@ public class Ui
     {
         _buttons.Add(structureButton);
     }
-    
+
     public void AddResource(ResourceTracker tracker)
     {
         _resourceTrackers.Add(tracker);
@@ -38,7 +37,7 @@ public class Ui
     {
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
 
-        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["ui_background"],_buttonBackground,
+        painter.DrawAsRectangle(ResourceAssets.Instance.Textures["ui_background"], _buttonBackground,
             new DrawSettings {SourceRectangle = _buttonBackground.MovedToZero().ToRectangle(), Depth = Depth.Back});
 
         foreach (var button in _buttons)
@@ -60,9 +59,42 @@ public class Ui
 
         foreach (var resourceTracker in _resourceTrackers)
         {
-            painter.DrawRectangle(resourceTracker.TextRectangle, new DrawSettings{Color = Color.White, Depth = Depth.Back});
-            painter.DrawRectangle(resourceTracker.IconRectangle, new DrawSettings{Color = Color.DarkBlue, Depth = Depth.Back- 1});
-            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont",50),resourceTracker.Resource.Status(),resourceTracker.TextRectangle, Alignment.Center, new DrawSettings{Color = Color.Black});
+            painter.DrawRectangle(resourceTracker.TextRectangle,
+                new DrawSettings {Color = Color.White, Depth = Depth.Back});
+            painter.DrawRectangle(resourceTracker.IconRectangle,
+                new DrawSettings {Color = Color.DarkBlue, Depth = Depth.Back - 1});
+            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 50),
+                resourceTracker.Resource.Status(), resourceTracker.TextRectangle, Alignment.Center,
+                new DrawSettings {Color = Color.Black});
+        }
+
+        painter.EndSpriteBatch();
+
+        painter.BeginSpriteBatch(SamplerState.LinearWrap);
+        if (State.HoveredItem != null)
+        {
+            var tooltipContent = State.HoveredItem.GetTooltip();
+
+            var titleFont = Client.Assets.GetFont("gmtk/GameFont", 64);
+            var titleRectangleNormalized = titleFont.MeasureString(tooltipContent.Title).ToRectangleF();
+            
+            var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
+            var bodyRectangleNormalized = bodyFont.MeasureString(tooltipContent.Body).ToRectangleF().Moved(titleRectangleNormalized.Size.JustY());
+
+            var tooltipSize = RectangleF.Union(titleRectangleNormalized, bodyRectangleNormalized).Size;
+
+            var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -20), tooltipSize + new Vector2(25), Alignment.BottomCenter);
+            
+            var tooltipRectangle = RectangleF.FromSizeAlignedWithin(paddedTooltipRectangle, tooltipSize, Alignment.Center);
+            var titleRectangle =
+                RectangleF.FromSizeAlignedWithin(tooltipRectangle, titleRectangleNormalized.Size + new Vector2(1), Alignment.TopLeft);
+            var bodyRectangle =
+                RectangleF.FromSizeAlignedWithin(tooltipRectangle, bodyRectangleNormalized.Size + new Vector2(1), Alignment.BottomLeft);
+            
+            painter.DrawRectangle(paddedTooltipRectangle, new DrawSettings{Depth = 200, Color = Color.DarkBlue.DimmedBy(0.25f).WithMultipliedOpacity(0.75f)});
+            painter.DrawLineRectangle(paddedTooltipRectangle, new LineDrawSettings{Depth = 190, Color = Color.White, Thickness = 2});
+            painter.DrawStringWithinRectangle(titleFont, tooltipContent.Title, titleRectangle, Alignment.TopLeft, new DrawSettings{Depth = 100});
+            painter.DrawStringWithinRectangle(bodyFont, tooltipContent.Body, bodyRectangle, Alignment.TopLeft, new DrawSettings{Depth = 100});
         }
 
         painter.EndSpriteBatch();
@@ -74,12 +106,6 @@ public class Ui
 
         uiHitTestLayer.AddZone(_buttonBackground, Depth.Back, () => { });
 
-        foreach (var resourceTracker in _resourceTrackers)
-        {
-            uiHitTestLayer.AddZone(resourceTracker.TotalRectangle, Depth.Middle, () => { State.ClearHover(); },
-                () => { State.SetHovered(resourceTracker); });
-        }
-        
         foreach (var button in _buttons)
         {
             uiHitTestLayer.AddZone(button.Rectangle, Depth.Middle, () => { State.ClearHover(); },

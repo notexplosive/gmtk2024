@@ -43,13 +43,14 @@ public class ResourceAssets
                 AddSound(resourceFiles, path.RemoveFileExtension());
             }
         });
-        
+
         yield return new VoidLoadEvent("Textures", () =>
         {
             foreach (var path in resourceFiles.GetFilesAt(".", "png"))
             {
                 var imageName = path.RemoveFileExtension();
-                var texture = Texture2D.FromFile(Client.Graphics.Device, Path.Join(resourceFiles.GetCurrentDirectory(), path));
+                var texture = Texture2D.FromFile(Client.Graphics.Device,
+                    Path.Join(resourceFiles.GetCurrentDirectory(), path));
                 Textures.Add(imageName, texture);
             }
         });

@@ -30,5 +30,7 @@
             "resourceName": "Food",
             "amount": 1
         }
-    ]
+    ],
+    "title": "House",
+    "description": "Increases Population Capacity and instantly provides 1 Population."
 }

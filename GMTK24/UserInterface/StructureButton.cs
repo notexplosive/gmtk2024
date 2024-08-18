@@ -13,4 +13,13 @@ public class StructureButton : IHoverable
         Blueprint = blueprint;
         Rectangle = rectangle;
     }
+
+    public TooltipContent GetTooltip()
+    {
+        return new TooltipContent()
+        {
+            Title = Blueprint.Title,
+            Body = Blueprint.Description
+        };
+    }
 }

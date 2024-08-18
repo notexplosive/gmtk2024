@@ -22,7 +22,7 @@ public class UiLayoutBuilder
         _resources.Add(resource);
     }
 
-    public Ui Build()
+    public Ui Build(Point screenSize)
     {
         var resourceWidth = 300;
         var resourceHeight = 80;
@@ -56,7 +56,7 @@ public class UiLayoutBuilder
             buttonRibbonLayoutGroup.Add(L.FixedElement(GetId(buildAction), buttonWidth, buttonHeight));
         }
 
-        var result = layoutBuilder.Bake(new Point(1920, 1080));
+        var result = layoutBuilder.Bake(screenSize);
 
         var ui = new Ui(result.FindElement("button-ribbon").Rectangle, result.FindElement("middle-area").Rectangle);
         foreach (var buildAction in _buildActions)

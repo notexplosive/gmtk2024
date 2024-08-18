@@ -26,6 +26,11 @@ public class Blueprint
     [JsonIgnore]
     public List<StructurePlan> Plans { get; } = new();
 
+    [JsonProperty("title")]
+    public string Title { get; set; } = "Title";
+
+    [JsonProperty("description")]
+    public string Description { get; set; } = "Lorem ipsum descriptum";
 
     public int Id()
     {

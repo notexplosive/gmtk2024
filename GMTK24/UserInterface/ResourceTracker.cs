@@ -3,7 +3,7 @@ using GMTK24.Model;
 
 namespace GMTK24.UserInterface;
 
-public class ResourceTracker : IHoverable
+public class ResourceTracker
 {
     public ResourceTracker(RectangleF textRectangle, RectangleF iconRectangle, Resource resource)
     {

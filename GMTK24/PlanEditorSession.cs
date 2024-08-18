@@ -16,17 +16,17 @@ namespace GMTK24;
 
 public class PlanEditorSession : ISession
 {
+    private readonly Point _screenSize;
     private readonly Camera _camera;
     private readonly List<Tuple<string, StructurePlan>> _plans = new();
     private Cell? _hoveredCell;
     private int _planIndex;
 
-    public PlanEditorSession()
+    public PlanEditorSession(Point screenSize)
     {
+        _screenSize = screenSize;
         ReadPlans();
         _planIndex = 0;
-
-        var screenSize = new Point(1920, 1080);
         var zoomLevel = 0.25f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
@@ -210,7 +210,7 @@ public class PlanEditorSession : ISession
 
         var bigFont = 128;
         painter.DrawStringAtPosition(Client.Assets.GetFont("engine/console-font", bigFont), _plans[_planIndex].Item1,
-            new Vector2(0, 1080 - bigFont), new DrawSettings());
+            new Vector2(0,  - bigFont), new DrawSettings());
 
         var messageBuilder = new StringBuilder();
         messageBuilder.AppendLine($"(Q){nameof(CurrentPlan.Settings.CreatesScaffold)}={CurrentPlan.Settings.CreatesScaffold}");
@@ -220,7 +220,7 @@ public class PlanEditorSession : ISession
         var message = messageBuilder.ToString();
         var smallFont = Client.Assets.GetFont("engine/console-font", 32);
         painter.DrawStringAtPosition(smallFont, message,
-            new Vector2(0, 1080 - bigFont - smallFont.MeasureString(message).Y), new DrawSettings());
+            new Vector2(0, _screenSize.Y - bigFont - smallFont.MeasureString(message).Y), new DrawSettings());
 
         painter.EndSpriteBatch();
     }

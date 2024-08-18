@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection.Metadata;
 using ExplogineMonoGame;
 using GMTK24.Config;
 
@@ -51,8 +52,6 @@ public class Inventory
 
     public void ResourceUpdate(float dt)
     {
-        var foodCostOfOnePerson = 10;
-        
         var population = GetResource("Population");
         var inspiration = GetResource("Inspiration");
         var food = GetResource("Food");
@@ -61,9 +60,9 @@ public class Inventory
 
         inspiration.Add(populationSeconds);
 
-        if (food.Quantity > foodCostOfOnePerson && !population.IsAtCapacity)
+        if (food.Quantity > GameplayConstants.FoodCostOfOnePerson && !population.IsAtCapacity)
         {
-            food.Consume(foodCostOfOnePerson);
+            food.Consume(GameplayConstants.FoodCostOfOnePerson);
             population.Add(1);
         }
     }

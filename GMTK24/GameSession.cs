@@ -21,9 +21,11 @@ public class GameSession : ISession
     private readonly Inventory _inventory = new();
     private bool _isPanning;
     private Vector2? _mousePosition;
+    private Point _screenSize;
 
-    public GameSession()
+    public GameSession(Point screenSize)
     {
+        _screenSize = screenSize;
         var uiBuilder = new UiLayoutBuilder();
 
         _inventory.AddResource(new Resource("Population"));
@@ -39,10 +41,9 @@ public class GameSession : ISession
         uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_house"));
         uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_platform"));
         uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_farm"));
-        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_tree"));
-        _ui = uiBuilder.Build();
+        uiBuilder.AddBlueprint(JsonFileReader.Read<Blueprint>(blueprintFolder, "blueprint_l1_decoration"));
+        _ui = uiBuilder.Build(screenSize);
 
-        var screenSize = new Point(1920, 1080);
         var zoomLevel = 0.5f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
@@ -91,7 +92,7 @@ public class GameSession : ISession
 
                     if (result == BuildResult.FailedBecauseOfStructure)
                     {
-                        _errorMessage.Display("Needs More Support");
+                        _errorMessage.Display("Needs Structural Support");
                     }
                     
                     if (result == BuildResult.FailedBecauseOfCost)
@@ -118,14 +119,14 @@ public class GameSession : ISession
 
                 if (normalizedScrollDelta < 0)
                 {
-                    if (_camera.ViewBounds.Width < 1920)
+                    if (_camera.ViewBounds.Width < _screenSize.X)
                     {
                         _camera.ZoomOutFrom((int) (normalizedScrollDelta * -zoomStrength), _mousePosition.Value);
                     }
                 }
                 else
                 {
-                    if (_camera.ViewBounds.Width > 192 * 2)
+                    if (_camera.ViewBounds.Width > _screenSize.X / 10 * 2)
                     {
                         _camera.ZoomInTowards((int) (normalizedScrollDelta * zoomStrength), _mousePosition.Value);
                     }
