@@ -3,12 +3,5 @@
         "plan_platform",
         "plan_platform2"
     ],
-    "cost": [
-        {
-            "resourceName": "Inspiration",
-            "amount": 10
-        }
-    ],
-    "title": "Platform",
-    "description": "Provides space and support for other structures."
+    "stats": "stats_platform"
 }

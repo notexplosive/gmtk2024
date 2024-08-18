@@ -26,4 +26,16 @@ public static class JsonFileReader
 
         return result;
     }
+    
+    public static T ReadOrDefault<T>(IFileSystem files, string fileName) where T : new()
+    {
+        var result = JsonConvert.DeserializeObject<T>(files.ReadFile(fileName + ".json"));
+
+        if (result == null)
+        {
+            return new T();
+        }
+
+        return result;
+    }
 }

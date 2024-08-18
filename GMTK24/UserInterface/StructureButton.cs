@@ -24,7 +24,7 @@ public class StructureButton : IHoverable
 
     public TooltipContent GetTooltip()
     {
-        var costString = DisplayCost(Blueprint.Cost);
+        var costString = DisplayCost(Blueprint.Stats().Cost);
 
         if (costString == string.Empty)
         {
@@ -33,8 +33,8 @@ public class StructureButton : IHoverable
 
         return new TooltipContent
         {
-            Title = Blueprint.Title,
-            Body = Blueprint.Description,
+            Title = Blueprint.Stats().Title,
+            Body = Blueprint.Stats().Description,
             Cost = costString
         };
     }

@@ -12,7 +12,7 @@ public class World
     {
         var placingLayer = DeducePlacingLayer(plan);
 
-        if (!inventory.CanAfford(plannedBlueprint.Cost))
+        if (!inventory.CanAfford(plannedBlueprint.Stats().Cost))
         {
             return BuildResult.FailedBecauseOfCost;
         }

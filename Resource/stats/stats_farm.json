@@ -1,0 +1,16 @@
+{
+    "onConstructDelta": [
+        {
+            "resourceName": "Food",
+            "amount": 2
+        }
+    ],
+    "cost": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 20
+        }
+    ],
+    "title": "Farm",
+    "description": "Increase #Food capacity and generate #Food over time.\nCan share space with other structures."
+}

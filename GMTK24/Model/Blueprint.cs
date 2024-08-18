@@ -1,19 +1,21 @@
 using System.Collections.Generic;
 using ExplogineCore.Data;
+using ExplogineMonoGame;
 using GMTK24.Config;
 using Newtonsoft.Json;
 
 namespace GMTK24.Model;
 
-public class Blueprint
+public class BlueprintStats
 {
-    private static int idPool;
-    private int? _id;
-    private int _structureIndex;
+    
+    [JsonProperty("title")]
+    public string Title { get; set; } = "Title";
 
-    [JsonProperty("structurePlans")]
-    public List<string> PlanNames { get; set; } = new();
-
+    [JsonProperty("description")]
+    public string Description { get; set; } = "Lorem ipsum";
+    
+    
     [JsonProperty("onConstructDelta")]
     public List<ResourceDelta> OnConstructDelta { get; set; } = new();
     
@@ -22,15 +24,35 @@ public class Blueprint
 
     [JsonProperty("cost")]
     public List<ResourceDelta> Cost { get; set; } = new();
+}
+
+public class Blueprint
+{
+    private static int idPool;
+    private int? _id;
+    private int _structureIndex;
+    private BlueprintStats? _cachedStats;
+
+    [JsonProperty("structurePlans")]
+    public List<string> PlanNames { get; set; } = new();
+
+    [JsonProperty("stats")]
+    public string StatsName { get; set; } = string.Empty;
+
+    public BlueprintStats Stats()
+    {
+        if (_cachedStats == null)
+        {
+            var statsFolder = Client.Debug.RepoFileSystem.GetDirectory("Resource/stats");
+            _cachedStats = JsonFileReader.ReadOrDefault<BlueprintStats>(statsFolder, StatsName);
+        }
+        
+        return _cachedStats;
+    }
     
     [JsonIgnore]
     public List<StructurePlan> Plans { get; } = new();
 
-    [JsonProperty("title")]
-    public string Title { get; set; } = "Title";
-
-    [JsonProperty("description")]
-    public string Description { get; set; } = "Lorem ipsum descriptum";
 
     public int Id()
     {

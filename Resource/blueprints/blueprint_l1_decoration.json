@@ -2,25 +2,5 @@
     "structurePlans": [
         "plan_decoration"
     ],
-    "title": "Decor",
-    "description": "Increases max #Inspiration significantly\nQuickly generates #Inspiration over time.\nCan share space with other structures.",
-    "cost": [
-        {
-            "resourceName": "Food",
-            "amount": 20
-        }
-    ],
-    "onConstructDelta": [
-        {
-            "resourceName": "Inspiration",
-            "amount": 100,
-            "affectCapacity": true
-        }
-    ],
-    "onSecondsDelta": [
-        {
-            "resourceName": "Inspiration",
-            "amount": 3
-        }
-    ]
+    "stats": "stats_decor"
 }

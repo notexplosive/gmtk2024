@@ -102,8 +102,8 @@ public class GameSession : ISession
                         if (_ui != null)
                         {
                             _ui.State.IncrementSelectedBlueprint();
-                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.OnConstructDelta);
-                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.Cost, -1);
+                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.Stats().OnConstructDelta);
+                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.Stats().Cost, -1);
 
                             if (_currentObjective?.IsComplete(_ui, _inventory, _world) == true)
                             {
@@ -269,7 +269,7 @@ public class GameSession : ISession
 
         foreach (var structure in _world.AllStructures())
         {
-            _inventory.ApplyDeltas(structure.Blueprint.OnSecondDelta, dt);
+            _inventory.ApplyDeltas(structure.Blueprint.Stats().OnSecondDelta, dt);
         }
 
         _inventory.ResourceUpdate(dt);

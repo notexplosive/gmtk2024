@@ -3,29 +3,5 @@
         "plan_house",
         "plan_house2"
     ],
-    "onConstructDelta": [
-        {
-            "resourceName": "Population",
-            "amount": 3
-        },
-        {
-            "resourceName": "Inspiration",
-            "amount": 50,
-            "affectCapacity": true
-        }
-    ],
-    "onSecondDelta": [
-        {
-            "resourceName": "Inspiration",
-            "amount": 1
-        }
-    ],
-    "cost": [
-        {
-            "resourceName": "Food",
-            "amount": 5
-        }
-    ],
-    "title": "House",
-    "description": "Increases #Population and increases max #Inspiration.\nGenerates #Inspiration over time."
+    "stats": "stats_house"
 }

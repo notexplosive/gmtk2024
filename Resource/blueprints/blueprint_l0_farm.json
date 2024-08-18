@@ -10,18 +10,5 @@
         "plan_farm8",
         "plan_farm_tree"
     ],
-    "onConstructDelta": [
-        {
-            "resourceName": "Food",
-            "amount": 2
-        }
-    ],
-    "cost": [
-        {
-            "resourceName": "Inspiration",
-            "amount": 20
-        }
-    ],
-    "title": "Food Production",
-    "description": "Increase #Food capacity and generate #Food over time.\nCan share space with other structures."
+    "stats": "stats_farm"
 }
