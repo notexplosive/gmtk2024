@@ -24,7 +24,7 @@ public class Ui
     private readonly Vector2 _rulesCorner;
     private readonly SequenceTween _uiTween = new();
     private float _ftueElapsedTime;
-    private FtueState _ftueState;
+    public FtueState CurrentFtueState { get; private set; } = FtueState.None;
 
     public Ui(RectangleF buttonStartingBackground, RectangleF middleArea, Vector2 rulesCorner)
     {
@@ -125,13 +125,13 @@ public class Ui
 
         painter.EndSpriteBatch();
 
-        if (_ftueState == FtueState.SelectBuilding)
+        if (CurrentFtueState == FtueState.SelectBuilding)
         {
             painter.BeginSpriteBatch();
 
             var sine = MathF.Sin(_ftueElapsedTime * 5);
 
-            var targetRectangle = _buttons.First().Rectangle;
+            var targetRectangle = _buttons.Last().Rectangle;
             var texture = ResourceAssets.Instance.Textures["ftue_arrow"];
             var position = new Vector2(targetRectangle.Center.X, targetRectangle.Top + sine * 50);
             var scale = new Vector2(2f, 2f);
@@ -141,15 +141,6 @@ public class Ui
                 Color = Color.White.WithMultipliedOpacity(Math.Clamp(_ftueElapsedTime - 2, 0, 1)),
                 Origin = new DrawOrigin(new Vector2(texture.Width / 2f, texture.Height))
             });
-            painter.EndSpriteBatch();
-        }
-
-        if (_ftueState == FtueState.PanCamera)
-        {
-            painter.BeginSpriteBatch();
-            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 48),
-                "Use Left or Middle Mouse to Pan the Camera\nYou can also use WASD", _middleArea.Inflated(0,-50), Alignment.TopCenter,
-                new DrawSettings {Color = Color.White.WithMultipliedOpacity(Math.Clamp(_ftueElapsedTime - 2, 0, 1))});
             painter.EndSpriteBatch();
         }
 
@@ -271,9 +262,9 @@ public class Ui
 
         if (State.SelectedButton != null)
         {
-            if (_ftueState == FtueState.SelectBuilding)
+            if (CurrentFtueState == FtueState.SelectBuilding)
             {
-                _ftueState = FtueState.PanCamera;
+                CurrentFtueState = FtueState.PanCamera;
                 _ftueElapsedTime = 0;
             }
         }
@@ -289,23 +280,21 @@ public class Ui
         throw new Exception($"No blueprint found {blueprintName}");
     }
 
-    public void StartFtue()
+    public void SetFtueState(int currentLevelIndex)
     {
-        _ftueState = FtueState.SelectBuilding;
+        if (!Enum.GetValues<FtueState>().Contains((FtueState)currentLevelIndex))
+        {
+            return;
+        }
+        
+        CurrentFtueState = (FtueState) currentLevelIndex;
     }
 
     public void SetHasPanned()
     {
-        if (_ftueState == FtueState.PanCamera)
+        if (CurrentFtueState == FtueState.PanCamera)
         {
-            _ftueState = FtueState.None;
+            CurrentFtueState = FtueState.None;
         }
     }
-}
-
-public enum FtueState
-{
-    None,
-    SelectBuilding,
-    PanCamera
 }

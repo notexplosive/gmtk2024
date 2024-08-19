@@ -12,6 +12,7 @@ using GMTK24.UserInterface;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace GMTK24;
 
@@ -38,6 +39,8 @@ public class GameSession : ISession
     private Vector2 _panVector;
     private Ui? _ui;
     private bool _hasPlayedEndCutscene;
+    private bool _isAwaitingScreenshot;
+    private PersistentToast? _currentToast;
 
     public GameSession(Point screenSize)
     {
@@ -106,6 +109,11 @@ public class GameSession : ISession
             {
                 PlayCutscene(EndCutscene());
             }
+            
+            if (input.Keyboard.GetButton(Keys.T).WasPressed)
+            {
+                ShowScreenshotToast();
+            }
         }
 
         _panVector = new Vector2(0, 0);
@@ -126,6 +134,11 @@ public class GameSession : ISession
 
             _isHovered.Unset();
             return;
+        }
+
+        if (input.Keyboard.GetButton(Keys.Enter).WasPressed)
+        {
+            TakeScreenshot();
         }
 
         if (_currentCutscene != null)
@@ -252,7 +265,7 @@ public class GameSession : ISession
 
                 if (normalizedScrollDelta < 0)
                 {
-                    if (_camera.ViewBounds.Width < _screenSize.X)
+                    if (_camera.ViewBounds.Width < _screenSize.X || _hasPlayedEndCutscene)
                     {
                         _camera.ZoomOutFrom((int) (normalizedScrollDelta * -zoomStrength), _mousePosition.Value);
                     }
@@ -273,6 +286,22 @@ public class GameSession : ISession
         }
 
         _ui?.UpdateInput(input, hitTestStack);
+    }
+
+    private void TakeScreenshot()
+    {
+        _isAwaitingScreenshot = false;
+    }
+
+    private void ShowScreenshotToast()
+    {
+        _isAwaitingScreenshot = true;
+        ShowToast("Press Enter to take a Screenshot", () => _isAwaitingScreenshot == false);
+    }
+
+    private void ShowToast(string text, Func<bool> vanishCriteria)
+    {
+        _currentToast = new PersistentToast(text, vanishCriteria);
     }
 
     public void Draw(Painter painter)
@@ -384,6 +413,34 @@ public class GameSession : ISession
         _ui?.Draw(painter, _inventory);
 
         _overlayScreen.Draw(painter, _screenSize);
+        
+        
+        if (_currentToast != null && !_overlayScreen.HasOverlay())
+        {
+            painter.BeginSpriteBatch();
+            var outerRectangle = _screenSize.ToRectangleF().Inflated(0, -120);
+
+            var toastFont = Client.Assets.GetFont("gmtk/GameFont", 64);
+            var toastRectangle = RectangleF.FromSizeAlignedWithin(outerRectangle,
+                toastFont.MeasureString(_currentToast.Text) + new Vector2(1), Alignment.TopCenter);
+
+            toastRectangle.Location = new Vector2(toastRectangle.X,
+                toastRectangle.Y - (toastRectangle.Y + toastRectangle.Height * 2f) *
+                (1 - _currentToast.VisiblePercent));
+
+            toastRectangle = toastRectangle.Inflated(20, 20);
+
+            painter.DrawRectangle(toastRectangle, new DrawSettings
+            {
+                Color = Color.Black.WithMultipliedOpacity(0.25f),
+                Depth = Depth.Back
+            });
+
+            painter.DrawStringWithinRectangle(toastFont, _currentToast.Text, toastRectangle, Alignment.Center,
+                new DrawSettings());
+            painter.EndSpriteBatch();
+        }
+
     }
 
     public void Update(float dt)
@@ -401,6 +458,11 @@ public class GameSession : ISession
 
         _overlayScreen.Update(dt);
         _currentCutscene?.Update(dt);
+        
+        if(!_overlayScreen.HasOverlay())
+        {
+            _currentToast?.Update(dt);
+        }
 
         if (_currentCutscene?.IsDone() == true)
         {
@@ -574,11 +636,9 @@ public class GameSession : ISession
 
     private void StartNextLevel()
     {
-        var isFtue = false;
         if (_currentLevelIndex == null)
         {
             _currentLevelIndex = 0;
-            isFtue = true;
         }
         else
         {
@@ -612,18 +672,25 @@ public class GameSession : ISession
         {
             _overlayScreen.OpenOverlay(_ui, new DialogueOverlay(_inventory,
                 level.IntroDialogue.Select(text => new DialoguePage {Text = text}).ToList(),
-                () => { _ui = BuildUi(uiBuilder); }));
+                () =>
+                {
+                    _ui = BuildUi(uiBuilder);
+                    _ui.SetFtueState(_currentLevelIndex.Value);
+                    
+                    if (_currentLevelIndex == 1)
+                    {
+                        ShowToast("Use Right/Middle Mouse pan the camera\n(You can also use WASD)", () => _ui?.CurrentFtueState == FtueState.None);
+                    }
+                }));
         }
         else
         {
             _ui = BuildUi(uiBuilder);
             _ui.FadeIn();
-
-            if (isFtue)
-            {
-                _ui.StartFtue();
-            }
+            _ui.SetFtueState(_currentLevelIndex.Value);
         }
+        
+
     }
 
     private Ui BuildUi(UiLayoutBuilder uiBuilder)
