@@ -10,7 +10,6 @@ public class ResourceTracker
         IconRectangle = iconRectangle;
         TextRectangle = textRectangle;
         Resource = resource;
-
         TotalRectangle = RectangleF.Union(iconRectangle, textRectangle);
     }
 

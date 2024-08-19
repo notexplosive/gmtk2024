@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using ExTween;
 using GMTK24.Config;
+using Microsoft.Xna.Framework;
 
 namespace GMTK24.Model;
 
@@ -39,5 +40,16 @@ public class Structure
         {
             occupiedWorldSpace.Add(worldCenter + localCell);
         }
+    }
+
+    public Vector2 PixelCenter()
+    {
+        var average = Vector2.Zero;
+        foreach (var cell in _occupiedWorldSpace)
+        {
+            average += Grid.CellToPixel(cell);
+        }
+
+        return average / _occupiedWorldSpace.Count;
     }
 }

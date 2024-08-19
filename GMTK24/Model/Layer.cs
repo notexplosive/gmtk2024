@@ -21,7 +21,7 @@ public class Layer
 
     public IEnumerable<Structure> Structures => _structures;
 
-    public void AddStructureToLayer(Cell centerCell, StructurePlan plan, Blueprint blueprint)
+    public Structure AddStructureToLayer(Cell centerCell, StructurePlan plan, Blueprint blueprint)
     {
         var realStructure = plan.BuildReal(centerCell, blueprint);
         _structures.Add(realStructure);
@@ -32,6 +32,8 @@ public class Layer
         {
             _cellToStructure.Add(cell, realStructure);
         }
+
+        return realStructure;
     }
 
     public bool IsStructurallySupported(Cell centerCell, StructurePlan plan)

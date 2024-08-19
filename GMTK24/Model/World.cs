@@ -42,9 +42,9 @@ public class World
         return placingLayer;
     }
 
-    public void AddStructure(Cell centerCell, StructurePlan plan, Blueprint blueprint)
+    public Structure AddStructure(Cell centerCell, StructurePlan plan, Blueprint blueprint)
     {
-        DeducePlacingLayer(plan).AddStructureToLayer(centerCell, plan, blueprint);
+        return DeducePlacingLayer(plan).AddStructureToLayer(centerCell, plan, blueprint);
     }
 
     public IEnumerable<Structure> AllStructures()

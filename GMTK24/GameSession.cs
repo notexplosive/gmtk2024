@@ -5,11 +5,11 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
-using ExTween;
 using GMTK24.Config;
 using GMTK24.Model;
 using GMTK24.UserInterface;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace GMTK24;
@@ -27,11 +27,12 @@ public class GameSession : ISession
     private int? _currentLevelIndex;
     private Objective? _currentObjective;
     private Overlay? _currentOverlay;
+    private float _elapsedTime;
     private bool _isPanning;
     private Vector2? _mousePosition;
     private Vector2 _panVector;
+    private readonly List<Particle> _particles = new();
     private Ui? _ui;
-    private float _elapsedTime;
 
     public GameSession(Point screenSize)
     {
@@ -76,12 +77,13 @@ public class GameSession : ISession
             {
                 StartNextLevel();
             }
+
             if (input.Keyboard.GetButton(Keys.W).WasPressed)
             {
                 _inventory.GetResource("Food").Add(100000);
             }
         }
-        
+
         _panVector = new Vector2(0, 0);
 
         if (_currentOverlay != null)
@@ -125,13 +127,28 @@ public class GameSession : ISession
 
                     if (result == BuildResult.Success)
                     {
-                        _world.AddStructure(plannedBuildPosition.Value, plannedStructure, plannedBlueprint);
+                        var structure = _world.AddStructure(plannedBuildPosition.Value, plannedStructure,
+                            plannedBlueprint);
+
+                        var onConstructDelta = structure.Blueprint.Stats().OnConstructDelta;
+
+                        foreach (var constructDelta in onConstructDelta)
+                        {
+                            if (!constructDelta.AffectCapacity)
+                            {
+                                SpawnParticleBurst(structure.PixelCenter(),
+                                    ResourceAssets.Instance.Textures[
+                                        _inventory.GetResource(constructDelta.ResourceName).IconNameNoBacker!],
+                                    constructDelta.Amount);
+                            }
+                        }
+
+                        structure.Blueprint.IncrementStructure();
+                        _inventory.ApplyDeltas(onConstructDelta);
+                        _inventory.ApplyDeltas(structure.Blueprint.Stats().Cost, -1);
+
                         if (_ui != null)
                         {
-                            _ui.State.IncrementSelectedBlueprint();
-                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.Stats().OnConstructDelta);
-                            _inventory.ApplyDeltas(_ui.State.SelectedButton!.Blueprint.Stats().Cost, -1);
-
                             if (_currentObjective?.IsComplete(_ui, _inventory, _world) == true)
                             {
                                 StartNextLevel();
@@ -227,9 +244,10 @@ public class GameSession : ISession
     public void Draw(Painter painter)
     {
         painter.Clear(Color.SkyBlue);
-        
-        DrawWater(painter, Color.CornflowerBlue.DimmedBy(0.1f), new Vector2(Grid.CellSize / 2f, -Grid.CellSize), MathF.PI / 2f, 0.75f);
-        
+
+        DrawWater(painter, Color.CornflowerBlue.DimmedBy(0.1f), new Vector2(Grid.CellSize / 2f, -Grid.CellSize),
+            MathF.PI / 2f, 0.75f);
+
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var scaffoldCell in _world.MainLayer.ScaffoldCells())
         {
@@ -309,9 +327,17 @@ public class GameSession : ISession
 
         DrawWater(painter, Color.CornflowerBlue, Vector2.Zero, 0, 1f);
         
-        DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.1f), new Vector2(0,Grid.CellSize), MathF.PI / 3, 1.5f);
-        
-        DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.2f), new Vector2(0,Grid.CellSize * 4), MathF.PI / 4, 2f);
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+        foreach (var particle in _particles)
+        {
+            painter.DrawAtPosition(particle.Texture, particle.Position, Scale2D.One, new DrawSettings{Angle = particle.Angle, Origin = DrawOrigin.Center, Color = Color.White.WithMultipliedOpacity(particle.Opacity)});
+        }
+        painter.EndSpriteBatch();
+
+        DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.1f), new Vector2(0, Grid.CellSize), MathF.PI / 3, 1.5f);
+
+        DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.2f), new Vector2(0, Grid.CellSize * 4), MathF.PI / 4,
+            2f);
 
         _errorMessage.Draw(painter);
 
@@ -320,54 +346,18 @@ public class GameSession : ISession
         _currentOverlay?.Draw(painter, _screenSize);
     }
 
-    private void DrawWater(Painter painter, Color waterColor, Vector2 offset, float phaseOffset, float intensity)
-    {
-        painter.BeginSpriteBatch(_camera.CanvasToScreen);
-
-        var waterLevel = Grid.CellSize + offset.Y;
-        
-        if (_camera.ViewBounds.Bottom > waterLevel)
-        {
-            var waterRect = RectangleF.FromCorners(
-                new Vector2(_camera.ViewBounds.Left, waterLevel),
-                new Vector2(_camera.ViewBounds.Right, _camera.ViewBounds.Bottom)
-                );
-            
-            painter.DrawRectangle(waterRect, new DrawSettings {Color = waterColor});
-
-            var currentCell = Grid.PixelToCell(waterRect.TopLeft) - new Cell(1, 0);
-
-            while (Grid.CellToPixel(currentCell).X < waterRect.Right)
-            {
-                var pixelPosition = Grid.CellToPixel(currentCell) + offset;
-
-                var waveHeight = 5 * intensity;
-                var waveSpeed = 1f;
-                var phase = _elapsedTime * waveSpeed + phaseOffset;
-                var sine = new Vector2(0,MathF.Sin(phase) * waveHeight);
-                var cos = new Vector2(0,MathF.Cos(phase) * waveHeight);
-
-                painter.DrawAsRectangle(
-                    ResourceAssets.Instance.Textures["circle"],
-                    new RectangleF(new Vector2(pixelPosition.X, waterLevel) + sine, new Vector2(Grid.CellSize)),
-                    new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
-                painter.DrawAsRectangle(
-                    ResourceAssets.Instance.Textures["circle"],
-                    new RectangleF(new Vector2(pixelPosition.X + Grid.CellSize / 2f, waterLevel) + cos,
-                        new Vector2(Grid.CellSize)),
-                    new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
-                currentCell += new Cell(1, 0);
-            }
-        }
-
-        painter.EndSpriteBatch();
-    }
-
     public void Update(float dt)
     {
         _elapsedTime += dt;
         _camera.CenterPosition += _panVector * dt * 60 * 10;
         _ui?.Update(dt);
+
+        _particles.RemoveAll(a => a.IsExpired());
+        
+        foreach (var particle in _particles)
+        {
+            particle.Update(dt);
+        }
 
         if (_currentOverlay != null)
         {
@@ -383,6 +373,61 @@ public class GameSession : ISession
         }
 
         _inventory.ResourceUpdate(dt);
+    }
+
+    private void SpawnParticleBurst(Vector2 startingPosition, Texture2D texture, int amount)
+    {
+
+        var startingAngle = Client.Random.Dirty.NextFloat() * MathF.PI * 2f;
+        for (var i = 0; i < amount; i++)
+        {
+            var angle = startingAngle + MathF.PI*2 / amount * (i-1);
+
+            _particles.Add(new Particle(startingPosition, texture, Vector2Extensions.Polar(400, angle)));
+        }
+    }
+
+    private void DrawWater(Painter painter, Color waterColor, Vector2 offset, float phaseOffset, float intensity)
+    {
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+
+        var waterLevel = Grid.CellSize + offset.Y;
+
+        if (_camera.ViewBounds.Bottom > waterLevel)
+        {
+            var waterRect = RectangleF.FromCorners(
+                new Vector2(_camera.ViewBounds.Left, waterLevel),
+                new Vector2(_camera.ViewBounds.Right, _camera.ViewBounds.Bottom)
+            );
+
+            painter.DrawRectangle(waterRect, new DrawSettings {Color = waterColor});
+
+            var currentCell = Grid.PixelToCell(waterRect.TopLeft) - new Cell(1, 0);
+
+            while (Grid.CellToPixel(currentCell).X < waterRect.Right)
+            {
+                var pixelPosition = Grid.CellToPixel(currentCell) + offset;
+
+                var waveHeight = 5 * intensity;
+                var waveSpeed = 1f;
+                var phase = _elapsedTime * waveSpeed + phaseOffset;
+                var sine = new Vector2(0, MathF.Sin(phase) * waveHeight);
+                var cos = new Vector2(0, MathF.Cos(phase) * waveHeight);
+
+                painter.DrawAsRectangle(
+                    ResourceAssets.Instance.Textures["circle"],
+                    new RectangleF(new Vector2(pixelPosition.X, waterLevel) + sine, new Vector2(Grid.CellSize)),
+                    new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
+                painter.DrawAsRectangle(
+                    ResourceAssets.Instance.Textures["circle"],
+                    new RectangleF(new Vector2(pixelPosition.X + Grid.CellSize / 2f, waterLevel) + cos,
+                        new Vector2(Grid.CellSize)),
+                    new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
+                currentCell += new Cell(1, 0);
+            }
+        }
+
+        painter.EndSpriteBatch();
     }
 
     private void StartNextLevel()

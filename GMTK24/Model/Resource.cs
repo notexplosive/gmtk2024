@@ -4,7 +4,8 @@ namespace GMTK24.Model;
 
 public class Resource
 {
-    public Resource(string? iconNameWithBacker, string? iconNameNoBacker, string name, bool hasCapacity, int startingAmount = 0)
+    public Resource(string? iconNameWithBacker, string? iconNameNoBacker, string name, bool hasCapacity,
+        int startingAmount = 0)
     {
         IconNameWithBacker = iconNameWithBacker;
         IconNameNoBacker = iconNameNoBacker;
