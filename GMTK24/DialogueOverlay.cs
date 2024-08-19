@@ -78,8 +78,8 @@ public class DialogueOverlay : Overlay
         var belowContentRectangle =
             new RectangleF(contentRectangle.Left, contentRectangle.Bottom, contentRectangle.Width, 80);
 
-        var font = Client.Assets.GetFont("gmtk/GameFont", 45);
-        painter.DrawStringWithinRectangle(font, "Click anywhere to continue", belowContentRectangle, Alignment.Center,
-            new DrawSettings {Color = Color.White.WithMultipliedOpacity(ContinueOpacity)});
+        var font = Client.Assets.GetFont("gmtk/GameFont", 32);
+        painter.DrawStringWithinRectangle(font, "Click to continue", belowContentRectangle, Alignment.Center,
+            new DrawSettings {Color = Color.White.DimmedBy(0.25f).WithMultipliedOpacity(ContinueOpacity)});
     }
 }

@@ -10,11 +10,11 @@ namespace GMTK24;
 public abstract class Overlay
 {
     private readonly HoverState _isHovered = new();
+    private readonly SequenceTween _tween = new();
+    protected readonly TweenableFloat AppearPercent = new(0);
+    protected readonly TweenableFloat ContentOpacity = new(0);
     protected readonly TweenableFloat ContinueOpacity = new(0);
     protected readonly TweenableFloat ScrimOpacity = new(0);
-    protected readonly TweenableFloat ContentOpacity = new(0);
-    protected readonly TweenableFloat AppearPercent = new(0);
-    private readonly SequenceTween _tween = new();
 
     public bool IsClosed { get; private set; }
 
@@ -40,15 +40,17 @@ public abstract class Overlay
         _tween.Clear();
 
         _tween
-            .Add(new MultiplexTween()
-                .Add(AppearPercent.TweenTo(1f, 1f, Ease.QuadFastSlow))
-                .Add(ScrimOpacity.TweenTo(1f, 0.25f, Ease.Linear))
-                .Add(ContentOpacity.TweenTo(1f, 0.25f, Ease.Linear))
-                
-                .Add(new SequenceTween()
-                    .Add(new WaitSecondsTween(1f))
-                    .Add(ContinueOpacity.TweenTo(1f, 0.25f, Ease.Linear))
-                )
+            .Add(
+                new MultiplexTween()
+                    .Add(AppearPercent.TweenTo(1f, 0.5f, Ease.QuadFastSlow))
+                    .Add(ScrimOpacity.TweenTo(1f, 0.25f, Ease.QuadFastSlow)))
+            .Add(
+                new MultiplexTween()
+                    .Add(ContentOpacity.TweenTo(1f, 0.25f, Ease.Linear))
+                    .Add(new SequenceTween()
+                        .Add(new WaitSecondsTween(1f))
+                        .Add(ContinueOpacity.TweenTo(1f, 0.25f, Ease.Linear))
+                    )
             )
             ;
 
@@ -66,7 +68,6 @@ public abstract class Overlay
                 .Add(ScrimOpacity.TweenTo(0, 0.25f, Ease.Linear))
                 .Add(AppearPercent.TweenTo(0f, 1f, Ease.QuadFastSlow))
             )
-            
             .Add(new CallbackTween(() => IsClosed = true));
         ;
     }
