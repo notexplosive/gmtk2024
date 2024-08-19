@@ -24,7 +24,6 @@ public class Ui
     private readonly Vector2 _rulesCorner;
     private readonly SequenceTween _uiTween = new();
     private float _ftueElapsedTime;
-    public FtueState CurrentFtueState { get; private set; } = FtueState.None;
 
     public Ui(RectangleF buttonStartingBackground, RectangleF middleArea, Vector2 rulesCorner)
     {
@@ -32,6 +31,8 @@ public class Ui
         _middleArea = middleArea;
         _rulesCorner = rulesCorner;
     }
+
+    public FtueState CurrentFtueState { get; private set; } = FtueState.None;
 
     public UiState State { get; } = new();
 
@@ -55,7 +56,7 @@ public class Ui
         return new Vector2(0, _buttonStartingBackground.Height * _fadeOutAmount * 1.5f);
     }
 
-    public void Draw(Painter painter, Inventory inventory)
+    public void Draw(Painter painter, Inventory inventory, bool isInCutscene)
     {
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
 
@@ -125,80 +126,89 @@ public class Ui
 
         painter.EndSpriteBatch();
 
-        if (CurrentFtueState == FtueState.SelectBuilding)
+        if (!isInCutscene)
         {
-            painter.BeginSpriteBatch();
-
-            var sine = MathF.Sin(_ftueElapsedTime * 5);
-
-            var targetRectangle = _buttons.Last().Rectangle;
-            var texture = ResourceAssets.Instance.Textures["ftue_arrow"];
-            var position = new Vector2(targetRectangle.Center.X, targetRectangle.Top + sine * 50);
-            var scale = new Vector2(2f, 2f);
-
-            painter.DrawAtPosition(texture, position, new Scale2D(scale), new DrawSettings
+            if (CurrentFtueState == FtueState.SelectBuilding)
             {
-                Color = Color.White.WithMultipliedOpacity(Math.Clamp(_ftueElapsedTime - 2, 0, 1)),
-                Origin = new DrawOrigin(new Vector2(texture.Width / 2f, texture.Height))
-            });
-            painter.EndSpriteBatch();
+                painter.BeginSpriteBatch();
+
+                var sine = MathF.Sin(_ftueElapsedTime * 5);
+
+                var targetRectangle = _buttons.Last().Rectangle;
+                var texture = ResourceAssets.Instance.Textures["ftue_arrow"];
+                var position = new Vector2(targetRectangle.Center.X, targetRectangle.Top + sine * 50);
+                var scale = new Vector2(2f, 2f);
+
+                painter.DrawAtPosition(texture, position, new Scale2D(scale), new DrawSettings
+                {
+                    Color = Color.White.WithMultipliedOpacity(Math.Clamp(_ftueElapsedTime - 2, 0, 1)),
+                    Origin = new DrawOrigin(new Vector2(texture.Width / 2f, texture.Height))
+                });
+                painter.EndSpriteBatch();
+            }
         }
 
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
-        if (State.HoveredItem != null)
+        if (!isInCutscene)
         {
-            var tooltipContent = State.HoveredItem.GetTooltip();
+            if (State.HoveredItem != null)
+            {
+                var tooltipContent = State.HoveredItem.GetTooltip();
 
-            var titleFont = Client.Assets.GetFont("gmtk/GameFont", 64);
-            var titleRectangleNormalized = titleFont.MeasureString(tooltipContent.Title).ToRectangleF();
+                var titleFont = Client.Assets.GetFont("gmtk/GameFont", 64);
+                var titleRectangleNormalized = titleFont.MeasureString(tooltipContent.Title).ToRectangleF();
 
-            var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
+                var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
 
-            var tooltipBodyText = ApplyIcons(inventory, tooltipContent.Body);
-            var tooltipCostText = ApplyIcons(inventory, tooltipContent.Cost);
+                var tooltipBodyText = ApplyIcons(inventory, tooltipContent.Body);
+                var tooltipCostText = ApplyIcons(inventory, tooltipContent.Cost);
 
-            var bodyTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipBodyText,
-                GameplayConstants.FormattedTextParser);
+                var bodyTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipBodyText,
+                    GameplayConstants.FormattedTextParser);
 
-            var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipCostText,
-                GameplayConstants.FormattedTextParser);
+                var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipCostText,
+                    GameplayConstants.FormattedTextParser);
 
-            var tooltipCostRectangleNormalized = costTextFormatted.MaxNeededSize().ToRectangleF()
-                .Moved(titleRectangleNormalized.Size.JustX());
+                var tooltipCostRectangleNormalized = costTextFormatted.MaxNeededSize().ToRectangleF()
+                    .Moved(titleRectangleNormalized.Size.JustX());
 
-            var bodyRectangleNormalized = bodyTextFormatted.MaxNeededSize().ToRectangleF()
-                .Moved(titleRectangleNormalized.Size.JustY());
+                var bodyRectangleNormalized = bodyTextFormatted.MaxNeededSize().ToRectangleF()
+                    .Moved(titleRectangleNormalized.Size.JustY());
 
-            var tooltipSize = RectangleF.Union(titleRectangleNormalized,
-                RectangleF.Union(bodyRectangleNormalized, tooltipCostRectangleNormalized)).Size + new Vector2(50, 0);
+                var tooltipSize = RectangleF.Union(titleRectangleNormalized,
+                                      RectangleF.Union(bodyRectangleNormalized, tooltipCostRectangleNormalized)).Size +
+                                  new Vector2(50, 0);
 
-            var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -40),
-                tooltipSize + new Vector2(25), Alignment.BottomCenter);
+                var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -40),
+                    tooltipSize + new Vector2(25), Alignment.BottomCenter);
 
-            var tooltipRectangle =
-                RectangleF.FromSizeAlignedWithin(paddedTooltipRectangle, tooltipSize, Alignment.Center);
-            var titleRectangle =
-                RectangleF.FromSizeAlignedWithin(tooltipRectangle, titleRectangleNormalized.Size + new Vector2(1),
-                    Alignment.TopLeft);
-            var bodyRectangle =
-                RectangleF.FromSizeAlignedWithin(tooltipRectangle, bodyRectangleNormalized.Size + new Vector2(1),
-                    Alignment.BottomLeft);
+                var tooltipRectangle =
+                    RectangleF.FromSizeAlignedWithin(paddedTooltipRectangle, tooltipSize, Alignment.Center);
+                var titleRectangle =
+                    RectangleF.FromSizeAlignedWithin(tooltipRectangle, titleRectangleNormalized.Size + new Vector2(1),
+                        Alignment.TopLeft);
+                var bodyRectangle =
+                    RectangleF.FromSizeAlignedWithin(tooltipRectangle, bodyRectangleNormalized.Size + new Vector2(1),
+                        Alignment.BottomLeft);
 
-            var costRectangle =
-                RectangleF.FromSizeAlignedWithin(tooltipRectangle, tooltipCostRectangleNormalized.Size + new Vector2(1),
-                    Alignment.TopRight);
+                var costRectangle =
+                    RectangleF.FromSizeAlignedWithin(tooltipRectangle,
+                        tooltipCostRectangleNormalized.Size + new Vector2(1),
+                        Alignment.TopRight);
 
-            painter.DrawRectangle(paddedTooltipRectangle,
-                new DrawSettings {Depth = 200, Color = Color.DarkBlue.DimmedBy(0.25f).WithMultipliedOpacity(0.75f)});
-            painter.DrawLineRectangle(paddedTooltipRectangle,
-                new LineDrawSettings {Depth = 190, Color = Color.White, Thickness = 2});
-            painter.DrawStringWithinRectangle(titleFont, tooltipContent.Title, titleRectangle, Alignment.TopLeft,
-                new DrawSettings {Depth = 100});
+                painter.DrawRectangle(paddedTooltipRectangle,
+                    new DrawSettings
+                        {Depth = 200, Color = Color.DarkBlue.DimmedBy(0.25f).WithMultipliedOpacity(0.75f)});
+                painter.DrawLineRectangle(paddedTooltipRectangle,
+                    new LineDrawSettings {Depth = 190, Color = Color.White, Thickness = 2});
+                painter.DrawStringWithinRectangle(titleFont, tooltipContent.Title, titleRectangle, Alignment.TopLeft,
+                    new DrawSettings {Depth = 100});
 
-            painter.DrawFormattedStringWithinRectangle(bodyTextFormatted, bodyRectangle, Alignment.TopLeft,
-                new DrawSettings());
-            painter.DrawFormattedStringWithinRectangle(costTextFormatted, costRectangle, Alignment.TopLeft,
-                new DrawSettings());
+                painter.DrawFormattedStringWithinRectangle(bodyTextFormatted, bodyRectangle, Alignment.TopLeft,
+                    new DrawSettings());
+                painter.DrawFormattedStringWithinRectangle(costTextFormatted, costRectangle, Alignment.TopLeft,
+                    new DrawSettings());
+            }
         }
 
         painter.DrawAtPosition(ResourceAssets.Instance.Textures["icon_help"], _rulesCorner, Scale2D.One,
@@ -282,11 +292,11 @@ public class Ui
 
     public void SetFtueState(int currentLevelIndex)
     {
-        if (!Enum.GetValues<FtueState>().Contains((FtueState)currentLevelIndex))
+        if (!Enum.GetValues<FtueState>().Contains((FtueState) currentLevelIndex))
         {
             return;
         }
-        
+
         CurrentFtueState = (FtueState) currentLevelIndex;
     }
 

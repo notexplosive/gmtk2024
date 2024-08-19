@@ -6,19 +6,30 @@ namespace GMTK24;
 public class PersistentToast
 {
     public string Text { get; }
-    private readonly Func<bool> _vanishCriteria;
+    private readonly Func<bool>? _vanishCriteria;
     private SequenceTween _tween = new();
     private bool _isFadingOut;
 
     public TweenableFloat VisiblePercent { get; } = new(0);
 
-    public PersistentToast(string text, Func<bool> vanishCriteria)
+    private PersistentToast(string text)
     {
         Text = text;
-        _vanishCriteria = vanishCriteria;
-        
         _tween
             .Add(VisiblePercent.TweenTo(1f, 0.75f, Ease.CubicFastSlow));
+    }
+    
+    public PersistentToast(string text, float duration) : this(text)
+    {
+        _tween
+            .Add(new WaitSecondsTween(duration))
+            .Add(new CallbackTween(FadeOut));
+    }
+    
+    public PersistentToast(string text, Func<bool> vanishCriteria) : this(text)
+    {
+        _vanishCriteria = vanishCriteria;
+        
     }
 
     public void FadeOut()
@@ -39,7 +50,7 @@ public class PersistentToast
     {
         _tween.Update(dt);
 
-        if (_vanishCriteria())
+        if (_vanishCriteria?.Invoke() == true)
         {
             FadeOut();
         }

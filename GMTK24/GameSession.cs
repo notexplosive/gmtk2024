@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
+using ExplogineMonoGame.AssetManagement;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
 using ExTween;
@@ -239,6 +242,11 @@ public class GameSession : ISession
             {
                 _panVector += new Vector2(1, 0);
             }
+            
+            if (input.Keyboard.GetButton(Keys.Space).WasPressed)
+            {
+                PlayCutscene(AlignToGridCutscene());
+            }
 
             if (_panVector != Vector2.Zero)
             {
@@ -288,9 +296,42 @@ public class GameSession : ISession
         _ui?.UpdateInput(input, hitTestStack);
     }
 
+    private Cutscene AlignToGridCutscene()
+    {
+        var cutscene = new Cutscene(_overlayScreen);
+
+        var newViewBounds = RectangleF.FromCenterAndSize(_camera.ViewBounds.Center, _screenSize.ToVector2());
+        newViewBounds.Location = newViewBounds.Location.ToPoint().ToVector2();
+        
+        cutscene.PanCamera(_camera, newViewBounds, 0.25f, Ease.CubicFastSlow);
+
+        return cutscene;
+    }
+
     private void TakeScreenshot()
     {
         _isAwaitingScreenshot = false;
+
+        var canvas = new Canvas(_screenSize);
+        
+        var painter = Client.Graphics.Painter;
+        Client.Graphics.PushCanvas(canvas);
+        painter.Clear(GameplayConstants.SkyColor);
+        DrawWorldBackground(painter);
+        DrawWorldForeground(painter);
+        
+        var currentTime = DateTime.Now;
+        var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var directory = Path.Join(homeDirectory, GameplayConstants.Title);
+        Directory.CreateDirectory(directory);
+        var screenshotFilePath = Path.Join(directory, $"{currentTime.ToFileTimeUtc()}.png");
+        using var stream = File.Create(screenshotFilePath);
+        var texture = canvas.Texture;
+        texture.SaveAsPng(stream, texture.Width, texture.Height);
+        
+        ShowToast($"Screenshot saved at\n{screenshotFilePath}", 5);
+        
+        Client.Graphics.PopCanvas();
     }
 
     private void ShowScreenshotToast()
@@ -299,6 +340,11 @@ public class GameSession : ISession
         ShowToast("Press Enter to take a Screenshot", () => _isAwaitingScreenshot == false);
     }
 
+    private void ShowToast(string text, float duration)
+    {
+        _currentToast = new PersistentToast(text, duration);
+    }
+    
     private void ShowToast(string text, Func<bool> vanishCriteria)
     {
         _currentToast = new PersistentToast(text, vanishCriteria);
@@ -306,37 +352,58 @@ public class GameSession : ISession
 
     public void Draw(Painter painter)
     {
-        painter.Clear(Color.SkyBlue);
+        painter.Clear(GameplayConstants.SkyColor);
 
-        DrawWater(painter, Color.CornflowerBlue.DimmedBy(0.1f), new Vector2(Grid.CellSize / 2f, -Grid.CellSize),
-            MathF.PI / 2f, 0.75f);
+        DrawWorldBackground(painter);
 
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
-        foreach (var scaffoldCell in _world.MainLayer.ScaffoldCells())
+
+        DrawMousePositionOverlay(painter);
+
+        DrawParticles(painter);
+
+        DrawWorldForeground(painter);
+
+        _errorMessage.Draw(painter);
+        
+        _ui?.Draw(painter, _inventory, _overlayScreen.HasOverlay() || _currentCutscene != null);
+
+        _overlayScreen.Draw(painter, _screenSize);
+        
+        DrawCurrentToast(painter);
+    }
+
+    private void DrawCurrentToast(Painter painter)
+    {
+        if (_currentToast != null)
         {
-            DrawScaffold(painter, scaffoldCell);
+            painter.BeginSpriteBatch();
+            var outerRectangle = _screenSize.ToRectangleF().Inflated(0, -120);
+
+            var toastFont = Client.Assets.GetFont("gmtk/GameFont", 32);
+            var toastRectangle = RectangleF.FromSizeAlignedWithin(outerRectangle,
+                toastFont.MeasureString(_currentToast.Text) + new Vector2(1), Alignment.TopCenter);
+
+            toastRectangle.Location = new Vector2(toastRectangle.X,
+                toastRectangle.Y - (toastRectangle.Y + toastRectangle.Height * 2f) *
+                (1 - _currentToast.VisiblePercent));
+
+            toastRectangle = toastRectangle.Inflated(20, 20);
+
+            painter.DrawRectangle(toastRectangle, new DrawSettings
+            {
+                Color = Color.Black.WithMultipliedOpacity(0.25f),
+                Depth = Depth.Back
+            });
+
+            painter.DrawStringWithinRectangle(toastFont, _currentToast.Text, toastRectangle, Alignment.Center,
+                new DrawSettings());
+            painter.EndSpriteBatch();
         }
+    }
 
-        painter.EndSpriteBatch();
-
-        painter.BeginSpriteBatch(_camera.CanvasToScreen);
-        foreach (var structure in _world.MainLayer.Structures)
-        {
-            Structure.DrawStructure(painter, structure);
-        }
-
-        painter.EndSpriteBatch();
-
-        painter.BeginSpriteBatch(_camera.CanvasToScreen);
-        foreach (var structure in _world.DecorationLayer.Structures)
-        {
-            Structure.DrawStructure(painter, structure);
-        }
-
-        painter.EndSpriteBatch();
-
-        painter.BeginSpriteBatch(_camera.CanvasToScreen);
-
+    private void DrawMousePositionOverlay(Painter painter)
+    {
         if (_mousePosition.HasValue && !_isPanning && _isHovered)
         {
             var buildPosition = GetPlannedBuildPosition();
@@ -387,9 +454,10 @@ public class GameSession : ISession
         }
 
         painter.EndSpriteBatch();
+    }
 
-        DrawWater(painter, Color.CornflowerBlue, Vector2.Zero, 0, 1f);
-
+    private void DrawParticles(Painter painter)
+    {
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var particle in _particles)
         {
@@ -402,45 +470,46 @@ public class GameSession : ISession
         }
 
         painter.EndSpriteBatch();
+    }
+
+    private void DrawWorldBackground(Painter painter)
+    {
+        DrawWater(painter, Color.CornflowerBlue.DimmedBy(0.1f), new Vector2(Grid.CellSize / 2f, -Grid.CellSize),
+            MathF.PI / 2f, 0.75f);
+
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+        foreach (var scaffoldCell in _world.MainLayer.ScaffoldCells())
+        {
+            DrawScaffold(painter, scaffoldCell);
+        }
+
+        painter.EndSpriteBatch();
+
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+        foreach (var structure in _world.MainLayer.Structures)
+        {
+            Structure.DrawStructure(painter, structure);
+        }
+
+        painter.EndSpriteBatch();
+
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+        foreach (var structure in _world.DecorationLayer.Structures)
+        {
+            Structure.DrawStructure(painter, structure);
+        }
+
+        painter.EndSpriteBatch();
+    }
+
+    private void DrawWorldForeground(Painter painter)
+    {
+        DrawWater(painter, Color.CornflowerBlue, Vector2.Zero, 0, 1f);
 
         DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.1f), new Vector2(0, Grid.CellSize), MathF.PI / 3, 1.5f);
 
         DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.2f), new Vector2(0, Grid.CellSize * 4), MathF.PI / 4,
             2f);
-
-        _errorMessage.Draw(painter);
-
-        _ui?.Draw(painter, _inventory);
-
-        _overlayScreen.Draw(painter, _screenSize);
-        
-        
-        if (_currentToast != null && !_overlayScreen.HasOverlay())
-        {
-            painter.BeginSpriteBatch();
-            var outerRectangle = _screenSize.ToRectangleF().Inflated(0, -120);
-
-            var toastFont = Client.Assets.GetFont("gmtk/GameFont", 64);
-            var toastRectangle = RectangleF.FromSizeAlignedWithin(outerRectangle,
-                toastFont.MeasureString(_currentToast.Text) + new Vector2(1), Alignment.TopCenter);
-
-            toastRectangle.Location = new Vector2(toastRectangle.X,
-                toastRectangle.Y - (toastRectangle.Y + toastRectangle.Height * 2f) *
-                (1 - _currentToast.VisiblePercent));
-
-            toastRectangle = toastRectangle.Inflated(20, 20);
-
-            painter.DrawRectangle(toastRectangle, new DrawSettings
-            {
-                Color = Color.Black.WithMultipliedOpacity(0.25f),
-                Depth = Depth.Back
-            });
-
-            painter.DrawStringWithinRectangle(toastFont, _currentToast.Text, toastRectangle, Alignment.Center,
-                new DrawSettings());
-            painter.EndSpriteBatch();
-        }
-
     }
 
     public void Update(float dt)
@@ -458,11 +527,7 @@ public class GameSession : ISession
 
         _overlayScreen.Update(dt);
         _currentCutscene?.Update(dt);
-        
-        if(!_overlayScreen.HasOverlay())
-        {
-            _currentToast?.Update(dt);
-        }
+        _currentToast?.Update(dt);
 
         if (_currentCutscene?.IsDone() == true)
         {
@@ -482,6 +547,7 @@ public class GameSession : ISession
 
     private Cutscene EndCutscene()
     {
+        _currentToast = null;
         var cutscene = new Cutscene(_overlayScreen);
 
         var lastStructure = _replayStructures.LastOrDefault();
@@ -546,7 +612,14 @@ public class GameSession : ISession
             cutscene.Callback(() => { structure.Show(); });
         }
         
-        cutscene.DisplayMessage(_ui, "We will be remembered."); // todo: screenshot moment
+        cutscene.Delay(0.5f);
+
+        cutscene.Callback(() =>
+        {
+            ShowScreenshotToast();
+        });
+        cutscene.WaitUntil(()=>_isAwaitingScreenshot == false);
+        cutscene.Delay(2f);
         
         cutscene.DisplayMessage(_ui,
             // "Press [Enter] to take a screenshot.",
@@ -559,7 +632,11 @@ public class GameSession : ISession
             "You can stay for as long as you like."
         );
         
-        cutscene.Callback(()=>{_ui?.FadeIn();});
+        cutscene.Callback(() =>
+        {
+            _ui?.FadeIn();
+            ShowToast("Press Space to lock camera to whole pixels", 5);
+        });
 
         return cutscene;
     }
@@ -650,6 +727,8 @@ public class GameSession : ISession
             WinGame();
             return;
         }
+        
+        _currentToast?.FadeOut();
 
         var level = _levels[_currentLevelIndex.Value];
         var uiBuilder = new UiLayoutBuilder();

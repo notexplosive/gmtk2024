@@ -1,4 +1,5 @@
 ﻿using ExplogineMonoGame.TextFormatting;
+using Microsoft.Xna.Framework;
 
 namespace GMTK24.Model;
 
@@ -15,4 +16,5 @@ public static class GameplayConstants
     }
     
     public static string Title => "We are a City";
+    public static Color SkyColor => Color.SkyBlue;
 }

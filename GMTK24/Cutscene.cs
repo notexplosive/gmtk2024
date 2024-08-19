@@ -51,4 +51,9 @@ public class Cutscene
     {
         return _tween.IsDone();
     }
+
+    public void WaitUntil(Func<bool> func)
+    {
+        _tween.Add(new WaitUntilTween(func));
+    }
 }
