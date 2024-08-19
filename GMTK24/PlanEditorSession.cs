@@ -162,7 +162,7 @@ public class PlanEditorSession : ISession
         {
             if (input.Keyboard.GetButton(Keys.Q).WasPressed)
             {
-                CurrentPlan.Settings.CreatesScaffold = !CurrentPlan.Settings.CreatesScaffold;
+                CurrentPlan.Settings.BlockScaffoldRaycasts = !CurrentPlan.Settings.BlockScaffoldRaycasts;
                 SaveCurrent();
             }
 
@@ -251,7 +251,7 @@ public class PlanEditorSession : ISession
         var messageBuilder = new StringBuilder();
         messageBuilder.AppendLine($"Tool: {_tool}");
         messageBuilder.AppendLine(
-            $"(Q){nameof(CurrentPlan.Settings.CreatesScaffold)}={CurrentPlan.Settings.CreatesScaffold}");
+            $"(Q){nameof(CurrentPlan.Settings.BlockScaffoldRaycasts)}={CurrentPlan.Settings.BlockScaffoldRaycasts}");
         messageBuilder.AppendLine(
             $"(E){nameof(CurrentPlan.Settings.StructureLayer)}={CurrentPlan.Settings.StructureLayer}");
         messageBuilder.AppendLine(

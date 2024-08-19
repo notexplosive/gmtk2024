@@ -85,7 +85,7 @@ public class Layer
 
     private IEnumerable<ScaffoldCell> GenerateScaffoldCells()
     {
-        foreach (var structure in _structures.Where(a => a.Settings.CreatesScaffold))
+        foreach (var structure in _structures)
         {
             foreach (var startingAnchorPoint in structure.ScaffoldAnchorPoints)
             {
@@ -93,19 +93,19 @@ public class Layer
                 while (anchorPoint.Y <= 0)
                 {
                     var foundStructure = GetStructureAt(anchorPoint);
-                    if (foundStructure == null || !foundStructure.Settings.CreatesScaffold)
+                    if (foundStructure == null || !foundStructure.Settings.BlockScaffoldRaycasts)
                     {
                         var foundStructureBelow = GetStructureAt(anchorPoint + new Cell(0, 1));
                         var foundStructureAbove = GetStructureAt(anchorPoint + new Cell(0, -1));
 
                         var type = ScaffoldPointType.Middle;
                         
-                        if (foundStructureBelow != null)
+                        if (foundStructureBelow != null && foundStructureBelow.Settings.BlockScaffoldRaycasts)
                         {
                             type = ScaffoldPointType.Bottom;
                         }
 
-                        if (foundStructureAbove != null)
+                        if (foundStructureAbove != null && foundStructureAbove.Settings.BlockScaffoldRaycasts)
                         {
                             type = ScaffoldPointType.Top;
                         }
