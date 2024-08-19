@@ -29,6 +29,7 @@ public class GameSession : ISession
     private bool _isPanning;
     private Vector2? _mousePosition;
     private Ui? _ui;
+    private Vector2 _panVector;
 
     public GameSession(Point screenSize)
     {
@@ -67,6 +68,8 @@ public class GameSession : ISession
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
+        _panVector = new Vector2(0, 0);
+        
         if (_currentOverlay != null)
         {
             _currentOverlay.UpdateInput(input, hitTestStack, _screenSize);
@@ -138,10 +141,37 @@ public class GameSession : ISession
                     }
                 }
             }
+            
+            if (input.Keyboard.GetButton(Keys.W).IsDown)
+            {
+                _panVector += new Vector2(0, -1);
+            }
+                
+            if (input.Keyboard.GetButton(Keys.A).IsDown)
+            {
+                _panVector += new Vector2(-1,0);
+            }
+                
+            if (input.Keyboard.GetButton(Keys.S).IsDown)
+            {
+                _panVector += new Vector2(0,1);
+            }
+                
+            if (input.Keyboard.GetButton(Keys.D).IsDown)
+            {
+                _panVector += new Vector2(1,0);
+            }
 
-            _isPanning = input.Mouse.GetButton(MouseButton.Middle).IsDown;
+            if (_panVector != Vector2.Zero)
+            {
+                _ui?.SetHasPanned();
+            }
+            
+            _isPanning = input.Mouse.GetButton(MouseButton.Middle).IsDown || input.Mouse.GetButton(MouseButton.Right).IsDown;
+            
             if (_isPanning)
             {
+                _ui?.SetHasPanned();
                 var delta = input.Mouse.Delta(hitTestStack.WorldMatrix * _camera.ScreenToCanvas);
                 _camera.CenterPosition -= delta;
             }
@@ -268,6 +298,7 @@ public class GameSession : ISession
 
     public void Update(float dt)
     {
+        _camera.CenterPosition += _panVector * dt * 60 * 10;
         _ui?.Update(dt);
 
         if (_currentOverlay != null)
@@ -287,9 +318,11 @@ public class GameSession : ISession
 
     private void StartNextLevel()
     {
+        var isFtue = false;
         if (_currentLevelIndex == null)
         {
             _currentLevelIndex = 0;
+            isFtue = true;
         }
         else
         {
@@ -329,6 +362,11 @@ public class GameSession : ISession
         {
             _ui = BuildUi(uiBuilder);
             _ui.FadeIn();
+
+            if (isFtue)
+            {
+                _ui.StartFtue();
+            }
         }
     }
 

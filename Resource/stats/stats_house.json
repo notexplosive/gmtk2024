@@ -22,7 +22,7 @@
             "amount": 5
         }
     ],
-    "title": "House",
+    "title": "Home",
     "description": "Grants #Population and increases max #Inspiration.\nGenerates some #Inspiration over time.",
     "icon": "button_icon_house"
 }

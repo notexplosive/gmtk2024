@@ -81,7 +81,7 @@ public abstract class Overlay
 
         var screenRect = screenSize.ToRectangleF();
         painter.DrawRectangle(screenRect,
-            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f * ScrimOpacity)});
+            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.25f * ScrimOpacity)});
 
         var contentRectangle = screenRect.Inflated(-100, -100);
         DrawContent(painter, contentRectangle);

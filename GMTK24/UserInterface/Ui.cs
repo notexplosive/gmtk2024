@@ -23,6 +23,8 @@ public class Ui
     private readonly List<ResourceTracker> _resourceTrackers = new();
     private readonly Vector2 _rulesCorner;
     private readonly SequenceTween _uiTween = new();
+    private float _ftueElapsedTime;
+    private FtueState _ftueState;
 
     public Ui(RectangleF buttonStartingBackground, RectangleF middleArea, Vector2 rulesCorner)
     {
@@ -65,12 +67,11 @@ public class Ui
             var backerSprite = ResourceAssets.Instance.Textures["button_normal"];
             var offset = new Vector2(0, 20);
 
-
             if (button.IsLocked)
             {
                 backerSprite = ResourceAssets.Instance.Textures["button_locked"];
             }
-            
+
             if (State.HoveredItem == button)
             {
                 backerSprite = ResourceAssets.Instance.Textures["button_hovered"];
@@ -83,22 +84,24 @@ public class Ui
             }
 
             var destinationRectangle = button.Rectangle.Moved(offset + FadeOffsetPixels());
-            painter.DrawAsRectangle(backerSprite,destinationRectangle, new DrawSettings {Depth = Depth.Middle});
+            painter.DrawAsRectangle(backerSprite, destinationRectangle, new DrawSettings {Depth = Depth.Middle});
             var buttonIconName = button.Blueprint.Stats().ButtonIconName;
             if (buttonIconName != null)
             {
                 painter.DrawAsRectangle(ResourceAssets.Instance.Textures[buttonIconName],
                     destinationRectangle, new DrawSettings {Depth = Depth.Middle - 1});
             }
-            
+
             var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
-            var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, Ui.ApplyIcons(inventory,StructureButton.DisplayCost(button.Blueprint.Stats().Cost)),
+            var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White,
+                ApplyIcons(inventory, StructureButton.DisplayCost(button.Blueprint.Stats().Cost)),
                 GameplayConstants.FormattedTextParser);
-            
-            painter.DrawFormattedStringWithinRectangle(costTextFormatted, destinationRectangle.Moved(new Vector2(0,0)), Alignment.TopCenter, new DrawSettings
-            {
-                Depth = Depth.Middle - 10
-            });
+
+            painter.DrawFormattedStringWithinRectangle(costTextFormatted, destinationRectangle.Moved(new Vector2(0, 0)),
+                Alignment.TopCenter, new DrawSettings
+                {
+                    Depth = Depth.Middle - 10
+                });
         }
 
         foreach (var resourceTracker in _resourceTrackers)
@@ -121,6 +124,34 @@ public class Ui
         }
 
         painter.EndSpriteBatch();
+
+        if (_ftueState == FtueState.SelectBuilding)
+        {
+            painter.BeginSpriteBatch();
+
+            var sine = MathF.Sin(_ftueElapsedTime * 5);
+
+            var targetRectangle = _buttons.First().Rectangle;
+            var texture = ResourceAssets.Instance.Textures["ftue_arrow"];
+            var position = new Vector2(targetRectangle.Center.X, targetRectangle.Top + sine * 50);
+            var scale = new Vector2(2f, 2f);
+
+            painter.DrawAtPosition(texture, position, new Scale2D(scale), new DrawSettings
+            {
+                Color = Color.White.WithMultipliedOpacity(Math.Clamp(_ftueElapsedTime - 2, 0, 1)),
+                Origin = new DrawOrigin(new Vector2(texture.Width / 2f, texture.Height))
+            });
+            painter.EndSpriteBatch();
+        }
+
+        if (_ftueState == FtueState.PanCamera)
+        {
+            painter.BeginSpriteBatch();
+            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 48),
+                "Use Left or Middle Mouse to Pan the Camera\nYou can also use WASD", _middleArea.Inflated(0,-50), Alignment.TopCenter,
+                new DrawSettings {Color = Color.White.WithMultipliedOpacity(Math.Clamp(_ftueElapsedTime - 2, 0, 1))});
+            painter.EndSpriteBatch();
+        }
 
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
         if (State.HoveredItem != null)
@@ -235,7 +266,17 @@ public class Ui
 
     public void Update(float dt)
     {
+        _ftueElapsedTime += dt;
         _uiTween.Update(dt);
+
+        if (State.SelectedButton != null)
+        {
+            if (_ftueState == FtueState.SelectBuilding)
+            {
+                _ftueState = FtueState.PanCamera;
+                _ftueElapsedTime = 0;
+            }
+        }
     }
 
     public Blueprint GetBlueprint(string blueprintName)
@@ -247,4 +288,24 @@ public class Ui
 
         throw new Exception($"No blueprint found {blueprintName}");
     }
+
+    public void StartFtue()
+    {
+        _ftueState = FtueState.SelectBuilding;
+    }
+
+    public void SetHasPanned()
+    {
+        if (_ftueState == FtueState.PanCamera)
+        {
+            _ftueState = FtueState.None;
+        }
+    }
+}
+
+public enum FtueState
+{
+    None,
+    SelectBuilding,
+    PanCamera
 }
