@@ -28,8 +28,9 @@ public class GameSession : ISession
     private Overlay? _currentOverlay;
     private bool _isPanning;
     private Vector2? _mousePosition;
-    private Ui? _ui;
     private Vector2 _panVector;
+    private Ui? _ui;
+    private float _elapsedTime;
 
     public GameSession(Point screenSize)
     {
@@ -61,15 +62,15 @@ public class GameSession : ISession
             average += Grid.CellToPixel(cell);
         }
 
-        _camera.CenterPosition = average / allCells.Count + new Vector2(0,-100);
-        
+        _camera.CenterPosition = average / allCells.Count + new Vector2(0, -100);
+
         _errorMessage = new ErrorMessage(screenSize);
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
         _panVector = new Vector2(0, 0);
-        
+
         if (_currentOverlay != null)
         {
             _currentOverlay.UpdateInput(input, hitTestStack, _screenSize);
@@ -141,34 +142,35 @@ public class GameSession : ISession
                     }
                 }
             }
-            
+
             if (input.Keyboard.GetButton(Keys.W).IsDown)
             {
                 _panVector += new Vector2(0, -1);
             }
-                
+
             if (input.Keyboard.GetButton(Keys.A).IsDown)
             {
-                _panVector += new Vector2(-1,0);
+                _panVector += new Vector2(-1, 0);
             }
-                
+
             if (input.Keyboard.GetButton(Keys.S).IsDown)
             {
-                _panVector += new Vector2(0,1);
+                _panVector += new Vector2(0, 1);
             }
-                
+
             if (input.Keyboard.GetButton(Keys.D).IsDown)
             {
-                _panVector += new Vector2(1,0);
+                _panVector += new Vector2(1, 0);
             }
 
             if (_panVector != Vector2.Zero)
             {
                 _ui?.SetHasPanned();
             }
-            
-            _isPanning = input.Mouse.GetButton(MouseButton.Middle).IsDown || input.Mouse.GetButton(MouseButton.Right).IsDown;
-            
+
+            _isPanning = input.Mouse.GetButton(MouseButton.Middle).IsDown ||
+                         input.Mouse.GetButton(MouseButton.Right).IsDown;
+
             if (_isPanning)
             {
                 _ui?.SetHasPanned();
@@ -212,6 +214,9 @@ public class GameSession : ISession
     public void Draw(Painter painter)
     {
         painter.Clear(Color.SkyBlue);
+        
+        DrawWater(painter, Color.CornflowerBlue.DimmedBy(0.1f), new Vector2(Grid.CellSize / 2f, -Grid.CellSize), MathF.PI / 2f, 0.75f);
+        
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var scaffoldCell in _world.MainLayer.ScaffoldCells())
         {
@@ -289,6 +294,12 @@ public class GameSession : ISession
 
         painter.EndSpriteBatch();
 
+        DrawWater(painter, Color.CornflowerBlue, Vector2.Zero, 0, 1f);
+        
+        DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.1f), new Vector2(0,Grid.CellSize), MathF.PI / 3, 1.5f);
+        
+        DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.2f), new Vector2(0,Grid.CellSize * 4), MathF.PI / 4, 2f);
+
         _errorMessage.Draw(painter);
 
         _ui?.Draw(painter, _inventory);
@@ -296,8 +307,52 @@ public class GameSession : ISession
         _currentOverlay?.Draw(painter, _screenSize);
     }
 
+    private void DrawWater(Painter painter, Color waterColor, Vector2 offset, float phaseOffset, float intensity)
+    {
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+
+        var waterLevel = Grid.CellSize + offset.Y;
+        
+        if (_camera.ViewBounds.Bottom > waterLevel)
+        {
+            var waterRect = RectangleF.FromCorners(
+                new Vector2(_camera.ViewBounds.Left, waterLevel),
+                new Vector2(_camera.ViewBounds.Right, _camera.ViewBounds.Bottom)
+                );
+            
+            painter.DrawRectangle(waterRect, new DrawSettings {Color = waterColor});
+
+            var currentCell = Grid.PixelToCell(waterRect.TopLeft) - new Cell(1, 0);
+
+            while (Grid.CellToPixel(currentCell).X < waterRect.Right)
+            {
+                var pixelPosition = Grid.CellToPixel(currentCell) + offset;
+
+                var waveHeight = 5 * intensity;
+                var waveSpeed = 1f;
+                var phase = _elapsedTime * waveSpeed + phaseOffset;
+                var sine = new Vector2(0,MathF.Sin(phase) * waveHeight);
+                var cos = new Vector2(0,MathF.Cos(phase) * waveHeight);
+
+                painter.DrawAsRectangle(
+                    ResourceAssets.Instance.Textures["circle"],
+                    new RectangleF(new Vector2(pixelPosition.X, waterLevel) + sine, new Vector2(Grid.CellSize)),
+                    new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
+                painter.DrawAsRectangle(
+                    ResourceAssets.Instance.Textures["circle"],
+                    new RectangleF(new Vector2(pixelPosition.X + Grid.CellSize / 2f, waterLevel) + cos,
+                        new Vector2(Grid.CellSize)),
+                    new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
+                currentCell += new Cell(1, 0);
+            }
+        }
+
+        painter.EndSpriteBatch();
+    }
+
     public void Update(float dt)
     {
+        _elapsedTime += dt;
         _camera.CenterPosition += _panVector * dt * 60 * 10;
         _ui?.Update(dt);
 

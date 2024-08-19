@@ -8,7 +8,7 @@ namespace GMTK24.Model;
 
 public class Blueprint
 {
-    private static int idPool;
+    private static int? idPool;
     private int? _id;
     private int _structureIndex;
     private BlueprintStats? _cachedStats;
@@ -36,6 +36,11 @@ public class Blueprint
 
     public int Id()
     {
+        if (idPool == null)
+        {
+            idPool = Client.Random.Clean.NextInt();
+        }
+        
         if (_id == null)
         {
             _id = idPool++;
