@@ -7,5 +7,12 @@
     ],
     "title": "Platform",
     "description": "Provides space and support for other structures.",
-    "icon": "button_icon_platform"
+    "icon": "button_icon_platform",
+    "sounds": [
+        "gen1",
+        "gen2",
+        "gen3",
+        "gen4",
+        "gen5"
+    ]
 }

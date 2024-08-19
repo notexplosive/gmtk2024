@@ -130,6 +130,9 @@ public class GameSession : ISession
                         var structure = _world.AddStructure(plannedBuildPosition.Value, plannedStructure,
                             plannedBlueprint);
 
+                        var soundName = Client.Random.Dirty.GetRandomElement(structure.Blueprint.Stats().Sounds);
+                        ResourceAssets.Instance.PlaySound("sounds/"+soundName, new SoundEffectSettings());
+
                         var onConstructDelta = structure.Blueprint.Stats().OnConstructDelta;
 
                         foreach (var constructDelta in onConstructDelta)

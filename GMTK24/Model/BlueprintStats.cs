@@ -25,4 +25,7 @@ public class BlueprintStats
 
     [JsonProperty("icon")]
     public string? ButtonIconName { get; set; }
+
+    [JsonProperty("sounds")]
+    public List<string> Sounds { get; set; } = new();
 }

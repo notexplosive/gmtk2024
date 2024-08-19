@@ -24,5 +24,10 @@
     ],
     "title": "Home",
     "description": "Grants #Population and increases max #Inspiration.\nGenerates some #Inspiration over time.",
-    "icon": "button_icon_house"
+    "icon": "button_icon_house",
+    "sounds": [
+        "house1",
+        "house2",
+        "house3"
+    ]
 }
