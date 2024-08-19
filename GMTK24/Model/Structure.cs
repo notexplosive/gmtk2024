@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ExTween;
 using GMTK24.Config;
 
 namespace GMTK24.Model;
@@ -25,12 +26,12 @@ public class Structure
 
     public PlanSettings Settings { get; }
     public Blueprint Blueprint { get; }
-
     public IEnumerable<Cell> OccupiedCells => _occupiedWorldSpace;
     public IEnumerable<Cell> ScaffoldAnchorPoints => _scaffoldAnchorPoints;
     public IEnumerable<Cell> CellsProvidingSupport => _cellsProvidingSupport;
     public IEnumerable<Cell> CellsNeedingSupport => _cellsNeedingSupport;
     public Cell Center { get; }
+    public float Lifetime { get; set; }
 
     private static void ApplyCells(Cell worldCenter, HashSet<Cell> localCells, List<Cell> occupiedWorldSpace)
     {

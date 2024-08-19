@@ -5,6 +5,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
+using ExTween;
 using GMTK24.Config;
 using GMTK24.Model;
 using GMTK24.UserInterface;
@@ -378,6 +379,7 @@ public class GameSession : ISession
         foreach (var structure in _world.AllStructures())
         {
             _inventory.ApplyDeltas(structure.Blueprint.Stats().OnSecondDelta, dt);
+            structure.Lifetime += dt;
         }
 
         _inventory.ResourceUpdate(dt);
@@ -499,10 +501,26 @@ public class GameSession : ISession
             return;
         }
 
+        var animationDuration = 0.25f;
+        var scaleVector = Vector2.One;
+        var texture = ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName];
         var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
-        painter.DrawAtPosition(ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName],
-            Grid.CellToPixel(graphicsTopLeft), Scale2D.One,
-            new DrawSettings {Depth = Depth.Front - structure.Center.Y});
+        var originOffset = new Vector2(texture.Width / 2f, texture.Height);
+        var origin = new DrawOrigin(originOffset);
+
+        if (structure.Lifetime < animationDuration)
+        {
+            var oscillationsPerSecond = 40;
+            var intensity = 0.25f;
+            var wiggle = MathF.Sin(structure.Lifetime * oscillationsPerSecond) *
+                         Math.Max(0, animationDuration - structure.Lifetime) * intensity;
+
+            scaleVector = new Vector2(1 - wiggle, 1 + wiggle);
+        }
+
+        painter.DrawAtPosition(texture,
+            Grid.CellToPixel(graphicsTopLeft) + originOffset, new Scale2D(scaleVector),
+            new DrawSettings {Depth = Depth.Front - structure.Center.Y, Origin = origin});
     }
 
     private Cell? GetPlannedBuildPosition()
