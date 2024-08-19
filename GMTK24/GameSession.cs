@@ -319,17 +319,24 @@ public class GameSession : ISession
         painter.Clear(GameplayConstants.SkyColor);
         DrawWorldBackground(painter);
         DrawWorldForeground(painter);
-        
-        var currentTime = DateTime.Now;
-        var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var directory = Path.Join(homeDirectory, GameplayConstants.Title);
-        Directory.CreateDirectory(directory);
-        var screenshotFilePath = Path.Join(directory, $"{currentTime.ToFileTimeUtc()}.png");
-        using var stream = File.Create(screenshotFilePath);
-        var texture = canvas.Texture;
-        texture.SaveAsPng(stream, texture.Width, texture.Height);
-        
-        ShowToast($"Screenshot saved at\n{screenshotFilePath}", 5);
+
+        try
+        {
+            var currentTime = DateTime.Now;
+            var homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var directory = Path.Join(homeDirectory, GameplayConstants.Title);
+            Directory.CreateDirectory(directory);
+            var screenshotFilePath = Path.Join(directory, $"{currentTime.ToFileTimeUtc()}.png");
+            using var stream = File.Create(screenshotFilePath);
+            var texture = canvas.Texture;
+            texture.SaveAsPng(stream, texture.Width, texture.Height);
+
+            ShowToast($"Screenshot saved at\n{screenshotFilePath}", 5);
+        }
+        catch
+        {
+            ShowToast("Screenshot capture failed :(", 3);
+        }
         
         Client.Graphics.PopCanvas();
     }
@@ -488,7 +495,7 @@ public class GameSession : ISession
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var structure in _world.MainLayer.Structures)
         {
-            Structure.DrawStructure(painter, structure);
+            Structure.DrawStructure(painter, structure, _elapsedTime);
         }
 
         painter.EndSpriteBatch();
@@ -496,7 +503,7 @@ public class GameSession : ISession
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var structure in _world.DecorationLayer.Structures)
         {
-            Structure.DrawStructure(painter, structure);
+            Structure.DrawStructure(painter, structure, _elapsedTime);
         }
 
         painter.EndSpriteBatch();

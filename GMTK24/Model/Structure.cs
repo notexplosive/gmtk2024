@@ -6,6 +6,7 @@ using ExplogineMonoGame.Data;
 using ExTween;
 using GMTK24.Config;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GMTK24.Model;
 
@@ -74,9 +75,11 @@ public class Structure
     public event Action? VisibilityChanged;
     
     
-    public static void DrawStructure(Painter painter, Structure structure)
+    public static void DrawStructure(Painter painter, Structure structure, float lifetime)
     {
-        if (structure.Settings.DrawDescription.TextureName == null)
+        var textureName = structure.Settings.DrawDescription.TextureName;
+        var frameNames = structure.Settings.DrawDescription.FrameNames;
+        if (textureName == null && frameNames == null)
         {
             return;
         }
@@ -88,23 +91,41 @@ public class Structure
 
         var animationDuration = 0.25f;
         var scaleVector = Vector2.One;
-        var texture = ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName];
-        var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
-        var originOffset = new Vector2(texture.Width / 2f, texture.Height);
-        var origin = new DrawOrigin(originOffset);
 
-        if (structure.Lifetime < animationDuration)
-        {
-            var oscillationsPerSecond = 40;
-            var intensity = 0.25f;
-            var wiggle = MathF.Sin(structure.Lifetime * oscillationsPerSecond) *
-                         Math.Max(0, animationDuration - structure.Lifetime) * intensity;
-
-            scaleVector = new Vector2(1 - wiggle, 1 + wiggle);
-        }
+        Texture2D? texture = null;
         
-        painter.DrawAtPosition(texture,
-            Grid.CellToPixel(graphicsTopLeft) + originOffset, new Scale2D(scaleVector),
-            new DrawSettings {Depth = Depth.Front - structure.Center.Y, Origin = origin});
+        if (textureName != null)
+        {
+            texture = ResourceAssets.Instance.Textures[textureName];
+        }
+
+        if (frameNames != null)
+        {
+            var framesPerSecond = 12;
+            var normalizedFrame = (lifetime * framesPerSecond) % frameNames.Count;
+            var frameIndex = (int) normalizedFrame;
+            texture = ResourceAssets.Instance.Textures[frameNames[frameIndex]];
+        }
+
+        if (texture != null)
+        {
+            var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
+            var originOffset = new Vector2(texture.Width / 2f, texture.Height);
+            var origin = new DrawOrigin(originOffset);
+
+            if (structure.Lifetime < animationDuration)
+            {
+                var oscillationsPerSecond = 40;
+                var intensity = 0.25f;
+                var wiggle = MathF.Sin(structure.Lifetime * oscillationsPerSecond) *
+                             Math.Max(0, animationDuration - structure.Lifetime) * intensity;
+
+                scaleVector = new Vector2(1 - wiggle, 1 + wiggle);
+            }
+
+            painter.DrawAtPosition(texture,
+                Grid.CellToPixel(graphicsTopLeft) + originOffset, new Scale2D(scaleVector),
+                new DrawSettings {Depth = Depth.Front - structure.Center.Y, Origin = origin});
+        }
     }
 }

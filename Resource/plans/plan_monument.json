@@ -1,7 +1,12 @@
 {
   "settings": {
     "drawDescription": {
-      "textureName": "monument",
+      "frames": [
+        "MONUMENT01",
+        "MONUMENT02",
+        "MONUMENT03",
+        "MONUMENT04"
+      ],
       "graphicsTopLeft": {
         "X": -7,
         "Y": -19

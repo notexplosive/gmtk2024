@@ -22,6 +22,7 @@ public class PlanEditorSession : ISession
     private Cell? _hoveredCell;
     private int _planIndex;
     private EditorTool _tool;
+    private float _elapsedTime;
 
     public PlanEditorSession(Point screenSize)
     {
@@ -201,7 +202,7 @@ public class PlanEditorSession : ISession
     public void Draw(Painter painter)
     {
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
-        Structure.DrawStructure(painter, CurrentPlan.BuildReal(Cell.Origin, new Blueprint()));
+        Structure.DrawStructure(painter, CurrentPlan.BuildReal(Cell.Origin, new Blueprint()), _elapsedTime);
         painter.EndSpriteBatch();
 
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
@@ -279,6 +280,7 @@ public class PlanEditorSession : ISession
 
     public void Update(float dt)
     {
+        _elapsedTime += dt;
     }
 
     private void SaveCurrent()
