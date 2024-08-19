@@ -52,17 +52,34 @@ public class DialogueOverlay : Overlay
         
     }
 
-    protected override void DrawContent(Painter painter, RectangleF rectangle)
+    protected override void DrawContent(Painter painter, RectangleF screenRectangle)
     {
+        var workingRectangle = RectangleF.FromCorners(screenRectangle.TopLeft + new Vector2(0,screenRectangle.Height * 2 /3f),screenRectangle.BottomRight);
+
+        workingRectangle = workingRectangle.Moved(new Vector2(0, workingRectangle.Height - workingRectangle.Height * AppearPercent));
+        
+        painter.DrawRectangle(workingRectangle,
+            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f * ScrimOpacity)});
+        
+        var contentRectangle = workingRectangle.Inflated(-100, -100);
+        contentRectangle = contentRectangle.Moved(new Vector2(0, -50));
+
         if (_currentPage != null)
         {
             var formattedText = FormattedText.FromFormatString(_currentPage.DialogueSpeaker.Font, Color.White,
-                Ui.ApplyIcons(_inventory, _currentPage.Text, 3),
+                Ui.ApplyIcons(_inventory, _currentPage.Text, 2),
                 GameplayConstants.FormattedTextParser);
-            painter.DrawFormattedStringWithinRectangle(formattedText, rectangle, Alignment.Center, new DrawSettings
+            painter.DrawFormattedStringWithinRectangle(formattedText, contentRectangle, Alignment.Center, new DrawSettings
             {
                 Color = _currentPage.DialogueSpeaker.Color.WithMultipliedOpacity(ContentOpacity)
             });
         }
+        
+        var belowContentRectangle =
+            new RectangleF(contentRectangle.Left, contentRectangle.Bottom, contentRectangle.Width, 80);
+
+        var font = Client.Assets.GetFont("gmtk/GameFont", 45);
+        painter.DrawStringWithinRectangle(font, "Click anywhere to continue", belowContentRectangle, Alignment.Center,
+            new DrawSettings {Color = Color.White.WithMultipliedOpacity(ContinueOpacity)});
     }
 }

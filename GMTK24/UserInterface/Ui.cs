@@ -21,7 +21,6 @@ public class Ui
     private readonly HoverState _isRulesHovered = new();
     private readonly RectangleF _middleArea;
     private readonly List<ResourceTracker> _resourceTrackers = new();
-    private readonly Vector2 _rulesCorner;
     private readonly SequenceTween _uiTween = new();
     private float _ftueElapsedTime;
 
@@ -29,7 +28,6 @@ public class Ui
     {
         _buttonStartingBackground = buttonStartingBackground;
         _middleArea = middleArea;
-        _rulesCorner = rulesCorner;
     }
 
     public FtueState CurrentFtueState { get; private set; } = FtueState.None;
@@ -211,9 +209,6 @@ public class Ui
             }
         }
 
-        painter.DrawAtPosition(ResourceAssets.Instance.Textures["icon_help"], _rulesCorner, Scale2D.One,
-            new DrawSettings());
-
         painter.EndSpriteBatch();
     }
 
@@ -238,10 +233,6 @@ public class Ui
             uiHitTestLayer.AddZone(button.Rectangle, Depth.Middle, () => { State.ClearHover(); },
                 () => { State.SetHovered(button); });
         }
-
-        uiHitTestLayer.AddZone(
-            new RectangleF(_rulesCorner, ResourceAssets.Instance.Textures["icon_help"].Bounds.Size.ToVector2()),
-            Depth.Middle, _isRulesHovered);
 
         if (input.Mouse.GetButton(MouseButton.Left).WasPressed)
         {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.AssetManagement;
@@ -29,21 +28,20 @@ public class GameSession : ISession
     private readonly OverlayScreen _overlayScreen;
     private readonly List<Particle> _particles = new();
     private readonly List<Structure> _replayStructures = new();
-    private readonly FormattedTextOverlay _rulesOverlay;
-    private Point _screenSize;
     private readonly RectangleF _startingCamera;
     private readonly World _world = new();
     private Cutscene? _currentCutscene;
     private int? _currentLevelIndex;
     private Objective? _currentObjective;
+    private PersistentToast? _currentToast;
     private float _elapsedTime;
+    private bool _hasPlayedEndCutscene;
+    private bool _isAwaitingScreenshot;
     private bool _isPanning;
     private Vector2? _mousePosition;
     private Vector2 _panVector;
+    private Point _screenSize;
     private Ui? _ui;
-    private bool _hasPlayedEndCutscene;
-    private bool _isAwaitingScreenshot;
-    private PersistentToast? _currentToast;
 
     public GameSession(Point screenSize)
     {
@@ -58,11 +56,6 @@ public class GameSession : ISession
         _levels = JsonFileReader.Read<LevelSequence>(Client.Debug.RepoFileSystem.GetDirectory("Resource"), "levels")
             .Levels;
         StartNextLevel();
-
-        _rulesOverlay =
-            new FormattedTextOverlay(
-                FormattedText.FromFormatString(new IndirectFont("gmtk/GameFont", 50), Color.White,
-                    _inventory.DisplayRules(), GameplayConstants.FormattedTextParser));
 
         var zoomLevel = 0.5f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
@@ -112,7 +105,7 @@ public class GameSession : ISession
             {
                 PlayCutscene(EndCutscene());
             }
-            
+
             if (input.Keyboard.GetButton(Keys.T).WasPressed)
             {
                 ShowScreenshotToast();
@@ -242,7 +235,7 @@ public class GameSession : ISession
             {
                 _panVector += new Vector2(1, 0);
             }
-            
+
             if (input.Keyboard.GetButton(Keys.Space).WasPressed)
             {
                 PlayCutscene(AlignToGridCutscene());
@@ -296,13 +289,69 @@ public class GameSession : ISession
         _ui?.UpdateInput(input, hitTestStack);
     }
 
+    public void Draw(Painter painter)
+    {
+        painter.Clear(GameplayConstants.SkyColor);
+
+        DrawWorldBackground(painter);
+
+        painter.BeginSpriteBatch(_camera.CanvasToScreen);
+
+        DrawMousePositionOverlay(painter);
+
+        DrawParticles(painter);
+
+        DrawWorldForeground(painter);
+
+        _errorMessage.Draw(painter);
+
+        _ui?.Draw(painter, _inventory, _overlayScreen.HasOverlay() || _currentCutscene != null);
+
+        _overlayScreen.Draw(painter, _screenSize);
+
+        DrawCurrentToast(painter);
+    }
+
+    public void Update(float dt)
+    {
+        _elapsedTime += dt;
+        _camera.CenterPosition += _panVector * dt * 60 * 10;
+        _ui?.Update(dt);
+
+        _particles.RemoveAll(a => a.IsExpired());
+
+        foreach (var particle in _particles)
+        {
+            particle.Update(dt);
+        }
+
+        _overlayScreen.Update(dt);
+        _currentCutscene?.Update(dt);
+        _currentToast?.Update(dt);
+
+        if (_currentCutscene?.IsDone() == true)
+        {
+            _currentCutscene = null;
+        }
+
+        _errorMessage.Update(dt);
+
+        foreach (var structure in _world.AllStructures())
+        {
+            _inventory.ApplyDeltas(structure.Blueprint.Stats().OnSecondDelta, dt);
+            structure.Lifetime += dt;
+        }
+
+        _inventory.ResourceUpdate(dt);
+    }
+
     private Cutscene AlignToGridCutscene()
     {
         var cutscene = new Cutscene(_overlayScreen);
 
         var newViewBounds = RectangleF.FromCenterAndSize(_camera.ViewBounds.Center, _screenSize.ToVector2());
         newViewBounds.Location = newViewBounds.Location.ToPoint().ToVector2();
-        
+
         cutscene.PanCamera(_camera, newViewBounds, 0.25f, Ease.CubicFastSlow);
 
         return cutscene;
@@ -313,7 +362,7 @@ public class GameSession : ISession
         _isAwaitingScreenshot = false;
 
         var canvas = new Canvas(_screenSize);
-        
+
         var painter = Client.Graphics.Painter;
         Client.Graphics.PushCanvas(canvas);
         painter.Clear(GameplayConstants.SkyColor);
@@ -337,7 +386,7 @@ public class GameSession : ISession
         {
             ShowToast("Screenshot capture failed :(", 3);
         }
-        
+
         Client.Graphics.PopCanvas();
     }
 
@@ -351,33 +400,10 @@ public class GameSession : ISession
     {
         _currentToast = new PersistentToast(text, duration);
     }
-    
+
     private void ShowToast(string text, Func<bool> vanishCriteria)
     {
         _currentToast = new PersistentToast(text, vanishCriteria);
-    }
-
-    public void Draw(Painter painter)
-    {
-        painter.Clear(GameplayConstants.SkyColor);
-
-        DrawWorldBackground(painter);
-
-        painter.BeginSpriteBatch(_camera.CanvasToScreen);
-
-        DrawMousePositionOverlay(painter);
-
-        DrawParticles(painter);
-
-        DrawWorldForeground(painter);
-
-        _errorMessage.Draw(painter);
-        
-        _ui?.Draw(painter, _inventory, _overlayScreen.HasOverlay() || _currentCutscene != null);
-
-        _overlayScreen.Draw(painter, _screenSize);
-        
-        DrawCurrentToast(painter);
     }
 
     private void DrawCurrentToast(Painter painter)
@@ -519,39 +545,6 @@ public class GameSession : ISession
             2f);
     }
 
-    public void Update(float dt)
-    {
-        _elapsedTime += dt;
-        _camera.CenterPosition += _panVector * dt * 60 * 10;
-        _ui?.Update(dt);
-
-        _particles.RemoveAll(a => a.IsExpired());
-
-        foreach (var particle in _particles)
-        {
-            particle.Update(dt);
-        }
-
-        _overlayScreen.Update(dt);
-        _currentCutscene?.Update(dt);
-        _currentToast?.Update(dt);
-
-        if (_currentCutscene?.IsDone() == true)
-        {
-            _currentCutscene = null;
-        }
-
-        _errorMessage.Update(dt);
-
-        foreach (var structure in _world.AllStructures())
-        {
-            _inventory.ApplyDeltas(structure.Blueprint.Stats().OnSecondDelta, dt);
-            structure.Lifetime += dt;
-        }
-
-        _inventory.ResourceUpdate(dt);
-    }
-
     private Cutscene EndCutscene()
     {
         _currentToast = null;
@@ -562,20 +555,20 @@ public class GameSession : ISession
         if (lastStructure != null)
         {
             var buildingCameraPosition = lastStructure.PixelCenter();
-            
-            cutscene.PanCamera(_camera, RectangleF.FromCenterAndSize(buildingCameraPosition, _camera.ViewBounds.Size), 1.25f, Ease.CubicFastSlow);
+
+            cutscene.PanCamera(_camera, RectangleF.FromCenterAndSize(buildingCameraPosition, _camera.ViewBounds.Size),
+                1.25f, Ease.CubicFastSlow);
         }
-        
 
         cutscene.DisplayMessage(_ui, "We are a city.");
-        
+
         var allStructuresRectangle = AllStructuresRectangle();
-        var skyCameraPosition = new Vector2(_camera.ViewBounds.X,allStructuresRectangle.Top - _camera.ViewBounds.Height * 5);
+        var skyCameraPosition =
+            new Vector2(_camera.ViewBounds.X, allStructuresRectangle.Top - _camera.ViewBounds.Height * 5);
         var skyViewBounds = new RectangleF(skyCameraPosition, _camera.ViewBounds.Size);
-        
+
         cutscene.PanCamera(_camera, skyViewBounds, 1, Ease.CubicSlowFast);
-        
-        
+
         cutscene.Callback(() =>
         {
             foreach (var structure in _replayStructures)
@@ -583,12 +576,12 @@ public class GameSession : ISession
                 structure.Hide();
             }
         });
-        
+
         cutscene.PanCamera(_camera, _startingCamera, 1, Ease.CubicFastSlow);
         cutscene.DisplayMessage(_ui, "From humble beginnings.");
 
-
-        var allStructuresViewBounds = RectangleF.FromCenterAndSize(allStructuresRectangle.Center, _screenSize.ToVector2() / 4);
+        var allStructuresViewBounds =
+            RectangleF.FromCenterAndSize(allStructuresRectangle.Center, _screenSize.ToVector2() / 4);
 
         var iterations = 0;
         while (!allStructuresViewBounds.Envelopes(allStructuresRectangle))
@@ -600,9 +593,8 @@ public class GameSession : ISession
             {
                 break;
             }
-            
         }
-        
+
         // extra 100px margin
         allStructuresViewBounds = allStructuresViewBounds.InflatedMaintainAspectRatio(100);
 
@@ -618,16 +610,13 @@ public class GameSession : ISession
             cutscene.Delay(delay);
             cutscene.Callback(() => { structure.Show(); });
         }
-        
+
         cutscene.Delay(0.5f);
 
-        cutscene.Callback(() =>
-        {
-            ShowScreenshotToast();
-        });
-        cutscene.WaitUntil(()=>_isAwaitingScreenshot == false);
+        cutscene.Callback(() => { ShowScreenshotToast(); });
+        cutscene.WaitUntil(() => _isAwaitingScreenshot == false);
         cutscene.Delay(2f);
-        
+
         cutscene.DisplayMessage(_ui,
             // "Press [Enter] to take a screenshot.",
             GameplayConstants.Title,
@@ -638,7 +627,7 @@ public class GameSession : ISession
             "Thank you for playing.",
             "You can stay for as long as you like."
         );
-        
+
         cutscene.Callback(() =>
         {
             _ui?.FadeIn();
@@ -734,7 +723,7 @@ public class GameSession : ISession
             WinGame();
             return;
         }
-        
+
         _currentToast?.FadeOut();
 
         var level = _levels[_currentLevelIndex.Value];
@@ -761,11 +750,11 @@ public class GameSession : ISession
                 () =>
                 {
                     _ui = BuildUi(uiBuilder);
-                    _ui.SetFtueState(_currentLevelIndex.Value);
-                    
+
                     if (_currentLevelIndex == 1)
                     {
-                        ShowToast("Use Right/Middle Mouse pan the camera\n(You can also use WASD)", () => _ui?.CurrentFtueState == FtueState.None);
+                        ShowToast("Use Right or Middle Mouse Buttons to pan the camera\nYou can also use WASD",
+                            () => _ui?.CurrentFtueState == FtueState.None);
                     }
                 }));
         }
@@ -773,16 +762,15 @@ public class GameSession : ISession
         {
             _ui = BuildUi(uiBuilder);
             _ui.FadeIn();
-            _ui.SetFtueState(_currentLevelIndex.Value);
         }
-        
-
     }
 
     private Ui BuildUi(UiLayoutBuilder uiBuilder)
     {
         var ui = uiBuilder.Build(_screenSize);
-        ui.RequestRules += ShowRules;
+        if(_currentLevelIndex.HasValue){
+            ui.SetFtueState(_currentLevelIndex.Value);
+        }
         return ui;
     }
 
@@ -793,11 +781,6 @@ public class GameSession : ISession
             _hasPlayedEndCutscene = true;
             PlayCutscene(EndCutscene());
         }
-    }
-
-    private void ShowRules()
-    {
-        _overlayScreen.OpenOverlay(_ui, _rulesOverlay);
     }
 
     public event Action? RequestEditorSession;

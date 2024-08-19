@@ -13,6 +13,7 @@ public abstract class Overlay
     protected readonly TweenableFloat ContinueOpacity = new(0);
     protected readonly TweenableFloat ScrimOpacity = new(0);
     protected readonly TweenableFloat ContentOpacity = new(0);
+    protected readonly TweenableFloat AppearPercent = new(0);
     private readonly SequenceTween _tween = new();
 
     public bool IsClosed { get; private set; }
@@ -40,11 +41,12 @@ public abstract class Overlay
 
         _tween
             .Add(new MultiplexTween()
+                .Add(AppearPercent.TweenTo(1f, 1f, Ease.QuadFastSlow))
                 .Add(ScrimOpacity.TweenTo(1f, 0.25f, Ease.Linear))
                 .Add(ContentOpacity.TweenTo(1f, 0.25f, Ease.Linear))
                 
                 .Add(new SequenceTween()
-                    .Add(new WaitSecondsTween(0.5f))
+                    .Add(new WaitSecondsTween(1f))
                     .Add(ContinueOpacity.TweenTo(1f, 0.25f, Ease.Linear))
                 )
             )
@@ -62,6 +64,7 @@ public abstract class Overlay
                 .Add(ContinueOpacity.TweenTo(0, 0.25f, Ease.Linear))
                 .Add(ContentOpacity.TweenTo(0, 0.25f, Ease.Linear))
                 .Add(ScrimOpacity.TweenTo(0, 0.25f, Ease.Linear))
+                .Add(AppearPercent.TweenTo(0f, 1f, Ease.QuadFastSlow))
             )
             
             .Add(new CallbackTween(() => IsClosed = true));
@@ -80,18 +83,8 @@ public abstract class Overlay
         painter.BeginSpriteBatch();
 
         var screenRect = screenSize.ToRectangleF();
-        painter.DrawRectangle(screenRect,
-            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.25f * ScrimOpacity)});
 
-        var contentRectangle = screenRect.Inflated(-100, -100);
-        DrawContent(painter, contentRectangle);
-
-        var belowContentRectangle =
-            new RectangleF(contentRectangle.Left, contentRectangle.Bottom, contentRectangle.Width, 80);
-
-        var font = Client.Assets.GetFont("gmtk/GameFont", 45);
-        painter.DrawStringWithinRectangle(font, "Click anywhere to continue", belowContentRectangle, Alignment.Center,
-            new DrawSettings {Color = Color.White.WithMultipliedOpacity(ContinueOpacity)});
+        DrawContent(painter, screenRect);
 
         painter.EndSpriteBatch();
     }

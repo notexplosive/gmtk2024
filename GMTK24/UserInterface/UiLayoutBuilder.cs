@@ -56,8 +56,6 @@ public class UiLayoutBuilder
             new Style(Alignment: Alignment.Center, PaddingBetweenElements: 20),
             L.FillHorizontal("button-ribbon", buttonRibbonHeight));
 
-        buttonRibbonLayoutGroup.Add(L.FixedElement("rules-button", resourceHeight, resourceHeight));
-
         foreach (var buildAction in _buttons)
         {
             buttonRibbonLayoutGroup.Add(L.FixedElement(GetId(buildAction), buttonWidth, buttonHeight));
