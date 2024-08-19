@@ -27,8 +27,8 @@ public class UiLayoutBuilder
         var resourceWidth = 250;
         var resourceHeight = 40;
 
-        var buttonWidth = 150;
-        var buttonHeight = 60;
+        var buttonWidth = 120;
+        var buttonHeight = 120;
 
         var buttonRibbonHeight = 110;
 

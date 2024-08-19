@@ -50,7 +50,7 @@ public class Ui
 
     private Vector2 FadeOffsetPixels()
     {
-        return new Vector2(0, _buttonStartingBackground.Height * _fadeOutAmount);
+        return new Vector2(0, _buttonStartingBackground.Height * _fadeOutAmount * 1.5f);
     }
 
     public void Draw(Painter painter, Inventory inventory)
@@ -62,25 +62,43 @@ public class Ui
 
         foreach (var button in _buttons)
         {
-            var color = Color.White;
-            var offset = Vector2.Zero + FadeOffsetPixels();
+            var backerSprite = ResourceAssets.Instance.Textures["button_normal"];
+            var offset = new Vector2(0, 20);
+
 
             if (button.IsLocked)
             {
-                color = Color.Gray;
+                backerSprite = ResourceAssets.Instance.Textures["button_locked"];
             }
             
             if (State.HoveredItem == button)
             {
-                offset = new Vector2(0, -20);
+                backerSprite = ResourceAssets.Instance.Textures["button_hovered"];
+                offset = new Vector2(0, 0);
             }
 
             if (State.SelectedButton == button)
             {
-                color = Color.Orange;
+                offset = new Vector2(0, -20);
             }
 
-            painter.DrawRectangle(button.Rectangle.Moved(offset), new DrawSettings {Color = color});
+            var destinationRectangle = button.Rectangle.Moved(offset + FadeOffsetPixels());
+            painter.DrawAsRectangle(backerSprite,destinationRectangle, new DrawSettings {Depth = Depth.Middle});
+            var buttonIconName = button.Blueprint.Stats().ButtonIconName;
+            if (buttonIconName != null)
+            {
+                painter.DrawAsRectangle(ResourceAssets.Instance.Textures[buttonIconName],
+                    destinationRectangle, new DrawSettings {Depth = Depth.Middle - 1});
+            }
+            
+            var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
+            var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, Ui.ApplyIcons(inventory,StructureButton.DisplayCost(button.Blueprint.Stats().Cost)),
+                GameplayConstants.FormattedTextParser);
+            
+            painter.DrawFormattedStringWithinRectangle(costTextFormatted, destinationRectangle.Moved(new Vector2(0,0)), Alignment.TopCenter, new DrawSettings
+            {
+                Depth = Depth.Middle - 10
+            });
         }
 
         foreach (var resourceTracker in _resourceTrackers)
@@ -132,7 +150,7 @@ public class Ui
             var tooltipSize = RectangleF.Union(titleRectangleNormalized,
                 RectangleF.Union(bodyRectangleNormalized, tooltipCostRectangleNormalized)).Size + new Vector2(50, 0);
 
-            var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -20),
+            var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -40),
                 tooltipSize + new Vector2(25), Alignment.BottomCenter);
 
             var tooltipRectangle =
@@ -211,6 +229,7 @@ public class Ui
 
     public void FadeOut()
     {
+        State.ClearSelection();
         _uiTween.Add(_fadeOutAmount.TweenTo(1f, 0.25f, Ease.Linear));
     }
 

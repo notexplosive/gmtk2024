@@ -7,8 +7,7 @@
         "plan_farm5",
         "plan_farm6",
         "plan_farm7",
-        "plan_farm8",
-        "plan_farm_tree"
+        "plan_farm8"
     ],
-    "stats": "stats_farm"
+    "stats": "stats_farm",
 }

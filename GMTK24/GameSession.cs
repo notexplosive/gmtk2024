@@ -52,6 +52,16 @@ public class GameSession : ISession
             screenSize);
         _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"),
             new Blueprint());
+
+        var average = Vector2.Zero;
+        var allCells = _world.AllStructures().SelectMany(a => a.OccupiedCells).ToList();
+        foreach (var cell in allCells)
+        {
+            average += Grid.CellToPixel(cell);
+        }
+
+        _camera.CenterPosition = average / allCells.Count + new Vector2(0,-100);
+        
         _errorMessage = new ErrorMessage(screenSize);
     }
 

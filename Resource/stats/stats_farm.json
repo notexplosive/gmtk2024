@@ -11,6 +11,7 @@
             "amount": 20
         }
     ],
-    "title": "Farm",
-    "description": "Increase #Food capacity and generate #Food over time.\nCan share space with other structures."
+    "title": "Small Farm",
+    "description": "Grants small amount of #Food.\nCan share space with other structures.",
+    "icon": "button_icon_farm"
 }

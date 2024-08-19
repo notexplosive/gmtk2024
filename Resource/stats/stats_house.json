@@ -23,5 +23,6 @@
         }
     ],
     "title": "House",
-    "description": "Increases #Population and increases max #Inspiration.\nGenerates #Inspiration over time."
+    "description": "Grants #Population and increases max #Inspiration.\nGenerates some #Inspiration over time.",
+    "icon": "button_icon_house"
 }

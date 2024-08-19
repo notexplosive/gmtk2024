@@ -39,7 +39,7 @@ public class StructureButton : IHoverable
         };
     }
 
-    private string DisplayCost(List<ResourceDelta> deltas)
+    public static string DisplayCost(List<ResourceDelta> deltas)
     {
         var stringBuilder = new StringBuilder();
 

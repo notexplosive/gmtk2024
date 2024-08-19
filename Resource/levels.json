@@ -4,10 +4,6 @@
             "blueprints": [
                 {
                     "name": "blueprint_l0_house"
-                },
-                {
-                    "name": "blueprint_l0_farm",
-                    "isLocked": true
                 }
             ],
             "completionCriteria": {
@@ -64,9 +60,9 @@
         },
         {
             "introDialogue": [
-                "We are a city, soon we will be glorious.",
+                "We are a city, soon we will be remembered.",
                 "With enough #Inspiration we can build something truly special.",
-                "...a monument to this great city."
+                "A monument for the world to remember us by."
             ],
             "blueprints": [
                 {

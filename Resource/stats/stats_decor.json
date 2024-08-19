@@ -1,6 +1,6 @@
 {
     "title": "Decor",
-    "description": "Increases max #Inspiration significantly\nQuickly generates #Inspiration over time.\nCan share space with other structures.",
+    "description": "Increases max #Inspiration significantly\nGenerates lots of #Inspiration over time.\nCan share space with other structures.",
     "cost": [
         {
             "resourceName": "Food",
@@ -19,5 +19,6 @@
             "resourceName": "Inspiration",
             "amount": 3
         }
-    ]
+    ],
+    "icon": "button_icon_decor"
 }

@@ -6,5 +6,6 @@
         }
     ],
     "title": "Platform",
-    "description": "Provides space and support for other structures."
+    "description": "Provides space and support for other structures.",
+    "icon": "button_icon_platform"
 }

@@ -57,4 +57,9 @@ public class UiState
         
         SelectedButton.Blueprint.IncrementStructure();
     }
+
+    public void ClearSelection()
+    {
+        SelectedButton = null;
+    }
 }
