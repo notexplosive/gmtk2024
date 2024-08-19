@@ -8,7 +8,6 @@
       }
     },
     "createsScaffold": true,
-    "providesSupport": true,
     "requiredSupports": 7,
     "layer": 0
   },
@@ -130,6 +129,49 @@
       "Y": -2
     }
   ],
+  "providesStructureCells": [
+    {
+      "X": -3,
+      "Y": -3
+    },
+    {
+      "X": -2,
+      "Y": -3
+    },
+    {
+      "X": -15,
+      "Y": -12
+    },
+    {
+      "X": 1,
+      "Y": -3
+    },
+    {
+      "X": 2,
+      "Y": -3
+    },
+    {
+      "X": 3,
+      "Y": -3
+    },
+    {
+      "X": 4,
+      "Y": -3
+    },
+    {
+      "X": 0,
+      "Y": -2
+    },
+    {
+      "X": -19,
+      "Y": -6
+    },
+    {
+      "X": -12,
+      "Y": -13
+    }
+  ],
+  "requiresSupportCells": [],
   "scaffoldAnchors": [
     {
       "X": 1,
@@ -142,6 +184,10 @@
     {
       "X": 4,
       "Y": 0
+    },
+    {
+      "X": -13,
+      "Y": -13
     }
   ]
 }

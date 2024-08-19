@@ -8,7 +8,6 @@
       }
     },
     "createsScaffold": true,
-    "providesSupport": true,
     "requiredSupports": 3,
     "layer": 0
   },
@@ -74,6 +73,21 @@
       "Y": -3
     }
   ],
+  "providesStructureCells": [
+    {
+      "X": -1,
+      "Y": -3
+    },
+    {
+      "X": 1,
+      "Y": -3
+    },
+    {
+      "X": 2,
+      "Y": -3
+    }
+  ],
+  "requiresSupportCells": [],
   "scaffoldAnchors": [
     {
       "X": 2,

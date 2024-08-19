@@ -125,11 +125,11 @@ public class Layer
 
     private IEnumerable<Cell> GenerateSupportedCells()
     {
-        foreach (var structure in _structures.Where(a => a.Settings.ProvidesSupport))
+        foreach (var structure in _structures)
         {
-            foreach (var x in structure.OccupiedCells.DistinctBy(a => a.X).Select(a => a.X))
+            foreach (var cell in structure.CellsProvidingSupport)
             {
-                yield return structure.OccupiedCells.Where(a => a.X == x).MinBy(a => a.Y);
+                yield return cell;
             }
         }
     }

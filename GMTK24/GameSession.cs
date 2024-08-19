@@ -52,7 +52,7 @@ public class GameSession : ISession
         var zoomLevel = 0.5f;
         _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
             screenSize);
-        _world.MainLayer.AddStructureToLayer(new Cell(0, 0), JsonFileReader.ReadPlan("plan_foundation"),
+        _world.MainLayer.AddStructureToLayer(new Cell(0, -2), JsonFileReader.ReadPlan("plan_foundation"),
             new Blueprint());
 
         var average = Vector2.Zero;
@@ -69,6 +69,18 @@ public class GameSession : ISession
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
+        if (Client.Debug.IsPassiveOrActive)
+        {
+            if (input.Keyboard.GetButton(Keys.Q).WasPressed)
+            {
+                StartNextLevel();
+            }
+            if (input.Keyboard.GetButton(Keys.W).WasPressed)
+            {
+                _inventory.GetResource("Food").Add(100000);
+            }
+        }
+        
         _panVector = new Vector2(0, 0);
 
         if (_currentOverlay != null)

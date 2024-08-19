@@ -16,30 +16,34 @@ public class Structure
     private readonly List<Cell> _occupiedWorldSpace = new();
 
     private readonly List<Cell> _scaffoldAnchorPoints = new();
+    private readonly List<Cell> _cellsProvidingSupport = new();
 
     /// <summary>
     ///     Use builder instead!
     /// </summary>
-    public Structure(Cell worldCenter, HashSet<Cell> localCells, IEnumerable<Cell> localAnchorPoints,
-        PlanSettings settings, Blueprint blueprint)
+    public Structure(Cell worldCenter, StructurePlan plan, Blueprint blueprint)
     {
-        Settings = settings;
+        Settings = plan.Settings;
         Blueprint = blueprint;
+
+        ApplyCells(worldCenter, plan.OccupiedCells, _occupiedWorldSpace);
+        ApplyCells(worldCenter, plan.ScaffoldAnchorPoints, _scaffoldAnchorPoints);
+        ApplyCells(worldCenter, plan.ProvidesStructureCells, _cellsProvidingSupport);
+        
+        Center = worldCenter;
+    }
+
+    private static void ApplyCells(Cell worldCenter, HashSet<Cell> localCells, List<Cell> occupiedWorldSpace)
+    {
         foreach (var localCell in localCells)
         {
-            _occupiedWorldSpace.Add(worldCenter + localCell);
+            occupiedWorldSpace.Add(worldCenter + localCell);
         }
-
-        foreach (var anchorPoint in localAnchorPoints)
-        {
-            _scaffoldAnchorPoints.Add(worldCenter + anchorPoint);
-        }
-
-        Center = worldCenter;
     }
 
     public IEnumerable<Cell> OccupiedCells => _occupiedWorldSpace;
     public IEnumerable<Cell> ScaffoldAnchorPoints => _scaffoldAnchorPoints;
+    public IEnumerable<Cell> CellsProvidingSupport => _cellsProvidingSupport;
     public Cell Center { get; }
 
     public IEnumerable<Cell> BottomCells()
