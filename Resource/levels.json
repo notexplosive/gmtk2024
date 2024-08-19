@@ -76,9 +76,6 @@
                 },
                 {
                     "name": "blueprint_l1_decoration"
-                },
-                {
-                    "name": "blueprint_l0_chain"
                 }
             ],
             "completionCriteria": {
