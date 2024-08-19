@@ -37,6 +37,19 @@ public class PlanEditorSession : ISession
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
     {
+        var delta = input.Mouse.ScrollDelta();
+        if (delta != 0)
+        {
+            if (delta < 0)
+            {
+                _camera.ViewBounds = _camera.ViewBounds.InflatedMaintainAspectRatio(10);
+            }
+            else
+            {
+                _camera.ViewBounds = _camera.ViewBounds.InflatedMaintainAspectRatio(-10);
+            }
+        }
+        
         if (input.Keyboard.GetButton(Keys.Escape).WasPressed)
         {
             RequestPlayMode?.Invoke();
@@ -85,29 +98,36 @@ public class PlanEditorSession : ISession
             ReadPlans();
         }
 
-        _hoveredCell = Grid.PixelToCell(input.Mouse.Position(_camera.ScreenToCanvas));
+        if (_camera.ViewBounds.Contains(input.Mouse.Position(_camera.ScreenToCanvas)))
+        {
+            _hoveredCell = Grid.PixelToCell(input.Mouse.Position(_camera.ScreenToCanvas));
+        }
+        else
+        {
+            _hoveredCell = null;
+        }
         
         if (input.Mouse.GetButton(MouseButton.Left).WasPressed)
         {
             if (_hoveredCell.HasValue)
             {
-                if (_tool == EditorTool.MainCells)
+                switch (_tool)
                 {
-                    ToggleCell(_hoveredCell.Value,CurrentPlan.OccupiedCells);
-                    SaveCurrent();
+                    case EditorTool.MainCells:
+                        ToggleCell(_hoveredCell.Value,CurrentPlan.OccupiedCells);
+                        break;
+                    case EditorTool.SpawnScaffold:
+                        ToggleCell(_hoveredCell.Value,CurrentPlan.ScaffoldAnchorPoints);
+                        break;
+                    case EditorTool.ProvidesSupport:
+                        ToggleCell(_hoveredCell.Value,CurrentPlan.ProvidesStructureCells);
+                        break;
+                    case EditorTool.RequiresSupport:
+                        ToggleCell(_hoveredCell.Value,CurrentPlan.RequiresSupportCells);
+                        break;
                 }
 
-                if (_tool == EditorTool.SpawnScaffold)
-                {
-                    ToggleCell(_hoveredCell.Value,CurrentPlan.ScaffoldAnchorPoints);
-                    SaveCurrent();
-                }
-                
-                if (_tool == EditorTool.ProvidesSupport)
-                {
-                    ToggleCell(_hoveredCell.Value,CurrentPlan.ProvidesStructureCells);
-                    SaveCurrent();
-                }
+                SaveCurrent();
             }
         }
 
@@ -190,26 +210,29 @@ public class PlanEditorSession : ISession
         {
             EditorTool.SpawnScaffold => CurrentPlan.ScaffoldAnchorPoints,
             EditorTool.ProvidesSupport => CurrentPlan.ProvidesStructureCells,
+            EditorTool.RequiresSupport => CurrentPlan.RequiresSupportCells,
             _ => CurrentPlan.OccupiedCells
         };
         
         painter.DrawLineRectangle(Grid.CellToPixelRectangle(Cell.Origin).Inflated(-1, -1), new LineDrawSettings{Color = Color.White.WithMultipliedOpacity(0.5f)});
 
-        if (cells != CurrentPlan.OccupiedCells)
-        {
-            foreach (var cell in CurrentPlan.OccupiedCells)
-            {
-                var rectangle = Grid.CellToPixelRectangle(cell).Inflated(-3, -3);
-                painter.DrawRectangle(rectangle,
-                        new DrawSettings {Color = Color.DarkBlue.WithMultipliedOpacity(0.25f), Depth = Depth.Middle - 1});
-            }
-        }
+        PreviewCells(painter, cells, CurrentPlan.OccupiedCells, Color.DarkBlue.WithMultipliedOpacity(0.25f), Depth.Middle + 1);
+        PreviewCells(painter, cells, CurrentPlan.RequiresSupportCells, Color.DarkRed.WithMultipliedOpacity(0.5f), Depth.Middle + 2);
+        PreviewCells(painter, cells, CurrentPlan.ProvidesStructureCells, Color.DarkGreen.WithMultipliedOpacity(0.5f), Depth.Middle + 2);
         
         foreach (var cell in cells)
         {
             var rectangle = Grid.CellToPixelRectangle(cell).Inflated(-1, -1);
+
+            // if this cell is not contained in the overall body cells, highlight that!
+            var color = Color.Orange;
+            if (!CurrentPlan.OccupiedCells.Contains(cell))
+            {
+                color = Color.HotPink;
+            }
+
             painter.DrawRectangle(rectangle,
-                    new DrawSettings {Color = Color.Orange.WithMultipliedOpacity(0.75f), Depth = Depth.Middle});
+                    new DrawSettings {Color = color.WithMultipliedOpacity(0.75f), Depth = Depth.Middle});
         }
 
         if (_hoveredCell.HasValue)
@@ -239,6 +262,19 @@ public class PlanEditorSession : ISession
             new Vector2(0, _screenSize.Y - bigFont - smallFont.MeasureString(message).Y), new DrawSettings());
 
         painter.EndSpriteBatch();
+    }
+
+    private static void PreviewCells(Painter painter, HashSet<Cell> selectedCells, HashSet<Cell> cellsToPreview, Color color, Depth depth)
+    {
+        if (selectedCells != cellsToPreview)
+        {
+            foreach (var cell in cellsToPreview)
+            {
+                var rectangle = Grid.CellToPixelRectangle(cell).Inflated(-3, -3);
+                painter.DrawRectangle(rectangle,
+                    new DrawSettings {Color = color, Depth = depth});
+            }
+        }
     }
 
     public void Update(float dt)
@@ -273,5 +309,6 @@ public class PlanEditorSession : ISession
         MainCells,
         SpawnScaffold,
         ProvidesSupport,
+        RequiresSupport
     }
 }

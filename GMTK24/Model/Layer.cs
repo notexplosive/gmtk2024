@@ -39,7 +39,7 @@ public class Layer
         var structure = plan.BuildReal(centerCell, new Blueprint());
         var actualSupports = 0;
 
-        foreach (var bottomCell in structure.BottomCells())
+        foreach (var bottomCell in structure.CellsNeedingSupport)
         {
             var belowCell = bottomCell + new Cell(0, 1);
             if (SupportedCells().Contains(belowCell))

@@ -95,7 +95,24 @@
       "Y": -3
     }
   ],
-  "requiresSupportCells": [],
+  "requiresSupportCells": [
+    {
+      "X": -1,
+      "Y": 0
+    },
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": 1,
+      "Y": 0
+    },
+    {
+      "X": 2,
+      "Y": 0
+    }
+  ],
   "scaffoldAnchors": [
     {
       "X": 2,
