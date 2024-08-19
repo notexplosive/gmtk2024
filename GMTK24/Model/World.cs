@@ -44,7 +44,13 @@ public class World
 
     public Structure AddStructure(Cell centerCell, StructurePlan plan, Blueprint blueprint)
     {
-        return DeducePlacingLayer(plan).AddStructureToLayer(centerCell, plan, blueprint);
+        var layer = DeducePlacingLayer(plan);
+        var structure =  layer.AddStructureToLayer(centerCell, plan, blueprint);
+        structure.VisibilityChanged += () =>
+        {
+            layer.ClearScaffoldCache();
+        };
+        return structure;
     }
 
     public IEnumerable<Structure> AllStructures()

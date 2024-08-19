@@ -25,7 +25,7 @@ public class Layer
     {
         var realStructure = plan.BuildReal(centerCell, blueprint);
         _structures.Add(realStructure);
-        _scaffoldCache = null;
+        ClearScaffoldCache();
         _supportedCache = null;
 
         foreach (var cell in realStructure.OccupiedCells)
@@ -34,6 +34,11 @@ public class Layer
         }
 
         return realStructure;
+    }
+
+    public void ClearScaffoldCache()
+    {
+        _scaffoldCache = null;
     }
 
     public bool IsStructurallySupported(Cell centerCell, StructurePlan plan)
@@ -89,6 +94,11 @@ public class Layer
     {
         foreach (var structure in _structures)
         {
+            if (!structure.IsVisible)
+            {
+                continue;
+            }
+            
             foreach (var startingAnchorPoint in structure.ScaffoldAnchorPoints)
             {
                 var anchorPoint = startingAnchorPoint + new Cell(0, 1);

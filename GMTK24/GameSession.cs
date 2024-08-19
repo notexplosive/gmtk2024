@@ -5,6 +5,7 @@ using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
+using ExTween;
 using GMTK24.Config;
 using GMTK24.Model;
 using GMTK24.UserInterface;
@@ -21,18 +22,22 @@ public class GameSession : ISession
     private readonly Inventory _inventory = new();
     private readonly HoverState _isHovered = new();
     private readonly List<Level> _levels;
+    private readonly OverlayScreen _overlayScreen;
+    private readonly List<Particle> _particles = new();
+    private readonly List<Structure> _replayStructures = new();
     private readonly FormattedTextOverlay _rulesOverlay;
-    private readonly Point _screenSize;
+    private Point _screenSize;
+    private readonly RectangleF _startingCamera;
     private readonly World _world = new();
+    private Cutscene? _currentCutscene;
     private int? _currentLevelIndex;
     private Objective? _currentObjective;
-    private Overlay? _currentOverlay;
     private float _elapsedTime;
     private bool _isPanning;
     private Vector2? _mousePosition;
     private Vector2 _panVector;
-    private readonly List<Particle> _particles = new();
     private Ui? _ui;
+    private bool _hasPlayedEndCutscene;
 
     public GameSession(Point screenSize)
     {
@@ -41,6 +46,8 @@ public class GameSession : ISession
         _inventory.AddResource(new Resource("ICONS_Social", "ICONS_Social00", "Population", false));
         _inventory.AddResource(new Resource("ICONS_Insp", "ICONS_Insp00", "Inspiration", true, 75));
         _inventory.AddResource(new Resource("ICONS_Food", "ICONS_Food00", "Food", false, 15));
+
+        _overlayScreen = new OverlayScreen(_inventory);
 
         _levels = JsonFileReader.Read<LevelSequence>(Client.Debug.RepoFileSystem.GetDirectory("Resource"), "levels")
             .Levels;
@@ -66,6 +73,8 @@ public class GameSession : ISession
 
         _camera.CenterPosition = average / allCells.Count + new Vector2(0, -100);
 
+        _startingCamera = _camera.ViewBounds;
+
         _errorMessage = new ErrorMessage(screenSize);
     }
 
@@ -73,6 +82,11 @@ public class GameSession : ISession
     {
         if (Client.Debug.IsPassiveOrActive)
         {
+            if (input.Keyboard.GetButton(Keys.Escape).WasPressed)
+            {
+                RequestEditorSession?.Invoke();
+            }
+
             if (input.Keyboard.GetButton(Keys.Q).WasPressed)
             {
                 StartNextLevel();
@@ -82,31 +96,46 @@ public class GameSession : ISession
             {
                 _inventory.GetResource("Food").Add(100000);
             }
+
+            if (input.Keyboard.GetButton(Keys.E).WasPressed)
+            {
+                _inventory.GetResource("Inspiration").Add(100000);
+            }
+
+            if (input.Keyboard.GetButton(Keys.R).WasPressed)
+            {
+                PlayCutscene(EndCutscene());
+            }
         }
 
         _panVector = new Vector2(0, 0);
 
-        if (_currentOverlay != null)
+        if (_overlayScreen.HasOverlay())
         {
-            _currentOverlay.UpdateInput(input, hitTestStack, _screenSize);
+            _overlayScreen.UpdateInput(input, hitTestStack, _screenSize);
 
-            if (_currentOverlay.IsClosed)
+            if (_overlayScreen.IsCurrentOverlayClosed())
             {
-                _currentOverlay = null;
-                _ui?.FadeIn();
+                _overlayScreen.ClearCurrentOverlay();
+
+                if (_currentCutscene == null)
+                {
+                    _ui?.FadeIn();
+                }
             }
 
             _isHovered.Unset();
             return;
         }
 
+        if (_currentCutscene != null)
+        {
+            _isHovered.Unset();
+            return;
+        }
+
         var worldLayer = hitTestStack.AddLayer(_camera.ScreenToCanvas, Depth.Back);
         worldLayer.AddZone(_camera.ViewBounds, Depth.Back, _isHovered);
-
-        if (input.Keyboard.GetButton(Keys.Escape).WasPressed && Client.Debug.IsPassiveOrActive)
-        {
-            RequestEditorSession?.Invoke();
-        }
 
         if (_isHovered)
         {
@@ -130,8 +159,10 @@ public class GameSession : ISession
                         var structure = _world.AddStructure(plannedBuildPosition.Value, plannedStructure,
                             plannedBlueprint);
 
+                        _replayStructures.Add(structure);
+
                         var soundName = Client.Random.Dirty.GetRandomElement(structure.Blueprint.Stats().Sounds);
-                        ResourceAssets.Instance.PlaySound("sounds/"+soundName, new SoundEffectSettings());
+                        ResourceAssets.Instance.PlaySound("sounds/" + soundName, new SoundEffectSettings());
 
                         var onConstructDelta = structure.Blueprint.Stats().OnConstructDelta;
 
@@ -262,7 +293,7 @@ public class GameSession : ISession
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var structure in _world.MainLayer.Structures)
         {
-            DrawStructure(painter, structure);
+            Structure.DrawStructure(painter, structure);
         }
 
         painter.EndSpriteBatch();
@@ -270,7 +301,7 @@ public class GameSession : ISession
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var structure in _world.DecorationLayer.Structures)
         {
-            DrawStructure(painter, structure);
+            Structure.DrawStructure(painter, structure);
         }
 
         painter.EndSpriteBatch();
@@ -329,12 +360,18 @@ public class GameSession : ISession
         painter.EndSpriteBatch();
 
         DrawWater(painter, Color.CornflowerBlue, Vector2.Zero, 0, 1f);
-        
+
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
         foreach (var particle in _particles)
         {
-            painter.DrawAtPosition(particle.Texture, particle.Position, Scale2D.One, new DrawSettings{Angle = particle.Angle, Origin = DrawOrigin.Center, Color = Color.White.WithMultipliedOpacity(particle.Opacity)});
+            painter.DrawAtPosition(particle.Texture, particle.Position, Scale2D.One,
+                new DrawSettings
+                {
+                    Angle = particle.Angle, Origin = DrawOrigin.Center,
+                    Color = Color.White.WithMultipliedOpacity(particle.Opacity)
+                });
         }
+
         painter.EndSpriteBatch();
 
         DrawWater(painter, Color.CornflowerBlue.BrightenedBy(0.1f), new Vector2(0, Grid.CellSize), MathF.PI / 3, 1.5f);
@@ -346,7 +383,7 @@ public class GameSession : ISession
 
         _ui?.Draw(painter, _inventory);
 
-        _currentOverlay?.Draw(painter, _screenSize);
+        _overlayScreen.Draw(painter, _screenSize);
     }
 
     public void Update(float dt)
@@ -356,15 +393,18 @@ public class GameSession : ISession
         _ui?.Update(dt);
 
         _particles.RemoveAll(a => a.IsExpired());
-        
+
         foreach (var particle in _particles)
         {
             particle.Update(dt);
         }
 
-        if (_currentOverlay != null)
+        _overlayScreen.Update(dt);
+        _currentCutscene?.Update(dt);
+
+        if (_currentCutscene?.IsDone() == true)
         {
-            _currentOverlay.Update(dt);
+            _currentCutscene = null;
         }
 
         _errorMessage.Update(dt);
@@ -378,13 +418,112 @@ public class GameSession : ISession
         _inventory.ResourceUpdate(dt);
     }
 
+    private Cutscene EndCutscene()
+    {
+        var cutscene = new Cutscene(_overlayScreen);
+
+        var lastStructure = _replayStructures.LastOrDefault();
+
+        if (lastStructure != null)
+        {
+            var buildingCameraPosition = lastStructure.PixelCenter();
+            
+            cutscene.PanCamera(_camera, RectangleF.FromCenterAndSize(buildingCameraPosition, _camera.ViewBounds.Size), 1.25f, Ease.CubicFastSlow);
+        }
+        
+
+        cutscene.DisplayMessage(_ui, "We are a city.");
+        
+        var allStructuresRectangle = AllStructuresRectangle();
+        var skyCameraPosition = new Vector2(_camera.ViewBounds.X,allStructuresRectangle.Top - _camera.ViewBounds.Height * 5);
+        var skyViewBounds = new RectangleF(skyCameraPosition, _camera.ViewBounds.Size);
+        
+        cutscene.PanCamera(_camera, skyViewBounds, 1, Ease.CubicSlowFast);
+        
+        
+        cutscene.Callback(() =>
+        {
+            foreach (var structure in _replayStructures)
+            {
+                structure.Hide();
+            }
+        });
+        
+        cutscene.PanCamera(_camera, _startingCamera, 1, Ease.CubicFastSlow);
+        cutscene.DisplayMessage(_ui, "From humble beginnings.");
+
+
+        var allStructuresViewBounds = RectangleF.FromCenterAndSize(allStructuresRectangle.Center, _screenSize.ToVector2() / 4);
+
+        var iterations = 0;
+        while (!allStructuresViewBounds.Envelopes(allStructuresRectangle))
+        {
+            allStructuresViewBounds = allStructuresViewBounds.InflatedMaintainAspectRatio(50);
+            iterations++;
+
+            if (iterations > 1000)
+            {
+                break;
+            }
+            
+        }
+        
+        // extra 100px margin
+        allStructuresViewBounds = allStructuresViewBounds.InflatedMaintainAspectRatio(100);
+
+        cutscene.PanCamera(_camera, allStructuresViewBounds, 2, Ease.CubicFastSlow);
+
+        cutscene.DisplayMessage(_ui, "We built and scaled.");
+
+        var buildDuration = 4f;
+        var totalStructures = _replayStructures.Count;
+        var delay = 1f / totalStructures * buildDuration;
+        foreach (var structure in _replayStructures)
+        {
+            cutscene.Delay(delay);
+            cutscene.Callback(() => { structure.Show(); });
+        }
+        
+        cutscene.DisplayMessage(_ui, "We will be remembered."); // todo: screenshot moment
+        
+        cutscene.DisplayMessage(_ui,
+            // "Press [Enter] to take a screenshot.",
+            GameplayConstants.Title,
+            "Made in 96 hours for the GMTK Game Jam",
+            "Visual Art by isawiitch",
+            "Sound Design by quarkimo",
+            "Programming and Game Design by NotExplosive",
+            "Thank you for playing.",
+            "You can stay for as long as you like."
+        );
+        
+        cutscene.Callback(()=>{_ui?.FadeIn();});
+
+        return cutscene;
+    }
+
+    private RectangleF AllStructuresRectangle()
+    {
+        var rectangle = new RectangleF();
+        foreach (var cell in _world.AllStructures().SelectMany(a => a.OccupiedCells))
+        {
+            rectangle = RectangleF.Union(rectangle, Grid.CellToPixelRectangle(cell));
+        }
+
+        return rectangle;
+    }
+
+    private void PlayCutscene(Cutscene cutscene)
+    {
+        _currentCutscene = cutscene;
+    }
+
     private void SpawnParticleBurst(Vector2 startingPosition, Texture2D texture, int amount)
     {
-
         var startingAngle = Client.Random.Dirty.NextFloat() * MathF.PI * 2f;
         for (var i = 0; i < amount; i++)
         {
-            var angle = startingAngle + MathF.PI*2 / amount * (i-1);
+            var angle = startingAngle + MathF.PI * 2 / amount * (i - 1);
 
             _particles.Add(new Particle(startingPosition, texture, Vector2Extensions.Polar(400, angle)));
         }
@@ -471,7 +610,7 @@ public class GameSession : ISession
 
         if (level.IntroDialogue.Count > 0)
         {
-            OpenOverlay(new DialogueOverlay(_inventory,
+            _overlayScreen.OpenOverlay(_ui, new DialogueOverlay(_inventory,
                 level.IntroDialogue.Select(text => new DialoguePage {Text = text}).ToList(),
                 () => { _ui = BuildUi(uiBuilder); }));
         }
@@ -496,19 +635,16 @@ public class GameSession : ISession
 
     private void WinGame()
     {
-        Client.Debug.Log("You win!");
+        if (!_hasPlayedEndCutscene)
+        {
+            _hasPlayedEndCutscene = true;
+            PlayCutscene(EndCutscene());
+        }
     }
 
     private void ShowRules()
     {
-        OpenOverlay(_rulesOverlay);
-    }
-
-    private void OpenOverlay(Overlay newOverlay)
-    {
-        newOverlay.Reset();
-        _currentOverlay = newOverlay;
-        _ui?.FadeOut();
+        _overlayScreen.OpenOverlay(_ui, _rulesOverlay);
     }
 
     public event Action? RequestEditorSession;
@@ -540,35 +676,6 @@ public class GameSession : ISession
 
             painter.DrawAsRectangle(texture, rectangle, new DrawSettings());
         }
-    }
-
-    public static void DrawStructure(Painter painter, Structure structure)
-    {
-        if (structure.Settings.DrawDescription.TextureName == null)
-        {
-            return;
-        }
-
-        var animationDuration = 0.25f;
-        var scaleVector = Vector2.One;
-        var texture = ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName];
-        var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
-        var originOffset = new Vector2(texture.Width / 2f, texture.Height);
-        var origin = new DrawOrigin(originOffset);
-
-        if (structure.Lifetime < animationDuration)
-        {
-            var oscillationsPerSecond = 40;
-            var intensity = 0.25f;
-            var wiggle = MathF.Sin(structure.Lifetime * oscillationsPerSecond) *
-                         Math.Max(0, animationDuration - structure.Lifetime) * intensity;
-
-            scaleVector = new Vector2(1 - wiggle, 1 + wiggle);
-        }
-
-        painter.DrawAtPosition(texture,
-            Grid.CellToPixel(graphicsTopLeft) + originOffset, new Scale2D(scaleVector),
-            new DrawSettings {Depth = Depth.Front - structure.Center.Y, Origin = origin});
     }
 
     private Cell? GetPlannedBuildPosition()

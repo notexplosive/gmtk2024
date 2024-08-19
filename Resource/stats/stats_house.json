@@ -6,6 +6,10 @@
         },
         {
             "resourceName": "Inspiration",
+            "amount": 10
+        },
+        {
+            "resourceName": "Inspiration",
             "amount": 50,
             "affectCapacity": true
         }

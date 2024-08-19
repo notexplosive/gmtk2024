@@ -14,7 +14,7 @@
             "affectCapacity": true
         }
     ],
-    "onSecondsDelta": [
+    "onSecondDelta": [
         {
             "resourceName": "Inspiration",
             "amount": 3
@@ -22,7 +22,6 @@
     ],
     "icon": "button_icon_decor",
     "sounds": [
-        "plant1",
         "plant2",
         "plant3",
         "plant4"

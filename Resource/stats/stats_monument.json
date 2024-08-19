@@ -1,0 +1,14 @@
+{
+    "cost": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 100
+        }
+    ],
+    "title": "Monument",
+    "description": "Win the game.",
+    "icon": "button_icon_platform",
+    "sounds": [
+        "gen1"
+    ]
+}

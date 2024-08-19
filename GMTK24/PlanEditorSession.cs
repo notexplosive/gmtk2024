@@ -201,7 +201,7 @@ public class PlanEditorSession : ISession
     public void Draw(Painter painter)
     {
         painter.BeginSpriteBatch(_camera.CanvasToScreen);
-        GameSession.DrawStructure(painter, CurrentPlan.BuildReal(Cell.Origin, new Blueprint()));
+        Structure.DrawStructure(painter, CurrentPlan.BuildReal(Cell.Origin, new Blueprint()));
         painter.EndSpriteBatch();
 
         painter.BeginSpriteBatch(_camera.CanvasToScreen);

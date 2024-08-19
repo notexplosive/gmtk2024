@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using ExplogineCore.Data;
+using ExplogineMonoGame;
+using ExplogineMonoGame.Data;
 using ExTween;
 using GMTK24.Config;
 using Microsoft.Xna.Framework;
@@ -11,6 +15,7 @@ public class Structure
     private readonly List<Cell> _cellsProvidingSupport = new();
     private readonly List<Cell> _occupiedWorldSpace = new();
     private readonly List<Cell> _scaffoldAnchorPoints = new();
+    public bool IsVisible { get; private set; } = true;
 
     public Structure(Cell worldCenter, StructurePlan plan, Blueprint blueprint)
     {
@@ -51,5 +56,55 @@ public class Structure
         }
 
         return average / _occupiedWorldSpace.Count;
+    }
+
+    public void Hide()
+    {
+        IsVisible = false;
+        VisibilityChanged?.Invoke();
+    }
+
+    public void Show()
+    {
+        Lifetime = 0;
+        IsVisible = true;
+        VisibilityChanged?.Invoke();
+    }
+
+    public event Action? VisibilityChanged;
+    
+    
+    public static void DrawStructure(Painter painter, Structure structure)
+    {
+        if (structure.Settings.DrawDescription.TextureName == null)
+        {
+            return;
+        }
+
+        if (!structure.IsVisible)
+        {
+            return;
+        }
+
+        var animationDuration = 0.25f;
+        var scaleVector = Vector2.One;
+        var texture = ResourceAssets.Instance.Textures[structure.Settings.DrawDescription.TextureName];
+        var graphicsTopLeft = structure.Center + structure.Settings.DrawDescription.GraphicTopLeft;
+        var originOffset = new Vector2(texture.Width / 2f, texture.Height);
+        var origin = new DrawOrigin(originOffset);
+
+        if (structure.Lifetime < animationDuration)
+        {
+            var oscillationsPerSecond = 40;
+            var intensity = 0.25f;
+            var wiggle = MathF.Sin(structure.Lifetime * oscillationsPerSecond) *
+                         Math.Max(0, animationDuration - structure.Lifetime) * intensity;
+
+            scaleVector = new Vector2(1 - wiggle, 1 + wiggle);
+        }
+        
+        painter.DrawAtPosition(texture,
+            Grid.CellToPixel(graphicsTopLeft) + originOffset, new Scale2D(scaleVector),
+            new DrawSettings {Depth = Depth.Front - structure.Center.Y, Origin = origin});
     }
 }

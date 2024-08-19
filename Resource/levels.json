@@ -76,13 +76,15 @@
                 },
                 {
                     "name": "blueprint_l1_decoration"
+                },
+                {
+                    "name": "blueprint_monument"
                 }
             ],
             "completionCriteria": {
-                "getResource": {
-                    // todo: require monument
-                    "resource": "Population",
-                    "targetQuantity": 800
+                "buildStructures": {
+                    "blueprint": "blueprint_monument",
+                    "targetQuantity": 1
                 }
             }
         }

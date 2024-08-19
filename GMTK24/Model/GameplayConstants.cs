@@ -13,4 +13,6 @@ public static class GameplayConstants
             return formattedTextParser;
         }
     }
+    
+    public static string Title => "We are a City";
 }
