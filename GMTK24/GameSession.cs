@@ -20,15 +20,15 @@ namespace GMTK24;
 
 public class GameSession : ISession
 {
-    private readonly Camera _camera;
-    private readonly ErrorMessage _errorMessage;
+    private Camera _camera;
+    private ErrorMessage _errorMessage;
     private readonly Inventory _inventory = new();
     private readonly HoverState _isHovered = new();
     private readonly List<Level> _levels;
     private readonly OverlayScreen _overlayScreen;
     private readonly List<Particle> _particles = new();
     private readonly List<Structure> _replayStructures = new();
-    private readonly RectangleF _startingCamera;
+    private RectangleF _startingCamera;
     private readonly World _world = new();
     private Cutscene? _currentCutscene;
     private int? _currentLevelIndex;
@@ -42,10 +42,12 @@ public class GameSession : ISession
     private Vector2 _panVector;
     private Point _screenSize;
     private Ui? _ui;
+    private Wrapped<bool> _muteSfx = new(true);
+    private Wrapped<bool> _muteMusic = new(true);
 
-    public GameSession(Point screenSize)
+    public GameSession(IWindow window)
     {
-        _screenSize = screenSize;
+        _screenSize = window.RenderResolution;
 
         _inventory.AddResource(new Resource("ICONS_Social", "ICONS_Social00", "Population", false));
         _inventory.AddResource(new Resource("ICONS_Insp", "ICONS_Insp00", "Inspiration", true, 75));
@@ -55,26 +57,42 @@ public class GameSession : ISession
 
         _levels = JsonFileReader.Read<LevelSequence>(Client.Debug.RepoFileSystem.GetDirectory("Resource"), "levels")
             .Levels;
-        StartNextLevel();
-
-        var zoomLevel = 0.5f;
-        _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, screenSize.ToVector2() * zoomLevel),
-            screenSize);
+        
         _world.MainLayer.AddStructureToLayer(new Cell(0, -2), JsonFileReader.ReadPlan("plan_foundation"),
             new Blueprint());
 
-        var average = Vector2.Zero;
+        var titleOverlay = new TitleOverlay(window, _muteSfx, _muteMusic, () =>
+        {
+            StartNextLevel();            
+        });
+
+        titleOverlay.ResolutionChanged += () =>
+        {
+            _screenSize = window.RenderResolution;
+            _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, _screenSize.ToVector2() * 0.5f), _screenSize);
+            _camera.CenterPosition = AverageOfAllCells() + new Vector2(0, -100);
+            _startingCamera = _camera.ViewBounds;
+            _errorMessage = new ErrorMessage(_screenSize);
+        };
+        _overlayScreen.OpenOverlay(null, titleOverlay);
+
+        _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, _screenSize.ToVector2() * 0.5f), _screenSize);
+        _camera.CenterPosition = AverageOfAllCells() + new Vector2(0, -100);
+        _startingCamera = _camera.ViewBounds;
+        _errorMessage = new ErrorMessage(_screenSize);
+    }
+
+    private Vector2 AverageOfAllCells()
+    {
         var allCells = _world.AllStructures().SelectMany(a => a.OccupiedCells).ToList();
+        var average = Vector2.Zero;
         foreach (var cell in allCells)
         {
-            average += Grid.CellToPixel(cell);
+            average += Grid.CellToPixel(cell) + new Vector2(Grid.CellSize/2f);
         }
 
-        _camera.CenterPosition = average / allCells.Count + new Vector2(0, -100);
-
-        _startingCamera = _camera.ViewBounds;
-
-        _errorMessage = new ErrorMessage(screenSize);
+        average = average / allCells.Count;
+        return average;
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)

@@ -38,7 +38,7 @@ public class GMTKCartridge : BasicGameCartridge
 
     private void SwitchToPlayMode()
     {
-        var gameSession = new GameSession(Runtime.Window.RenderResolution);
+        var gameSession = new GameSession(Runtime.Window);
         gameSession.RequestEditorSession += SwitchToEditor;
         _session = gameSession;
     }

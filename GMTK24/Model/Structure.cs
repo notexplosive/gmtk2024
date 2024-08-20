@@ -53,7 +53,7 @@ public class Structure
         var average = Vector2.Zero;
         foreach (var cell in _occupiedWorldSpace)
         {
-            average += Grid.CellToPixel(cell);
+            average += Grid.CellToPixel(cell) + new Vector2(Grid.CellSize) / 2;
         }
 
         return average / _occupiedWorldSpace.Count;

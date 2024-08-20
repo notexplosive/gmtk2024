@@ -20,15 +20,29 @@ public abstract class Overlay
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack, Point screenSize)
     {
-        hitTestStack.AddZone(screenSize.ToRectangleF(), Depth.Middle, _isHovered);
+        // back scrim to block inputs below
+        hitTestStack.AddZone(screenSize.ToRectangleF(), Depth.Back, () => { });
+        
+        // front scrim to ensure the screen is hovered
+        hitTestStack.AddZone(screenSize.ToRectangleF(), Depth.Front, _isHovered, true);
 
-        if (_isHovered && input.Mouse.GetButton(MouseButton.Left, true).WasPressed)
+        if (_isHovered)
         {
-            OnContinue(_tween);
+            if (input.Mouse.GetButton(MouseButton.Left, true).WasPressed)
+            {
+                OnTapAnywhere(_tween);
+            }
+
+            if (_tween.IsDone())
+            {
+                UpdateInputInternal(input, hitTestStack);
+            }
         }
     }
 
-    protected abstract void OnContinue(SequenceTween tween);
+    protected abstract void UpdateInputInternal(ConsumableInput input, HitTestStack hitTestStack);
+
+    protected abstract void OnTapAnywhere(SequenceTween tween);
 
     public void Reset()
     {
@@ -49,7 +63,7 @@ public abstract class Overlay
                     .Add(ContentOpacity.TweenTo(1f, 0.25f, Ease.Linear))
                     .Add(new SequenceTween()
                         .Add(new WaitSecondsTween(1f))
-                        .Add(ContinueOpacity.TweenTo(1f, 0.25f, Ease.Linear))
+                        .Add(ContinueOpacity.TweenTo(1f, 0.25f, Ease.QuadFastSlow))
                     )
             )
             ;
@@ -90,5 +104,5 @@ public abstract class Overlay
         painter.EndSpriteBatch();
     }
 
-    protected abstract void DrawContent(Painter painter, RectangleF rectangle);
+    protected abstract void DrawContent(Painter painter, RectangleF screenRectangle);
 }

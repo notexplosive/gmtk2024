@@ -29,8 +29,13 @@ public class DialogueOverlay : Overlay
         }
         _currentPage = _pages.First();
     }
-    
-    protected override void OnContinue(SequenceTween tween)
+
+    protected override void UpdateInputInternal(ConsumableInput input, HitTestStack hitTestStack)
+    {
+        
+    }
+
+    protected override void OnTapAnywhere(SequenceTween tween)
     {
         tween.SkipToEnd();
         _pageIndex++;

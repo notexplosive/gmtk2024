@@ -15,6 +15,6 @@ public static class GameplayConstants
         }
     }
     
-    public static string Title => "We are a City";
+    public static string Title => "Seaside Town";
     public static Color SkyColor => Color.SkyBlue;
 }
