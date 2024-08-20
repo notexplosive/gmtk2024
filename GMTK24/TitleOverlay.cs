@@ -34,17 +34,19 @@ public class TitleOverlay : Overlay
         
         _layoutRoot.Add(L.FillHorizontal("title", 128));
 
-        var buttonSize = 120;
+        var buttonSize = 100;
         var bufferSize = 40;
 
         _layoutRoot.Add(L.FixedElement(bufferSize, bufferSize));
 
-        _layoutRoot.Add(L.FixedElement("play", buttonSize * 4, buttonSize));
 
         _layoutRoot.Add(L.FixedElement(bufferSize, bufferSize));
 
         var buttonGroup = _layoutRoot.AddGroup(new Style {Alignment = Alignment.Center, PaddingBetweenElements = 10},
             L.FillHorizontal(buttonSize));
+        
+        buttonGroup.Add(L.FixedElement("play", buttonSize * 4, buttonSize));
+        
         buttonGroup.Add(L.FixedElement("fullscreen", buttonSize * 2, buttonSize));
         //buttonGroup.Add(L.FixedElement("mute-music", buttonSize * 2, buttonSize));
         //buttonGroup.Add(L.FixedElement("mute-sfx", buttonSize * 2, buttonSize));
@@ -57,7 +59,7 @@ public class TitleOverlay : Overlay
             onPlay();
             Close();
         }));
-        _buttonStates.Add(new PressButtonState("fullscreen", "Toggle Fullscreen", () =>
+        _buttonStates.Add(new PressButtonState("fullscreen", "Toggle\nFullscreen", () =>
         {
             window.SetFullscreen(!window.IsFullscreen);
             window.SetRenderResolution(new CartridgeConfig(window.Size, SamplerState.PointWrap));
@@ -121,14 +123,9 @@ public class TitleOverlay : Overlay
     protected override void DrawContent(Painter painter, RectangleF screenRectangle)
     {
         var font = Client.Assets.GetFont("gmtk/GameFont", 80);
-        painter.DrawStringWithinRectangle(font, GameplayConstants.Title, _bakedLayout.FindElement("title"),
-            Alignment.Center,
-            new DrawSettings {Depth = Depth.Middle - 10, Color = Color.White.WithMultipliedOpacity(ContentOpacity)});
         
-        painter.DrawStringWithinRectangle(font, GameplayConstants.Title, _bakedLayout.FindElement("title").Rectangle.Moved(new Vector2(2)),
-            Alignment.Center,
-            new DrawSettings {Depth = Depth.Middle, Color = Color.Black.WithMultipliedOpacity(ContentOpacity)});
-
+        painter.DrawAtPosition(ResourceAssets.Instance.Textures["ARCHITOWER_Logo"],_bakedLayout.FindElement("title").Rectangle.Center, new Scale2D(2), new DrawSettings{Origin = DrawOrigin.Center, Color = Color.White.WithMultipliedOpacity(ContentOpacity)});
+        
         foreach (var button in _buttonStates)
         {
             DrawButton(painter, button);

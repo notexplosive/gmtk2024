@@ -479,6 +479,11 @@ public class GameSession : ISession
         var rectangle = canvas.Size.ToRectangleF().Inflated(-10, -10);
         painter.DrawStringWithinRectangle(font2, "notexplosive.net", rectangle, Alignment.BottomRight,
             new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f)});
+
+        var logo = ResourceAssets.Instance.Textures["ARCHITOWER_Logo"];
+        var logoRect = RectangleF.FromSizeAlignedWithin(rectangle, logo.Bounds.Size.ToVector2(), Alignment.BottomRight);
+        painter.DrawAsRectangle(logo, logoRect, new DrawSettings());
+        
         painter.EndSpriteBatch();
 
         Client.Graphics.PopCanvas();
