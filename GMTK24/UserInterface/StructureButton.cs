@@ -21,6 +21,9 @@ public class StructureButton : IHoverable
     public bool IsLocked { get; }
     public Blueprint Blueprint { get; }
     public RectangleF Rectangle { get; }
+    public float HoverTime { get; set; }
+
+    public static float MaxHoverTime => 0.1f; 
 
     public TooltipContent GetTooltip()
     {

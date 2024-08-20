@@ -20,7 +20,7 @@
             "amount": 3
         }
     ],
-    "icon": "button_icon_decor",
+    "icon": "BUTTONS_Decor01",
     "sounds": [
         "plant2",
         "plant3",

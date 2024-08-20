@@ -660,7 +660,7 @@ public class GameSession : ISession
         cutscene.Callback(() =>
         {
             _ui?.FadeIn();
-            ShowToast("Press Space to lock camera to whole pixels", 5);
+            ShowToast("Press Space to align camera with pixels", 5);
         });
 
         return cutscene;

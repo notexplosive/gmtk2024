@@ -30,7 +30,7 @@ public class UiLayoutBuilder
         var buttonWidth = 120;
         var buttonHeight = 120;
 
-        var buttonRibbonHeight = 110;
+        var buttonRibbonHeight = 120;
 
         var layoutBuilder = new LayoutBuilder(new Style(Orientation.Vertical));
 
@@ -53,7 +53,7 @@ public class UiLayoutBuilder
         layoutBuilder.Add(L.FillBoth("middle-area"));
 
         var buttonRibbonLayoutGroup = layoutBuilder.AddGroup(
-            new Style(Alignment: Alignment.Center, PaddingBetweenElements: 20),
+            new Style(Alignment: Alignment.TopCenter, PaddingBetweenElements: 20),
             L.FillHorizontal("button-ribbon", buttonRibbonHeight));
 
         foreach (var buildAction in _buttons)
@@ -70,7 +70,7 @@ public class UiLayoutBuilder
         );
         foreach (var blueprintButton in _buttons)
         {
-            ui.AddButton(new StructureButton(result.FindElement(GetId(blueprintButton)).Rectangle, blueprintButton.Name,
+            ui.AddButton(new StructureButton(result.FindElement(GetId(blueprintButton)).Rectangle.Moved(new Vector2(0,-20)), blueprintButton.Name,
                 blueprintButton.Blueprint, blueprintButton.IsLocked));
         }
 

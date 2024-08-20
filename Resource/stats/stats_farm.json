@@ -13,7 +13,7 @@
     ],
     "title": "Garden",
     "description": "Grants small amount of #Food.\nCan share space with other structures.",
-    "icon": "button_icon_farm",
+    "icon": "BUTTONS_Farm01",
     "sounds": [
         "plant2",
         "plant3",

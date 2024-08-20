@@ -6,6 +6,7 @@ using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExplogineMonoGame.Input;
 using ExTween;
+using GMTK24.Config;
 using GMTK24.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,44 +64,43 @@ public class Ui
 
         foreach (var button in _buttons)
         {
-            var backerSprite = ResourceAssets.Instance.Textures["button_normal"];
-            var offset = new Vector2(0, 20);
-
-            if (button.IsLocked)
-            {
-                backerSprite = ResourceAssets.Instance.Textures["button_locked"];
-            }
-
-            if (State.HoveredItem == button)
-            {
-                backerSprite = ResourceAssets.Instance.Textures["button_hovered"];
-                offset = new Vector2(0, 0);
-            }
+            var backerSprite = ResourceAssets.Instance.Textures["BUTTONS_Base2"];
+            Vector2 offset;
 
             if (State.SelectedButton == button)
             {
-                offset = new Vector2(0, -20);
+                backerSprite = ResourceAssets.Instance.Textures["BUTTONS_Base1"];
+                button.HoverTime = StructureButton.MaxHoverTime;
             }
+
+            var hoverPercent = (button.HoverTime / StructureButton.MaxHoverTime);
+            offset = new Vector2(0, -40 * Ease.QuadFastSlow(hoverPercent));
 
             var destinationRectangle = button.Rectangle.Moved(offset + FadeOffsetPixels());
             painter.DrawAsRectangle(backerSprite, destinationRectangle, new DrawSettings {Depth = Depth.Middle});
             var buttonIconName = button.Blueprint.Stats().ButtonIconName;
             if (buttonIconName != null)
             {
+                var color = Color.White;
+                if (button == State.SelectedButton)
+                {
+                    color = Color.DarkBlue;
+                }
+                
                 painter.DrawAsRectangle(ResourceAssets.Instance.Textures[buttonIconName],
-                    destinationRectangle, new DrawSettings {Depth = Depth.Middle - 1});
+                    destinationRectangle, new DrawSettings {Depth = Depth.Middle - 1, Color = color});
             }
 
-            var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
-            var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White,
-                ApplyIcons(inventory, StructureButton.DisplayCost(button.Blueprint.Stats().Cost)),
-                GameplayConstants.FormattedTextParser);
-
-            painter.DrawFormattedStringWithinRectangle(costTextFormatted, destinationRectangle.Moved(new Vector2(0, 0)),
-                Alignment.TopCenter, new DrawSettings
-                {
-                    Depth = Depth.Middle - 10
-                });
+            // var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
+            // var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White,
+            //     ApplyIcons(inventory, StructureButton.DisplayCost(button.Blueprint.Stats().Cost)),
+            //     GameplayConstants.FormattedTextParser);
+            //
+            // painter.DrawFormattedStringWithinRectangle(costTextFormatted, destinationRectangle.Moved(new Vector2(0, 0)),
+            //     Alignment.TopRight, new DrawSettings
+            //     {
+            //         Depth = Depth.Middle - 10
+            //     });
         }
 
         foreach (var resourceTracker in _resourceTrackers)
@@ -177,7 +177,7 @@ public class Ui
                                       RectangleF.Union(bodyRectangleNormalized, tooltipCostRectangleNormalized)).Size +
                                   new Vector2(50, 0);
 
-                var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -40),
+                var paddedTooltipRectangle = RectangleF.FromSizeAlignedWithin(_middleArea.Inflated(-20, -80),
                     tooltipSize + new Vector2(25), Alignment.BottomCenter);
 
                 var tooltipRectangle =
@@ -260,6 +260,20 @@ public class Ui
     {
         _ftueElapsedTime += dt;
         _uiTween.Update(dt);
+
+        foreach (var button in _buttons)
+        {
+            if (State.HoveredItem == button)
+            {
+                button.HoverTime += dt;
+            }
+            else
+            {
+                button.HoverTime -= dt;
+            }
+
+            button.HoverTime = Math.Clamp(button.HoverTime, 0, StructureButton.MaxHoverTime);
+        }
 
         if (State.SelectedButton != null)
         {

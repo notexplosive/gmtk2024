@@ -7,7 +7,7 @@
     ],
     "title": "Monument",
     "description": "Win the game.",
-    "icon": "button_icon_platform",
+    "icon": "BUTTONS_MONUMENT",
     "sounds": [
         "gen1"
     ]

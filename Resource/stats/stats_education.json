@@ -13,7 +13,7 @@
     ],
     "title": "Garden",
     "description": "Grants small amount of #Food.\nCan share space with other structures.",
-    "icon": "BUTTONS_Education02",
+    "icon": "BUTTONS_Education01",
     "sounds": [
         "gen1",
         "gen2",
