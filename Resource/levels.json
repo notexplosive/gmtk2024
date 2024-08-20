@@ -7,6 +7,12 @@
                 },
                 {
                     "name": "blueprint_l1_education"
+                },
+                {
+                    "name": "blueprint_l1_farm"
+                },
+                {
+                    "name": "blueprint_l1_shop"
                 }
             ],
             "completionCriteria": {

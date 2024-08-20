@@ -1,6 +1,7 @@
 {
   "settings": {
     "drawDescription": {
+      "textureName": null,
       "frames": [
         "MONUMENT01",
         "MONUMENT02",
