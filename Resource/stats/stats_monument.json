@@ -30,10 +30,6 @@
     "title": "Monument",
     "icon": "BUTTONS_MONUMENT",
     "sounds": [
-        "gen1",
-        "gen2",
-        "gen3",
-        "gen4",
-        "gen5"
+        "monument"
     ]
 }

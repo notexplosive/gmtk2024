@@ -62,8 +62,8 @@ public class MusicPlayer
             var quieterZoomedIn = zoomPercent * 2f;
             var louderZoomedIn = 1-quieterZoomedIn;
             
-            _tracks[0].Volume = louderZoomedIn * _mainGameMusicFader / 2f;
-            _tracks[1].Volume = quieterZoomedIn * _mainGameMusicFader / 2f;
+            _tracks[0].Volume = louderZoomedIn * _mainGameMusicFader;
+            _tracks[1].Volume = quieterZoomedIn * _mainGameMusicFader;
             _tracks[2].Volume = 0;
             
             // birds

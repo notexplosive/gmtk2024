@@ -7,32 +7,32 @@ namespace GMTK24;
 
 public class Objective
 {
-    private readonly LevelCompletionCriteria _criteria;
+    public LevelCompletionCriteria Criteria { get; }
 
     public Objective(LevelCompletionCriteria levelCompletionCriteria)
     {
-        _criteria = levelCompletionCriteria;
+        Criteria = levelCompletionCriteria;
     }
 
     public bool IsComplete(Ui ui, Inventory inventory, World world)
     {
-        var hasBuildCriteria = _criteria.RequiredStructures != null;
-        var hasResourceCriteria = _criteria.RequiredResources != null;
+        var hasBuildCriteria = Criteria.RequiredStructures != null;
+        var hasResourceCriteria = Criteria.RequiredResources != null;
 
         var resourceCriteriaSatisfied = !hasResourceCriteria;
         var buildCriteriaSatisfied = !hasBuildCriteria;
 
         if (hasBuildCriteria)
         {
-            var blueprint = ui.GetBlueprint(_criteria.RequiredStructures!.BlueprintName);
+            var blueprint = ui.GetBlueprint(Criteria.RequiredStructures!.BlueprintName);
             var matchingStructures = world.AllStructures().Count(a => a.Blueprint == blueprint);
-            buildCriteriaSatisfied = matchingStructures >= _criteria.RequiredStructures.TargetQuantity;
+            buildCriteriaSatisfied = matchingStructures >= Criteria.RequiredStructures.TargetQuantity;
         }
 
         if (hasResourceCriteria)
         {
-            var currentResource = inventory.GetResource(_criteria.RequiredResources!.ResourceName);
-            resourceCriteriaSatisfied = currentResource.Quantity >= _criteria.RequiredResources.TargetQuantity;
+            var currentResource = inventory.GetResource(Criteria.RequiredResources!.ResourceName);
+            resourceCriteriaSatisfied = currentResource.Quantity >= Criteria.RequiredResources.TargetQuantity;
         }
 
         return buildCriteriaSatisfied && resourceCriteriaSatisfied;

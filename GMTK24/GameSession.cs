@@ -536,7 +536,8 @@ public class GameSession : ISession
                 Depth = Depth.Back
             });
 
-            painter.DrawStringWithinRectangle(toastFont, _currentToast.Text, toastRectangle, Alignment.Center,
+            
+            painter.DrawFormattedStringWithinRectangle(FormattedText.FromFormatString(toastFont, Color.White, _currentToast.Text, GameplayConstants.FormattedTextParser), toastRectangle, Alignment.Center,
                 new DrawSettings());
             painter.EndSpriteBatch();
         }
@@ -869,8 +870,15 @@ public class GameSession : ISession
 
                     if (_currentLevelIndex == 1)
                     {
-                        ShowToast("Use Right or Middle Mouse Buttons to pan the camera\nYou can also use WASD",
+                        ShowToast("Use [color(ffff00)]Right or Middle Mouse Buttons[/color] to pan the camera\nYou can also use [color(ffff00)]WASD[/color].",
                             () => _ui?.CurrentFtueState == FtueState.None);
+                    }
+                    else
+                    {
+                        if (_currentObjective.Criteria.RequiredResources != null)
+                        {
+                            ShowToast(Ui.ApplyIcons(_inventory,$"Next milestone at {_currentObjective.Criteria.RequiredResources.TargetQuantity} #{_currentObjective.Criteria.RequiredResources.ResourceName}"), 10f);
+                        }
                     }
                 }));
         }

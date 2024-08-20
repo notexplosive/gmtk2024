@@ -19,8 +19,9 @@
         {
             "introDialogue": [
                 "Welcome to our humble village!",
-                "We can't keep stacking houses forever.",
-                "We need to expand outwards."
+                "We can build up, or we can build out.",
+                "Or we can do both!",
+                "The choice is yours."
             ],
             "blueprints": [
                 {
