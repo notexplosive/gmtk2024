@@ -15,4 +15,4 @@ end
 
 butler.login()
 
-butler.push(".build", "notexplosive", "gmtk24", "main")
+butler.push(".build", "notexplosive", "architowers", "main")

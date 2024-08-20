@@ -493,7 +493,7 @@ public class GameSession : ISession
             var texture = canvas.Texture;
             texture.SaveAsPng(stream, texture.Width, texture.Height);
 
-            ShowToast($"Screenshot saved at\n{screenshotFilePath}", 5);
+            ShowToast($"Screenshot saved at\n{screenshotFilePath.Replace("\\","/")}", 5);
         }
         catch
         {
@@ -914,7 +914,7 @@ public class GameSession : ISession
 
                     if (_currentLevelIndex == 1)
                     {
-                        ShowToast("Use [color(ffff00)]Right or Middle Mouse Buttons[/color] to pan the camera\nYou can also use [color(ffff00)]WASD[/color].",
+                        ShowToast("[color(ffff00)]Scroll[/color] to Zoom",
                             () => _ui?.CurrentFtueState == FtueState.None);
                     }
                     else

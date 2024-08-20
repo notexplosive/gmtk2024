@@ -37,15 +37,14 @@
             "completionCriteria": {
                 "getResource": {
                     "resource": "Population",
-                    "targetQuantity": 15
+                    "targetQuantity": 10
                 }
             }
         },
         {
             "introDialogue": [
-                "These tiny gardens don't scale.",
-                "We need more reliable sources of #Food.",
-                "Maybe the scholars can find a better way."
+                "We've found a way to scale up our #Food production!",
+                "Ask the scholars to show you how."
             ],
             "blueprints": [
                 {
@@ -76,9 +75,9 @@
         },
         {
             "introDialogue": [
-                "Things are going well for us.",
-                "All we need now is a crown jewel.",
-                "Something to put this city on the map."
+                "Things are going well.",
+                "All we need is a crown jewel.",
+                "A monument to celebrate this great city."
             ],
             "blueprints": [
                 {
