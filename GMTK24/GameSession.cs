@@ -20,30 +20,31 @@ namespace GMTK24;
 
 public class GameSession : ISession
 {
-    private Camera _camera;
-    private ErrorMessage _errorMessage;
     private readonly Inventory _inventory = new();
     private readonly HoverState _isHovered = new();
     private readonly List<Level> _levels;
     private readonly OverlayScreen _overlayScreen;
     private readonly List<Particle> _particles = new();
     private readonly List<Structure> _replayStructures = new();
-    private RectangleF _startingCamera;
     private readonly World _world = new();
+    private Camera _camera;
     private Cutscene? _currentCutscene;
     private int? _currentLevelIndex;
     private Objective? _currentObjective;
     private PersistentToast? _currentToast;
     private float _elapsedTime;
+    private ErrorMessage _errorMessage;
     private bool _hasPlayedEndCutscene;
     private bool _isAwaitingScreenshot;
     private bool _isPanning;
     private Vector2? _mousePosition;
+    private readonly MusicPlayer _musicPlayer = new();
+    private readonly Wrapped<bool> _muteMusic = new(true);
+    private readonly Wrapped<bool> _muteSfx = new(true);
     private Vector2 _panVector;
     private Point _screenSize;
+    private RectangleF _startingCamera;
     private Ui? _ui;
-    private Wrapped<bool> _muteSfx = new(true);
-    private Wrapped<bool> _muteMusic = new(true);
 
     public GameSession(IWindow window)
     {
@@ -51,29 +52,31 @@ public class GameSession : ISession
         {
             realWindow.AllowResizing = false;
         }
+
         _screenSize = window.RenderResolution;
 
         _inventory.AddResource(new Resource("ICONS_Social", "ICONS_Social00", "Population", false));
         _inventory.AddResource(new Resource("ICONS_Insp", "ICONS_Insp00", "Inspiration", true, 75));
         _inventory.AddResource(new Resource("ICONS_Food", "ICONS_Food00", "Food", false, 15));
+        _inventory.AddResource(new Resource("ICONS_Knowledge", "ICONS_Knowledge00", "Knowledge", false));
+        _inventory.AddResource(new Resource("ICONS_Commerce", "ICONS_Commerce00", "Money", false));
+        _inventory.AddResource(new Resource("ICONS_Joy", "ICONS_Joy00", "Joy", false));
 
         _overlayScreen = new OverlayScreen(_inventory);
 
         _levels = JsonFileReader.Read<LevelSequence>(Client.Debug.RepoFileSystem.GetDirectory("Resource"), "levels")
             .Levels;
-        
+
         _world.MainLayer.AddStructureToLayer(new Cell(0, -2), JsonFileReader.ReadPlan("plan_foundation"),
             new Blueprint());
 
-        var titleOverlay = new TitleOverlay(window, _muteSfx, _muteMusic, () =>
-        {
-            StartNextLevel();            
-        });
+        var titleOverlay = new TitleOverlay(window, _muteSfx, _muteMusic, () => { StartNextLevel(); });
 
         titleOverlay.ResolutionChanged += () =>
         {
             _screenSize = window.RenderResolution;
-            _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, _screenSize.ToVector2() * 0.5f), _screenSize);
+            _camera = new Camera(RectangleF.FromCenterAndSize(Vector2.Zero, _screenSize.ToVector2() * 0.5f),
+                _screenSize);
             _camera.CenterPosition = AverageOfAllCells() + new Vector2(0, -100);
             _startingCamera = _camera.ViewBounds;
             _errorMessage = new ErrorMessage(_screenSize);
@@ -84,19 +87,8 @@ public class GameSession : ISession
         _camera.CenterPosition = AverageOfAllCells() + new Vector2(0, -100);
         _startingCamera = _camera.ViewBounds;
         _errorMessage = new ErrorMessage(_screenSize);
-    }
 
-    private Vector2 AverageOfAllCells()
-    {
-        var allCells = _world.AllStructures().SelectMany(a => a.OccupiedCells).ToList();
-        var average = Vector2.Zero;
-        foreach (var cell in allCells)
-        {
-            average += Grid.CellToPixel(cell) + new Vector2(Grid.CellSize/2f);
-        }
-
-        average = average / allCells.Count;
-        return average;
+        _musicPlayer.Start();
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -288,14 +280,14 @@ public class GameSession : ISession
 
                 if (normalizedScrollDelta < 0)
                 {
-                    if (_camera.ViewBounds.Width < _screenSize.X || _hasPlayedEndCutscene)
+                    if (_camera.ViewBounds.Width < MaxViewBoundsWidth() || _hasPlayedEndCutscene)
                     {
                         _camera.ZoomOutFrom((int) (normalizedScrollDelta * -zoomStrength), _mousePosition.Value);
                     }
                 }
                 else
                 {
-                    if (_camera.ViewBounds.Width > (float) _screenSize.X / 10 * 2)
+                    if (_camera.ViewBounds.Width > MinViewBoundsWidth())
                     {
                         _camera.ZoomInTowards((int) (normalizedScrollDelta * zoomStrength), _mousePosition.Value);
                     }
@@ -332,6 +324,21 @@ public class GameSession : ISession
         _overlayScreen.Draw(painter, _screenSize);
 
         DrawCurrentToast(painter);
+
+        painter.BeginSpriteBatch();
+
+        var height = 25;
+        var position = new Vector2(200, 200);
+        var width = 200;
+        foreach (var volume in _musicPlayer.Volumes())
+        {
+            painter.DrawRectangle(new RectangleF(position, new Vector2(width, height)),
+                new DrawSettings {Depth = Depth.Back, Color = Color.Black});
+            painter.DrawRectangle(new RectangleF(position, new Vector2(width * volume, height)), new DrawSettings());
+            position += new Vector2(0, height);
+        }
+
+        painter.EndSpriteBatch();
     }
 
     public void Update(float dt)
@@ -339,6 +346,9 @@ public class GameSession : ISession
         _elapsedTime += dt;
         _camera.CenterPosition += _panVector * dt * 60 * 10;
         _ui?.Update(dt);
+
+        _musicPlayer.Update(
+            Math.Clamp((_camera.ViewBounds.Width) / MaxViewBoundsWidth(), 0f, 1f));
 
         _particles.RemoveAll(a => a.IsExpired());
 
@@ -367,6 +377,29 @@ public class GameSession : ISession
         _inventory.ResourceUpdate(dt);
     }
 
+    private Vector2 AverageOfAllCells()
+    {
+        var allCells = _world.AllStructures().SelectMany(a => a.OccupiedCells).ToList();
+        var average = Vector2.Zero;
+        foreach (var cell in allCells)
+        {
+            average += Grid.CellToPixel(cell) + new Vector2(Grid.CellSize / 2f);
+        }
+
+        average = average / allCells.Count;
+        return average;
+    }
+
+    private int MaxViewBoundsWidth()
+    {
+        return _screenSize.X * 2;
+    }
+
+    private float MinViewBoundsWidth()
+    {
+        return (float) _screenSize.X / 10 * 2;
+    }
+
     private Cutscene AlignToGridCutscene()
     {
         var cutscene = new Cutscene(_overlayScreen);
@@ -390,13 +423,14 @@ public class GameSession : ISession
         painter.Clear(GameplayConstants.SkyColor);
         DrawWorldBackground(painter);
         DrawWorldForeground(painter);
-        
+
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
         var font2 = Client.Assets.GetFont("gmtk/GameFont", 32);
         var rectangle = canvas.Size.ToRectangleF().Inflated(-10, -10);
-        painter.DrawStringWithinRectangle(font2, $"notexplosive.net", rectangle, Alignment.BottomRight, new DrawSettings{Color = Color.Black.WithMultipliedOpacity(0.5f)});
+        painter.DrawStringWithinRectangle(font2, "notexplosive.net", rectangle, Alignment.BottomRight,
+            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f)});
         painter.EndSpriteBatch();
-        
+
         Client.Graphics.PopCanvas();
 
         try
@@ -416,7 +450,6 @@ public class GameSession : ISession
         {
             ShowToast("Screenshot capture failed :(", 3);
         }
-
     }
 
     private void ShowScreenshotToast()
@@ -660,7 +693,7 @@ public class GameSession : ISession
         cutscene.Callback(() =>
         {
             _ui?.FadeIn();
-            ShowToast("Press Space to align camera with pixels", 5);
+            ShowToast("Press Space to reset camera", 5);
         });
 
         return cutscene;
@@ -797,9 +830,11 @@ public class GameSession : ISession
     private Ui BuildUi(UiLayoutBuilder uiBuilder)
     {
         var ui = uiBuilder.Build(_screenSize);
-        if(_currentLevelIndex.HasValue){
+        if (_currentLevelIndex.HasValue)
+        {
             ui.SetFtueState(_currentLevelIndex.Value);
         }
+
         return ui;
     }
 

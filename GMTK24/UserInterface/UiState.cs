@@ -1,3 +1,4 @@
+using ExplogineCore.Data;
 using ExplogineMonoGame;
 using GMTK24.Config;
 using GMTK24.Model;
@@ -23,6 +24,7 @@ public class UiState
     {
         if (HoveredItem is StructureButton structureButton && !structureButton.IsLocked)
         {
+            ResourceAssets.Instance.PlaySound("sounds/ui_button", new SoundEffectSettings());
             SelectedButton = structureButton;
         }
     }

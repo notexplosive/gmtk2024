@@ -101,6 +101,7 @@ public class TitleOverlay : Overlay
         {
             if (_primedButton != null && _primedButton.HoverState)
             {
+                ResourceAssets.Instance.PlaySound("sounds/ui_button", new SoundEffectSettings());
                 _primedButton.OnClick();
             }
 

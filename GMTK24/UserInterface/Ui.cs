@@ -106,7 +106,7 @@ public class Ui
         foreach (var resourceTracker in _resourceTrackers)
         {
             var textRectangle = resourceTracker.TextRectangle.Moved(-FadeOffsetPixels());
-            painter.DrawRectangle(textRectangle, new DrawSettings {Color = Color.White, Depth = Depth.Back});
+            painter.DrawRectangle(textRectangle, new DrawSettings {Color = Color.White.WithMultipliedOpacity(0.5f), Depth = Depth.Back});
 
             var iconName = resourceTracker.Resource.IconNameWithBacker;
 
@@ -117,8 +117,8 @@ public class Ui
                     Scale2D.One, new DrawSettings {Origin = DrawOrigin.Center, Depth = Depth.Middle});
             }
 
-            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 35),
-                resourceTracker.Resource.Status(), textRectangle, Alignment.Center,
+            painter.DrawStringWithinRectangle(Client.Assets.GetFont("gmtk/GameFont", 25),
+                resourceTracker.Resource.Status(), textRectangle.Inflated(-10, 0), Alignment.CenterLeft,
                 new DrawSettings {Color = Color.Black});
         }
 

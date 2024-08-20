@@ -36,13 +36,15 @@ public class ResourceAssets
     {
         var resourceFiles = Client.Debug.RepoFileSystem.GetDirectory("Resource");
 
-        yield return new VoidLoadEvent("Sound", () =>
+        
+        foreach (var path in resourceFiles.GetFilesAt(".", "ogg"))
         {
-            foreach (var path in resourceFiles.GetFilesAt(".", "ogg"))
+            yield return new VoidLoadEvent(path, () =>
             {
                 AddSound(resourceFiles, path.RemoveFileExtension());
-            }
-        });
+            });
+        }
+   
 
         yield return new VoidLoadEvent("Textures", () =>
         {

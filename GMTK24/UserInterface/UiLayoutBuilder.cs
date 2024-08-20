@@ -24,7 +24,7 @@ public class UiLayoutBuilder
 
     public Ui Build(Point screenSize)
     {
-        var resourceWidth = 250;
+        var resourceWidth = 200;
         var resourceHeight = 40;
 
         var buttonWidth = 120;
