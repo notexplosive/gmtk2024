@@ -9,8 +9,7 @@
     "description": "Provides a platform beneath another structure.",
     "icon": "BUTTONS_Overhang01",
     "sounds": [
-        "brick1",
-        "brick2",
-        "brick3"
+        "chain1",
+        "chain2"
     ]
 }
