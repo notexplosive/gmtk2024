@@ -391,10 +391,10 @@ public class GameSession : ISession
         DrawWorldBackground(painter);
         DrawWorldForeground(painter);
         
-        painter.BeginSpriteBatch();
+        painter.BeginSpriteBatch(SamplerState.LinearWrap);
         var font2 = Client.Assets.GetFont("gmtk/GameFont", 32);
         var rectangle = canvas.Size.ToRectangleF().Inflated(-10, -10);
-        painter.DrawStringWithinRectangle(font2, $"notexplosive.net", rectangle, Alignment.BottomRight, new DrawSettings{Color = Color.Black});
+        painter.DrawStringWithinRectangle(font2, $"notexplosive.net", rectangle, Alignment.BottomRight, new DrawSettings{Color = Color.Black.WithMultipliedOpacity(0.5f)});
         painter.EndSpriteBatch();
         
         Client.Graphics.PopCanvas();
