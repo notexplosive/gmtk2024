@@ -1,0 +1,14 @@
+{
+    "structurePlans": [
+        "plan_garden",
+        "plan_garden2",
+        "plan_garden3",
+        "plan_garden4",
+        "plan_garden5",
+        "plan_garden6",
+        "plan_garden7",
+        "plan_garden8",
+        "plan_garden_tree"
+    ],
+    "stats": "stats_garden"
+}

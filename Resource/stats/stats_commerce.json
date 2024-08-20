@@ -1,0 +1,24 @@
+{
+    "onConstructDelta": [
+        {
+            "resourceName": "Money",
+            "amount": 3
+        }
+    ],
+    "cost": [
+        {
+            "resourceName": "Food",
+            "amount": 5
+        }
+    ],
+    "title": "Commerce",
+    "description": "TODO",
+    "icon": "BUTTONS_Commerce01",
+    "sounds": [
+        "gen1",
+        "gen2",
+        "gen3",
+        "gen4",
+        "gen5"
+    ]
+}

@@ -49,7 +49,7 @@ public class MusicPlayer
             var louderZoomedOut = (zoomPercent - 0.5f)*2f;
             var quieterZoomedOut = 1-louderZoomedOut;
             
-            _tracks[0].Volume = 0f * _mainGameMusicFader;
+            _tracks[0].Volume = 0f;
             _tracks[1].Volume = quieterZoomedOut * _mainGameMusicFader;
             _tracks[2].Volume = louderZoomedOut * _mainGameMusicFader;
         }
@@ -62,9 +62,9 @@ public class MusicPlayer
             var quieterZoomedIn = zoomPercent * 2f;
             var louderZoomedIn = 1-quieterZoomedIn;
             
-            _tracks[0].Volume = louderZoomedIn * _mainGameMusicFader;
-            _tracks[1].Volume = quieterZoomedIn * _mainGameMusicFader;
-            _tracks[2].Volume = 0 * _mainGameMusicFader;
+            _tracks[0].Volume = louderZoomedIn * _mainGameMusicFader / 2f;
+            _tracks[1].Volume = quieterZoomedIn * _mainGameMusicFader / 2f;
+            _tracks[2].Volume = 0;
             
             // birds
             _tracks[3].Volume = quieterZoomedIn;
