@@ -1,0 +1,24 @@
+{
+    "onConstructDelta": [
+        {
+            "resourceName": "Food",
+            "amount": 2
+        }
+    ],
+    "cost": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 20
+        }
+    ],
+    "title": "Garden",
+    "description": "Grants small amount of #Food.\nCan share space with other structures.",
+    "icon": "BUTTONS_Education02",
+    "sounds": [
+        "gen1",
+        "gen2",
+        "gen3",
+        "gen4",
+        "gen5"
+    ]
+}

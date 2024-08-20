@@ -4,6 +4,9 @@
             "blueprints": [
                 {
                     "name": "blueprint_l0_house"
+                },
+                {
+                    "name": "blueprint_l1_education"
                 }
             ],
             "completionCriteria": {

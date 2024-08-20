@@ -651,8 +651,8 @@ public class GameSession : ISession
             GameplayConstants.Title,
             "Made in 96 hours for the GMTK Game Jam",
             "Visual Art by isawiitch",
-            "Sound Design by quarkimo",
-            "Programming and Game Design by NotExplosive",
+            "Music & Sound Design by quarkimo",
+            "Programming & Game Design by NotExplosive",
             "Thank you for playing.",
             "You can stay for as long as you like."
         );
