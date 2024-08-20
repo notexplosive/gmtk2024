@@ -619,6 +619,10 @@ public class GameSession : ISession
 
     private void DrawWorldBackground(Painter painter)
     {
+        DrawClouds(painter, 0.25f, Client.Random.CleanNoise.NoiseAt(0), 30);
+        DrawClouds(painter, 0.5f, Client.Random.CleanNoise.NoiseAt(1), 15);
+        DrawClouds(painter, 0.6f, Client.Random.CleanNoise.NoiseAt(2), 2);
+        
         DrawWater(painter, Color.CornflowerBlue.DimmedBy(0.1f), new Vector2(Grid.CellSize / 2f, -Grid.CellSize),
             MathF.PI / 2f, 0.75f);
 
@@ -644,6 +648,42 @@ public class GameSession : ISession
             Structure.DrawStructure(painter, structure, _elapsedTime);
         }
 
+        painter.EndSpriteBatch();
+    }
+
+    private void DrawClouds(Painter painter, float opacity, Noise noise, int numberOfClouds)
+    {
+        painter.BeginSpriteBatch();
+        
+        var cloudGraphics = new List<string>()
+        {
+            "Clouds01",
+            "Clouds02",
+            "Clouds03",
+            "Clouds04",
+            "Clouds05"
+        };
+
+        var cloud = ResourceAssets.Instance.Textures[cloudGraphics[noise.IntAt(0,cloudGraphics.Count)]];
+        var width = cloud.Width;
+        var height = cloud.Height;
+
+        
+        for (int i = 0; i < numberOfClouds; i++) {
+            var sign = noise.BoolAt(i) ? -1 : 1;
+            var startingX = noise.NoiseAt(i).IntAt(i) % _screenSize.X;
+            var speed = noise.NoiseAt(i).IntAt(i+1) % 60 + 60;
+            var x = (startingX + _elapsedTime * speed * opacity * 0.25f) % (_screenSize.X + width * 2) - width;
+            var y = noise.IntAt(i, _screenSize.Y / 3) - _camera.CenterPosition.Y / 5 * opacity;
+
+            if (sign == -1)
+            {
+                x = _screenSize.X - x;
+            }
+
+            painter.DrawAtPosition(cloud, new Vector2(x,y), Scale2D.One, new DrawSettings{Color = Color.White.WithMultipliedOpacity(opacity)});
+        }
+        
         painter.EndSpriteBatch();
     }
 
@@ -964,3 +1004,4 @@ public class GameSession : ISession
         return _ui?.State.CurrentBlueprint();
     }
 }
+

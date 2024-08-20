@@ -12,6 +12,7 @@
             "amount": 5
         }
     ],
+    "description": "Can share space with other structures.",
     "icon": "BUTTONS_Decor01",
     "sounds": [
         "gen1",

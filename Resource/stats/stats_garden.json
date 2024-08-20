@@ -13,6 +13,7 @@
     ],
     "title": "Garden",
     "icon": "BUTTONS_Garden01",
+    "description": "Can share space with other structures.",
     "sounds": [
         "plant2",
         "plant3",
