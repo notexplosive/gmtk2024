@@ -15,5 +15,6 @@
     "icon": "BUTTONS_Farm01",
     "sounds": [
         "plant5"
-    ]
+    ],
+    "ambientSound": "ambience_farm"
 }

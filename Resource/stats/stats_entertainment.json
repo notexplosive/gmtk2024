@@ -23,5 +23,6 @@
         "gen3",
         "gen4",
         "gen5"
-    ]
+    ],
+    "ambientSound": "ambience_entertainment"
 }

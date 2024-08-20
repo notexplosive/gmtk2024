@@ -31,5 +31,6 @@
     "icon": "BUTTONS_MONUMENT",
     "sounds": [
         "monument"
-    ]
+    ],
+    "ambientSound": "ambience_store"
 }

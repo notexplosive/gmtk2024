@@ -120,13 +120,14 @@ public class TitleOverlay : Overlay
 
     protected override void DrawContent(Painter painter, RectangleF screenRectangle)
     {
-        painter.DrawRectangle(_bakedLayout.FindElement("title"),
-            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f * ContentOpacity), Depth = Depth.Middle});
-
         var font = Client.Assets.GetFont("gmtk/GameFont", 80);
         painter.DrawStringWithinRectangle(font, GameplayConstants.Title, _bakedLayout.FindElement("title"),
             Alignment.Center,
             new DrawSettings {Depth = Depth.Middle - 10, Color = Color.White.WithMultipliedOpacity(ContentOpacity)});
+        
+        painter.DrawStringWithinRectangle(font, GameplayConstants.Title, _bakedLayout.FindElement("title").Rectangle.Moved(new Vector2(2)),
+            Alignment.Center,
+            new DrawSettings {Depth = Depth.Middle, Color = Color.Black.WithMultipliedOpacity(ContentOpacity)});
 
         foreach (var button in _buttonStates)
         {

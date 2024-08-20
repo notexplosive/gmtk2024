@@ -12,7 +12,7 @@ public class MusicPlayer
 {
     private List<SoundEffectInstance> _tracks = new();
     private SequenceTween _tween = new();
-    private TweenableFloat _mainGameMusicFader = new(0);
+    public TweenableFloat MainGameMusicFader { get; } = new(0);
 
     public float[] Volumes()
     {
@@ -50,20 +50,20 @@ public class MusicPlayer
             var quieterZoomedOut = 1-louderZoomedOut;
             
             _tracks[0].Volume = 0f;
-            _tracks[1].Volume = quieterZoomedOut * _mainGameMusicFader;
-            _tracks[2].Volume = louderZoomedOut * _mainGameMusicFader;
+            _tracks[1].Volume = quieterZoomedOut * MainGameMusicFader;
+            _tracks[2].Volume = louderZoomedOut * MainGameMusicFader;
         }
         
         // ocean
-        _tracks[4].Volume = zoomPercent * 0.5f;
+        _tracks[4].Volume = zoomPercent * 0.3f;
 
         if (zoomPercent < 0.5f)
         {
             var quieterZoomedIn = zoomPercent * 2f;
             var louderZoomedIn = 1-quieterZoomedIn;
             
-            _tracks[0].Volume = louderZoomedIn * _mainGameMusicFader;
-            _tracks[1].Volume = quieterZoomedIn * _mainGameMusicFader;
+            _tracks[0].Volume = louderZoomedIn * MainGameMusicFader;
+            _tracks[1].Volume = quieterZoomedIn * MainGameMusicFader;
             _tracks[2].Volume = 0;
             
             // birds
@@ -89,11 +89,16 @@ public class MusicPlayer
 
     public void FadeIn()
     {
-        _tween.Add(_mainGameMusicFader.TweenTo(1f, 3f, Ease.QuadSlowFast));
+        _tween.Add(MainGameMusicFader.TweenTo(1f, 3f, Ease.QuadSlowFast));
     }
 
     public void FadeOut()
     {
-        _tween.Add(_mainGameMusicFader.TweenTo(0f, 3f, Ease.QuadSlowFast));
+        _tween.Add(MainGameMusicFader.TweenTo(0f, 3f, Ease.QuadSlowFast));
+    }
+    
+    public void FadeToVolume(float percent)
+    {
+        _tween.Add(MainGameMusicFader.TweenTo(percent, 1f, Ease.QuadSlowFast));
     }
 }

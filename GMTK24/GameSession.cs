@@ -288,6 +288,7 @@ public class GameSession : ISession
 
             if (scrollDelta != 0 && !_isPanning)
             {
+                _ui?.SetHasPanned();
                 var normalizedScrollDelta = scrollDelta / 120f;
 
                 var zoomStrength = 20;
@@ -712,14 +713,14 @@ public class GameSession : ISession
                 1.25f, Ease.CubicFastSlow);
         }
 
-        cutscene.DisplayMessage(_ui, "That's it!");
+        cutscene.DisplayMessage(_ui, "Congratulations!");
 
         var allStructuresRectangle = AllStructuresRectangle();
         var skyCameraPosition =
             new Vector2(_camera.ViewBounds.X, allStructuresRectangle.Top - _camera.ViewBounds.Height * 5);
         var skyViewBounds = new RectangleF(skyCameraPosition, _camera.ViewBounds.Size);
 
-        cutscene.PanCamera(_camera, skyViewBounds, 1, Ease.CubicSlowFast);
+        cutscene.PanCamera(_camera, skyViewBounds, 2, Ease.CubicSlowFast);
 
         cutscene.Callback(() =>
         {
@@ -728,8 +729,15 @@ public class GameSession : ISession
                 structure.Hide();
             }
         });
+        
+        cutscene.Callback(() =>
+        {
+            _musicPlayer.FadeToVolume(0.5f);
+        });
 
-        cutscene.PanCamera(_camera, _startingCamera, 1, Ease.CubicFastSlow);
+        cutscene.Delay(0.5f);
+        
+        cutscene.PanCamera(_camera, _startingCamera, 2, Ease.CubicFastSlow);
         cutscene.DisplayMessage(_ui, "We've come a long way.");
 
         var allStructuresViewBounds =
@@ -756,7 +764,7 @@ public class GameSession : ISession
 
         cutscene.Callback(() =>
         {
-            ResourceAssets.Instance.PlaySound("sounds/sfx_cutscene", new SoundEffectSettings());
+            ResourceAssets.Instance.PlaySound("sounds/sfx_cutscene", new SoundEffectSettings{Volume = 1f});
         });
 
         var buildDuration = 4f;
@@ -786,6 +794,7 @@ public class GameSession : ISession
 
         cutscene.Callback(() =>
         {
+            _musicPlayer.FadeIn();
             _ui?.FadeIn();
             ShowToast("Press Space to reset camera", 5);
         });

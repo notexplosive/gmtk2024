@@ -16,6 +16,6 @@ public static class GameplayConstants
         }
     }
     
-    public static string Title => "Tower Town";
+    public static string Title => "Architower";
     public static Color SkyColor => ColorExtensions.FromRgbaHexString("a6ddf4");
 }

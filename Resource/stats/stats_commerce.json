@@ -19,5 +19,6 @@
     "icon": "BUTTONS_Commerce01",
     "sounds": [
         "other1"
-    ]
+    ],
+    "ambientSound": "ambience_store"
 }
