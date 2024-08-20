@@ -56,8 +56,8 @@ public class GameSession : ISession
         _screenSize = window.RenderResolution;
 
         _inventory.AddResource(new Resource("ICONS_Social", "ICONS_Social00", "Population", false));
-        _inventory.AddResource(new Resource("ICONS_Insp", "ICONS_Insp00", "Inspiration", true, 75));
-        _inventory.AddResource(new Resource("ICONS_Food", "ICONS_Food00", "Food", false, 15));
+        _inventory.AddResource(new Resource("ICONS_Insp", "ICONS_Insp00", "Inspiration", true));
+        _inventory.AddResource(new Resource("ICONS_Food", "ICONS_Food00", "Food", false, 3));
         _inventory.AddResource(new Resource("ICONS_Knowledge", "ICONS_Knowledge00", "Knowledge", false));
         _inventory.AddResource(new Resource("ICONS_Commerce", "ICONS_Commerce00", "Money", false));
         _inventory.AddResource(new Resource("ICONS_Joy", "ICONS_Joy00", "Joy", false));
@@ -667,7 +667,7 @@ public class GameSession : ISession
                 1.25f, Ease.CubicFastSlow);
         }
 
-        cutscene.DisplayMessage(_ui, "We are a city.");
+        cutscene.DisplayMessage(_ui, "That's it!");
 
         var allStructuresRectangle = AllStructuresRectangle();
         var skyCameraPosition =
@@ -685,7 +685,7 @@ public class GameSession : ISession
         });
 
         cutscene.PanCamera(_camera, _startingCamera, 1, Ease.CubicFastSlow);
-        cutscene.DisplayMessage(_ui, "From humble beginnings.");
+        cutscene.DisplayMessage(_ui, "We've come a long way.");
 
         var allStructuresViewBounds =
             RectangleF.FromCenterAndSize(allStructuresRectangle.Center, _screenSize.ToVector2() / 4);
@@ -706,9 +706,9 @@ public class GameSession : ISession
         allStructuresViewBounds = allStructuresViewBounds.InflatedMaintainAspectRatio(100);
 
         cutscene.PanCamera(_camera, allStructuresViewBounds, 2, Ease.CubicFastSlow);
-
-        cutscene.DisplayMessage(_ui, "We built and scaled.");
         
+        cutscene.Delay(0.25f);
+
         cutscene.Callback(() =>
         {
             ResourceAssets.Instance.PlaySound("sounds/sfx_cutscene", new SoundEffectSettings());
@@ -733,11 +733,10 @@ public class GameSession : ISession
             // "Press [Enter] to take a screenshot.",
             GameplayConstants.Title,
             "Made in 96 hours for the GMTK Game Jam",
-            "Visual Art by isawiitch",
             "Music & Sound Design by quarkimo",
+            "Art by isawiitch",
             "Programming & Game Design by NotExplosive",
-            "Thank you for playing.",
-            "You can stay for as long as you like."
+            "Thank you for playing."
         );
 
         cutscene.Callback(() =>

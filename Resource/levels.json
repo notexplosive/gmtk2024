@@ -6,48 +6,21 @@
                     "name": "blueprint_l0_house"
                 },
                 {
-                    "name": "blueprint_l1_education"
-                },
-                {
-                    "name": "blueprint_l1_farm"
-                },
-                {
-                    "name": "blueprint_l1_shop"
-                }
-            ],
-            "completionCriteria": {
-                "buildStructures": {
-                    "blueprint": "blueprint_l0_house",
-                    "targetQuantity": 3
-                }
-            }
-        },
-        {
-            "introDialogue": [
-                "We are a village, soon we will be a town.",
-                "Homes create #Population and #Inspiration.",
-                "We need more #Food to build more homes."
-            ],
-            "blueprints": [
-                {
-                    "name": "blueprint_l0_house"
-                },
-                {
                     "name": "blueprint_l0_garden"
                 }
             ],
             "completionCriteria": {
                 "getResource": {
                     "resource": "Population",
-                    "targetQuantity": 10
+                    "targetQuantity": 5
                 }
             }
         },
         {
             "introDialogue": [
-                "We are a town.",
-                "Soon we will be a city.",
-                "We need more space to expand."
+                "Welcome to our humble village!",
+                "We can't keep stacking houses forever.",
+                "We need to expand outwards."
             ],
             "blueprints": [
                 {
@@ -63,15 +36,15 @@
             "completionCriteria": {
                 "getResource": {
                     "resource": "Population",
-                    "targetQuantity": 40
+                    "targetQuantity": 15
                 }
             }
         },
         {
             "introDialogue": [
-                "We are a city, soon we will be remembered.",
-                "With enough #Inspiration we can build something truly special.",
-                "A monument for the world to remember us by."
+                "These tiny gardens don't scale.",
+                "We need more reliable sources of #Food.",
+                "Maybe the scholars can find a better way."
             ],
             "blueprints": [
                 {
@@ -84,7 +57,58 @@
                     "name": "blueprint_l1_platform"
                 },
                 {
+                    "name": "blueprint_l1_education"
+                },
+                {
+                    "name": "blueprint_l1_farm"
+                },
+                {
+                    "name": "blueprint_l1_chain"
+                }
+            ],
+            "completionCriteria": {
+                "getResource": {
+                    "resource": "Population",
+                    "targetQuantity": 30
+                }
+            }
+        },
+        {
+            "introDialogue": [
+                "Things are going well for us.",
+                "All we need now is a crown jewel.",
+                "Something to put this city on the map."
+            ],
+            "blueprints": [
+                {
+                    "name": "blueprint_l1_house"
+                },
+                {
+                    "name": "blueprint_l1_garden"
+                },
+                {
+                    "name": "blueprint_l1_platform"
+                },
+                {
+                    "name": "blueprint_l1_education"
+                },
+                {
+                    "name": "blueprint_l1_farm"
+                },
+                {
+                    "name": "blueprint_l1_chain"
+                },
+                {
+                    "name": "blueprint_l1_shop"
+                },
+                {
+                    "name": "blueprint_l1_bridge"
+                },
+                {
                     "name": "blueprint_l1_decoration"
+                },
+                {
+                    "name": "blueprint_l1_theater"
                 },
                 {
                     "name": "blueprint_monument"

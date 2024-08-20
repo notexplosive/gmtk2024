@@ -2,15 +2,11 @@
     "onConstructDelta": [
         {
             "resourceName": "Population",
-            "amount": 3
+            "amount": 1
         },
         {
             "resourceName": "Inspiration",
-            "amount": 10
-        },
-        {
-            "resourceName": "Inspiration",
-            "amount": 50,
+            "amount": 10,
             "affectCapacity": true
         }
     ],
@@ -23,11 +19,10 @@
     "cost": [
         {
             "resourceName": "Food",
-            "amount": 5
+            "amount": 1
         }
     ],
     "title": "Home",
-    "description": "Grants #Population and increases max #Inspiration.\nGenerates some #Inspiration over time.",
     "icon": "BUTTONS_House01",
     "sounds": [
         "house1",

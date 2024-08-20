@@ -132,7 +132,7 @@ public class Ui
 
                 var sine = MathF.Sin(_ftueElapsedTime * 5);
 
-                var targetRectangle = _buttons.Last().Rectangle;
+                var targetRectangle = _buttons.First().Rectangle;
                 var texture = ResourceAssets.Instance.Textures["ftue_arrow"];
                 var position = new Vector2(targetRectangle.Center.X, targetRectangle.Top + sine * 50);
                 var scale = new Vector2(2f, 2f);
@@ -140,7 +140,7 @@ public class Ui
                 painter.DrawAtPosition(texture, position, new Scale2D(scale), new DrawSettings
                 {
                     Color = Color.White.WithMultipliedOpacity(Math.Clamp(_ftueElapsedTime - 2, 0, 1)),
-                    Origin = new DrawOrigin(new Vector2(texture.Width / 2f, texture.Height))
+                    Origin = new DrawOrigin(new Vector2(texture.Width / 2f, texture.Height + 25))
                 });
                 painter.EndSpriteBatch();
             }
@@ -159,7 +159,7 @@ public class Ui
                 var bodyFont = Client.Assets.GetFont("gmtk/GameFont", 32);
 
                 var tooltipBodyText = ApplyIcons(inventory, tooltipContent.Body);
-                var tooltipCostText = ApplyIcons(inventory, tooltipContent.Cost);
+                var tooltipCostText = "Cost: " + ApplyIcons(inventory, tooltipContent.Cost);
 
                 var bodyTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipBodyText,
                     GameplayConstants.FormattedTextParser);

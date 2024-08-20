@@ -2,7 +2,7 @@
     "cost": [
         {
             "resourceName": "Inspiration",
-            "amount": 10
+            "amount": 25
         }
     ],
     "title": "Platform",

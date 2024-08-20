@@ -1,18 +1,17 @@
 {
     "onConstructDelta": [
         {
-            "resourceName": "Money",
-            "amount": 3
+            "resourceName": "Food",
+            "amount": 10
         }
     ],
     "cost": [
         {
-            "resourceName": "Food",
-            "amount": 5
+            "resourceName": "Knowledge",
+            "amount": 3
         }
     ],
     "title": "Farm",
-    "description": "TODO",
     "icon": "BUTTONS_Farm01",
     "sounds": [
         "plant5"

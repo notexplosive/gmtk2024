@@ -2,11 +2,32 @@
     "cost": [
         {
             "resourceName": "Inspiration",
+            "amount": 300
+        },
+        {
+            "resourceName": "Joy",
             "amount": 100
         }
     ],
+    "onSecondDelta": [
+        {
+            "resourceName": "Inspiration",
+            "amount": 10
+        },
+        {
+            "resourceName": "Food",
+            "amount": 5
+        },
+        {
+            "resourceName": "Knowledge",
+            "amount": 2
+        },
+        {
+            "resourceName": "Money",
+            "amount": 2
+        }
+    ],
     "title": "Monument",
-    "description": "Win the game.",
     "icon": "BUTTONS_MONUMENT",
     "sounds": [
         "gen1",

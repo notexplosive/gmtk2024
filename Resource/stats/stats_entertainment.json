@@ -1,0 +1,27 @@
+{
+    "onSecondDelta": [
+        {
+            "resourceName": "Joy",
+            "amount": 1
+        }
+    ],
+    "cost": [
+        {
+            "resourceName": "Knowledge",
+            "amount": 15
+        },
+        {
+            "resourceName": "Money",
+            "amount": 15
+        }
+    ],
+    "title": "Entertainment",
+    "icon": "BUTTONS_Entertainment01",
+    "sounds": [
+        "gen1",
+        "gen2",
+        "gen3",
+        "gen4",
+        "gen5"
+    ]
+}

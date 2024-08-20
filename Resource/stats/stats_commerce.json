@@ -2,17 +2,20 @@
     "onConstructDelta": [
         {
             "resourceName": "Money",
-            "amount": 3
+            "amount": 5
         }
     ],
     "cost": [
         {
             "resourceName": "Food",
             "amount": 5
+        },
+        {
+            "resourceName": "Inspiration",
+            "amount": 200
         }
     ],
     "title": "Commerce",
-    "description": "TODO",
     "icon": "BUTTONS_Commerce01",
     "sounds": [
         "other1"

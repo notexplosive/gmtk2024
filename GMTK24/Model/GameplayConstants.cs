@@ -1,4 +1,5 @@
-﻿using ExplogineMonoGame.TextFormatting;
+﻿using ExplogineMonoGame.Data;
+using ExplogineMonoGame.TextFormatting;
 using Microsoft.Xna.Framework;
 
 namespace GMTK24.Model;
@@ -15,6 +16,6 @@ public static class GameplayConstants
         }
     }
     
-    public static string Title => "Seaside Town";
-    public static Color SkyColor => Color.SkyBlue;
+    public static string Title => "Tower Town";
+    public static Color SkyColor => ColorExtensions.FromRgbaHexString("a6ddf4");
 }

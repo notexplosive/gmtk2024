@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Text;
 using GMTK24.Config;
+using GMTK24.UserInterface;
 using Newtonsoft.Json;
 
 namespace GMTK24.Model;
@@ -11,8 +13,7 @@ public class BlueprintStats
     public string Title { get; set; } = "Title";
 
     [JsonProperty("description")]
-    public string Description { get; set; } = "Lorem ipsum";
-    
+    public string? Description { get; set; }
     
     [JsonProperty("onConstructDelta")]
     public List<ResourceDelta> OnConstructDelta { get; set; } = new();
@@ -31,4 +32,25 @@ public class BlueprintStats
 
     [JsonProperty("ambientSound")]
     public string? AmbientSound { get; set; } = null;
+
+    public string GenerateDescription()
+    {
+        var result = new StringBuilder();
+        if (OnConstructDelta.Count > 0)
+        {
+            result.AppendLine($"Creates {StructureButton.DisplayDelta(OnConstructDelta," and ")}.");
+        }
+
+        if (OnSecondDelta.Count > 0)
+        {
+            result.AppendLine($"Generates {StructureButton.DisplayDelta(OnSecondDelta," and ")} per second.");
+        }
+
+        if (Description != null)
+        {
+            result.AppendLine(Description);
+        }
+
+        return result.ToString().Trim();
+    }
 }

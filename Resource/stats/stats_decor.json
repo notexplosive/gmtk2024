@@ -1,23 +1,15 @@
 {
     "title": "Decor",
-    "description": "Increases max #Inspiration significantly\nGenerates lots of #Inspiration over time.\nCan share space with other structures.",
     "cost": [
         {
-            "resourceName": "Food",
-            "amount": 20
+            "resourceName": "Money",
+            "amount": 1
         }
     ],
     "onConstructDelta": [
         {
-            "resourceName": "Inspiration",
-            "amount": 100,
-            "affectCapacity": true
-        }
-    ],
-    "onSecondDelta": [
-        {
-            "resourceName": "Inspiration",
-            "amount": 3
+            "resourceName": "Joy",
+            "amount": 5
         }
     ],
     "icon": "BUTTONS_Decor01",

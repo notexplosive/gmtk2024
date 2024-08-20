@@ -27,7 +27,7 @@ public class StructureButton : IHoverable
 
     public TooltipContent GetTooltip()
     {
-        var costString = DisplayCost(Blueprint.Stats().Cost);
+        var costString = DisplayDelta(Blueprint.Stats().Cost);
 
         if (costString == string.Empty)
         {
@@ -37,16 +37,23 @@ public class StructureButton : IHoverable
         return new TooltipContent
         {
             Title = Blueprint.Stats().Title,
-            Body = Blueprint.Stats().Description,
+            Body = Blueprint.Stats().GenerateDescription(),
             Cost = costString
         };
     }
 
-    public static string DisplayCost(List<ResourceDelta> deltas)
+    public static string DisplayDelta(List<ResourceDelta> deltas, string joiner = "  ")
     {
         var stringBuilder = new StringBuilder();
 
-        stringBuilder.Append(string.Join("  ", deltas.Select(delta => delta.Amount + $"#{delta.ResourceName}")));
+        stringBuilder.Append(string.Join(joiner, deltas.Select(delta =>
+        {
+            if (delta.AffectCapacity)
+            {
+                return $"increase max #{delta.ResourceName} by {delta.Amount}"; 
+            }
+            return delta.Amount + $"#{delta.ResourceName}";
+        })));
 
         return stringBuilder.ToString();
     }

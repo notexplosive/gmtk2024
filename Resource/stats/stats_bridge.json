@@ -1,0 +1,16 @@
+{
+    "cost": [
+        {
+            "resourceName": "Money",
+            "amount": 1
+        }
+    ],
+    "title": "Bridge",
+    "description": "Provides a large flat space for structures.",
+    "icon": "BUTTONS_Road01",
+    "sounds": [
+        "brick1",
+        "brick2",
+        "brick3"
+    ]
+}
