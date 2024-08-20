@@ -1,0 +1,70 @@
+{
+  "settings": {
+    "drawDescription": {
+      "textureName": "chain2",
+      "frames": null,
+      "graphicsTopLeft": {
+        "X": -2,
+        "Y": 0
+      }
+    },
+    "requiredSupports": 1,
+    "layer": 0,
+    "blockScaffold": false
+  },
+  "cells": [
+    {
+      "X": -1,
+      "Y": 9
+    },
+    {
+      "X": -2,
+      "Y": 9
+    },
+    {
+      "X": 0,
+      "Y": 9
+    },
+    {
+      "X": 1,
+      "Y": 9
+    },
+    {
+      "X": 2,
+      "Y": 9
+    },
+    {
+      "X": 0,
+      "Y": 0
+    }
+  ],
+  "providesStructureCells": [
+    {
+      "X": 2,
+      "Y": 9
+    },
+    {
+      "X": 1,
+      "Y": 9
+    },
+    {
+      "X": 0,
+      "Y": 9
+    },
+    {
+      "X": -1,
+      "Y": 9
+    },
+    {
+      "X": -2,
+      "Y": 9
+    }
+  ],
+  "requiresSupportCells": [
+    {
+      "X": 0,
+      "Y": 0
+    }
+  ],
+  "scaffoldAnchors": []
+}

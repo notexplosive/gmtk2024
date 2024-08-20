@@ -1,6 +1,7 @@
 {
     "structurePlans": [
-        "plan_chain"
+        "plan_chain",
+        "plan_chain2"
     ],
     "stats": "stats_chain"
 }

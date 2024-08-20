@@ -108,6 +108,10 @@ public class GameSession : ISession
             if (input.Keyboard.GetButton(Keys.W).WasPressed)
             {
                 _inventory.GetResource("Food").Add(100000);
+                _inventory.GetResource("Knowledge").Add(100000);
+                _inventory.GetResource("Money").Add(100000);
+                _inventory.GetResource("Inspiration").AddCapacity(100000);
+                _inventory.GetResource("Inspiration").Add(100000);
             }
 
             if (input.Keyboard.GetButton(Keys.E).WasPressed)

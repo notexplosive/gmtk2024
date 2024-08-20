@@ -1,0 +1,37 @@
+{
+  "settings": {
+    "drawDescription": {
+      "textureName": "DECOR_BIG03",
+      "frames": null,
+      "graphicsTopLeft": {
+        "X": 0,
+        "Y": -1
+      }
+    },
+    "requiredSupports": 2,
+    "layer": 1,
+    "blockScaffold": true
+  },
+  "cells": [
+    {
+      "X": 0,
+      "Y": 0
+    },
+    {
+      "X": 1,
+      "Y": 0
+    }
+  ],
+  "providesStructureCells": [],
+  "requiresSupportCells": [
+    {
+      "X": 1,
+      "Y": 0
+    },
+    {
+      "X": 0,
+      "Y": 0
+    }
+  ],
+  "scaffoldAnchors": []
+}

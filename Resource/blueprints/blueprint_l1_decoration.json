@@ -1,5 +1,15 @@
 {
     "structurePlans": [
+        "plan_decoration2",
+        "plan_decoration3",
+        "plan_decoration4",
+        "plan_decoration5",
+        "plan_decoration6",
+        "plan_decoration7",
+        "plan_decoration8",
+        "plan_decoration9",
+        "plan_decoration10",
+        "plan_decoration11",
         "plan_decoration"
     ],
     "stats": "stats_decor"
