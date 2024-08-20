@@ -47,6 +47,10 @@ public class GameSession : ISession
 
     public GameSession(IWindow window)
     {
+        if (window is RealWindow realWindow)
+        {
+            realWindow.AllowResizing = false;
+        }
         _screenSize = window.RenderResolution;
 
         _inventory.AddResource(new Resource("ICONS_Social", "ICONS_Social00", "Population", false));
@@ -386,6 +390,14 @@ public class GameSession : ISession
         painter.Clear(GameplayConstants.SkyColor);
         DrawWorldBackground(painter);
         DrawWorldForeground(painter);
+        
+        painter.BeginSpriteBatch();
+        var font2 = Client.Assets.GetFont("gmtk/GameFont", 32);
+        var rectangle = canvas.Size.ToRectangleF().Inflated(-10, -10);
+        painter.DrawStringWithinRectangle(font2, $"notexplosive.net", rectangle, Alignment.BottomRight, new DrawSettings{Color = Color.Black});
+        painter.EndSpriteBatch();
+        
+        Client.Graphics.PopCanvas();
 
         try
         {
@@ -405,7 +417,6 @@ public class GameSession : ISession
             ShowToast("Screenshot capture failed :(", 3);
         }
 
-        Client.Graphics.PopCanvas();
     }
 
     private void ShowScreenshotToast()
