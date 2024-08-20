@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
@@ -127,5 +128,21 @@ public class Structure
                 Grid.CellToPixel(graphicsTopLeft) + originOffset, new Scale2D(scaleVector),
                 new DrawSettings {Depth = Depth.Front - structure.Center.Y, Origin = origin});
         }
+    }
+
+    public RectangleF TotalRectangle()
+    {
+        if (_occupiedWorldSpace.Count == 0)
+        {
+            return Grid.CellToPixelRectangle(Center);
+        }
+        
+        var rectangle = Grid.CellToPixelRectangle(_occupiedWorldSpace.First());
+        foreach (var cell in _occupiedWorldSpace)
+        {
+            rectangle = RectangleF.Union(rectangle, Grid.CellToPixelRectangle(cell));
+        }
+
+        return rectangle;
     }
 }

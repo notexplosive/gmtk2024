@@ -60,7 +60,7 @@ public class Ui
         painter.BeginSpriteBatch(SamplerState.LinearWrap);
 
         painter.DrawAsRectangle(ResourceAssets.Instance.Textures["ui_background"], ButtonBackground,
-            new DrawSettings {SourceRectangle = ButtonBackground.MovedToZero().ToRectangle(), Depth = Depth.Back});
+            new DrawSettings {SourceRectangle = ButtonBackground.MovedToZero().ToRectangle(), Depth = Depth.Back - 10});
 
         foreach (var button in _buttons)
         {

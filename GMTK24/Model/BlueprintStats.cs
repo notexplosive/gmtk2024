@@ -28,4 +28,7 @@ public class BlueprintStats
 
     [JsonProperty("sounds")]
     public List<string> Sounds { get; set; } = new();
+
+    [JsonProperty("ambientSound")]
+    public string? AmbientSound { get; set; } = null;
 }

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using ExplogineCore;
 using ExplogineCore.Data;
 using ExplogineMonoGame;
@@ -14,10 +17,11 @@ public class ResourceAssets
 {
     private static ResourceAssets? instanceImpl;
     private readonly Dictionary<string, Canvas> _dynamicTextures = new();
+    private List<Task> _allTasks = new();
     public Dictionary<string, Texture2D> Textures { get; } = new();
     public Dictionary<string, SpriteSheet> Sheets { get; } = new();
-    public Dictionary<string, SoundEffectInstance> SoundInstances { get; set; } = new();
-    public Dictionary<string, SoundEffect> SoundEffects { get; set; } = new();
+    public ConcurrentDictionary<string, SoundEffectInstance> SoundInstances { get; set; } = new();
+    public ConcurrentDictionary<string, SoundEffect> SoundEffects { get; set; } = new();
 
     public static ResourceAssets Instance
     {
@@ -56,6 +60,16 @@ public class ResourceAssets
                 Textures.Add(imageName, texture);
             }
         });
+
+        yield return new VoidLoadEvent("Waiting for threads...", () =>
+        {
+            _allTasks.RemoveAll(a => a.IsCompleted);
+
+            while (_allTasks.Any(a => !a.IsCompleted))
+            {
+                _allTasks.RemoveAll(a => a.IsCompleted);
+            }
+        });
     }
 
     public void Unload()
@@ -68,10 +82,13 @@ public class ResourceAssets
 
     public void AddSound(IFileSystem resourceFiles, string path)
     {
-        var vorbis = ReadOgg.ReadVorbis(Path.Join(resourceFiles.GetCurrentDirectory(), path + ".ogg"));
-        var soundEffect = ReadOgg.ReadSoundEffect(vorbis);
-        SoundInstances[path] = soundEffect.CreateInstance();
-        SoundEffects[path] = soundEffect;
+        _allTasks.Add(Task.Run(() =>
+        {
+            var vorbis = ReadOgg.ReadVorbis(Path.Join(resourceFiles.GetCurrentDirectory(), path + ".ogg"));
+            var soundEffect = ReadOgg.ReadSoundEffect(vorbis);
+            SoundInstances[path] = soundEffect.CreateInstance();
+            SoundEffects[path] = soundEffect;
+        }));
     }
 
     public void PlaySound(string key, SoundEffectSettings settings)
@@ -97,6 +114,16 @@ public class ResourceAssets
     }
 
     private void Unload<T>(Dictionary<string, T> dictionary) where T : IDisposable
+    {
+        foreach (var sound in dictionary.Values)
+        {
+            sound.Dispose();
+        }
+
+        dictionary.Clear();
+    }
+    
+    private void Unload<T>(ConcurrentDictionary<string, T> dictionary) where T : IDisposable
     {
         foreach (var sound in dictionary.Values)
         {

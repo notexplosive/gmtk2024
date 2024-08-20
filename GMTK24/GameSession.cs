@@ -23,6 +23,9 @@ public class GameSession : ISession
     private readonly Inventory _inventory = new();
     private readonly HoverState _isHovered = new();
     private readonly List<Level> _levels;
+    private readonly MusicPlayer _musicPlayer = new();
+    private readonly Wrapped<bool> _muteMusic = new(true);
+    private readonly Wrapped<bool> _muteSfx = new(true);
     private readonly OverlayScreen _overlayScreen;
     private readonly List<Particle> _particles = new();
     private readonly List<Structure> _replayStructures = new();
@@ -38,9 +41,6 @@ public class GameSession : ISession
     private bool _isAwaitingScreenshot;
     private bool _isPanning;
     private Vector2? _mousePosition;
-    private readonly MusicPlayer _musicPlayer = new();
-    private readonly Wrapped<bool> _muteMusic = new(true);
-    private readonly Wrapped<bool> _muteSfx = new(true);
     private Vector2 _panVector;
     private Point _screenSize;
     private RectangleF _startingCamera;
@@ -88,7 +88,7 @@ public class GameSession : ISession
         _startingCamera = _camera.ViewBounds;
         _errorMessage = new ErrorMessage(_screenSize);
 
-        _musicPlayer.Start();
+        _musicPlayer.Startup();
     }
 
     public void UpdateInput(ConsumableInput input, HitTestStack hitTestStack)
@@ -123,6 +123,16 @@ public class GameSession : ISession
             if (input.Keyboard.GetButton(Keys.T).WasPressed)
             {
                 ShowScreenshotToast();
+            }
+
+            if (input.Keyboard.GetButton(Keys.Y).WasPressed)
+            {
+                _musicPlayer.FadeIn();
+            }
+            
+            if (input.Keyboard.GetButton(Keys.U).WasPressed)
+            {
+                _musicPlayer.FadeOut();
             }
         }
 
@@ -325,20 +335,24 @@ public class GameSession : ISession
 
         DrawCurrentToast(painter);
 
-        painter.BeginSpriteBatch();
-
-        var height = 25;
-        var position = new Vector2(200, 200);
-        var width = 200;
-        foreach (var volume in _musicPlayer.Volumes())
+        if (Client.Debug.IsActive)
         {
-            painter.DrawRectangle(new RectangleF(position, new Vector2(width, height)),
-                new DrawSettings {Depth = Depth.Back, Color = Color.Black});
-            painter.DrawRectangle(new RectangleF(position, new Vector2(width * volume, height)), new DrawSettings());
-            position += new Vector2(0, height);
-        }
+            painter.BeginSpriteBatch();
 
-        painter.EndSpriteBatch();
+            var height = 25;
+            var position = new Vector2(200, 200);
+            var width = 200;
+            foreach (var volume in _musicPlayer.Volumes())
+            {
+                painter.DrawRectangle(new RectangleF(position, new Vector2(width, height)),
+                    new DrawSettings {Depth = Depth.Back, Color = Color.Black});
+                painter.DrawRectangle(new RectangleF(position, new Vector2(width * volume, height)),
+                    new DrawSettings());
+                position += new Vector2(0, height);
+            }
+
+            painter.EndSpriteBatch();
+        }
     }
 
     public void Update(float dt)
@@ -347,8 +361,39 @@ public class GameSession : ISession
         _camera.CenterPosition += _panVector * dt * 60 * 10;
         _ui?.Update(dt);
 
-        _musicPlayer.Update(
-            Math.Clamp((_camera.ViewBounds.Width) / MaxViewBoundsWidth(), 0f, 1f));
+        var structuresInView = new List<Structure>();
+        foreach (var structure in _world.AllStructures())
+        {
+            if (_camera.ViewBounds.Intersects(structure.TotalRectangle()))
+            {
+                structuresInView.Add(structure);
+            }
+        }
+
+        var ambientPercentages = new Dictionary<string, float>();
+
+        foreach (var structure in _world.AllStructures())
+        {
+            var sound = structure.Blueprint.Stats().AmbientSound;
+            if (sound != null)
+            {
+                ambientPercentages[sound] = 0f;
+            }
+        }
+        
+        foreach (var structureInView in structuresInView)
+        {
+            var sound = structureInView.Blueprint.Stats().AmbientSound;
+            if (sound != null)
+            {
+                var addedPercent = RectangleF.Intersect(structureInView.TotalRectangle(), _camera.ViewBounds).Area / _camera.ViewBounds.Area;
+                var currentPercent = ambientPercentages.GetValueOrDefault(sound);
+                ambientPercentages[sound] = currentPercent + addedPercent;
+            }
+        }
+
+        _musicPlayer.Update(dt,
+            Math.Clamp(_camera.ViewBounds.Width / MaxViewBoundsWidth(), 0f, 1f), ambientPercentages);
 
         _particles.RemoveAll(a => a.IsExpired());
 
@@ -784,6 +829,11 @@ public class GameSession : ISession
         {
             WinGame();
             return;
+        }
+
+        if (_currentLevelIndex == 1)
+        {
+            _musicPlayer.FadeIn();
         }
 
         _currentToast?.FadeOut();

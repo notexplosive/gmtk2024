@@ -33,5 +33,6 @@
         "house1",
         "house2",
         "house3"
-    ]
+    ],
+    "ambientSound": "ambient_house"
 }

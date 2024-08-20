@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using ExplogineMonoGame;
+using ExTween;
+using GMTK24.Model;
 using Microsoft.Xna.Framework.Audio;
 
 namespace GMTK24;
@@ -7,19 +11,23 @@ namespace GMTK24;
 public class MusicPlayer
 {
     private List<SoundEffectInstance> _tracks = new();
+    private SequenceTween _tween = new();
+    private TweenableFloat _mainGameMusicFader = new(0);
 
     public float[] Volumes()
     {
         return _tracks.Select(a=>a.Volume).ToArray();
     }
     
-    public void Start()
+    public void Startup()
     {
         _tracks = new List<SoundEffectInstance>()
         {
-            ResourceAssets.Instance.SoundInstances["sounds/music_zoomin"],
-            ResourceAssets.Instance.SoundInstances["sounds/music_neutral"],
-            ResourceAssets.Instance.SoundInstances["sounds/music_zoomout"]
+            ResourceAssets.Instance.SoundInstances["sounds/music_zoomin"], // 0
+            ResourceAssets.Instance.SoundInstances["sounds/music_neutral"], // 1
+            ResourceAssets.Instance.SoundInstances["sounds/music_zoomout"], // 2
+            ResourceAssets.Instance.SoundInstances["sounds/ambient_birds"], // 3
+            ResourceAssets.Instance.SoundInstances["sounds/ambient_ocean"], // 4
         };
 
         _tracks.ForEach(instance => instance.IsLooped = true);
@@ -27,23 +35,65 @@ public class MusicPlayer
         _tracks.ForEach(instance => instance.Play());
     }
 
-    public void Update(float percent)
+    public void Update(float dt, float zoomPercent, Dictionary<string, float> ambientPercentages)
     {
-        if (percent > 0.5f)
-        {
-            var subPercent = (percent - 0.5f)*2f;
-            _tracks[0].Volume = 0f;
-            _tracks[1].Volume = 1-subPercent;
-            _tracks[2].Volume = subPercent;
-        }
+        _tween.Update(dt);
 
-        if (percent < 0.5f)
+        if (_tween.IsDone())
         {
-            var quieter = percent * 2f;
-            var louder = 1-quieter;
-            _tracks[0].Volume = louder;
-            _tracks[1].Volume = quieter;
-            _tracks[2].Volume = 0;
+            _tween.Clear();
         }
+        
+        if (zoomPercent > 0.5f)
+        {
+            var louderZoomedOut = (zoomPercent - 0.5f)*2f;
+            var quieterZoomedOut = 1-louderZoomedOut;
+            
+            _tracks[0].Volume = 0f * _mainGameMusicFader;
+            _tracks[1].Volume = quieterZoomedOut * _mainGameMusicFader;
+            _tracks[2].Volume = louderZoomedOut * _mainGameMusicFader;
+        }
+        
+        // ocean
+        _tracks[4].Volume = zoomPercent * 0.5f;
+
+        if (zoomPercent < 0.5f)
+        {
+            var quieterZoomedIn = zoomPercent * 2f;
+            var louderZoomedIn = 1-quieterZoomedIn;
+            
+            _tracks[0].Volume = louderZoomedIn * _mainGameMusicFader;
+            _tracks[1].Volume = quieterZoomedIn * _mainGameMusicFader;
+            _tracks[2].Volume = 0 * _mainGameMusicFader;
+            
+            // birds
+            _tracks[3].Volume = quieterZoomedIn;
+
+            foreach (var (ambientSound, percentage) in ambientPercentages)
+            {
+                var sound = ResourceAssets.Instance.SoundInstances["sounds/"+ambientSound];
+                if (sound.State == SoundState.Stopped && percentage != 0)
+                {
+                    sound.Play();
+                }
+
+                if (sound.State == SoundState.Playing && percentage == 0)
+                {
+                    sound.Stop();
+                }
+                    
+                sound.Volume = Math.Clamp(percentage * 2, 0,1);
+            }
+        }
+    }
+
+    public void FadeIn()
+    {
+        _tween.Add(_mainGameMusicFader.TweenTo(1f, 3f, Ease.QuadSlowFast));
+    }
+
+    public void FadeOut()
+    {
+        _tween.Add(_mainGameMusicFader.TweenTo(0f, 3f, Ease.QuadSlowFast));
     }
 }
