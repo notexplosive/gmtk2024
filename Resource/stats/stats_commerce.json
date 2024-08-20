@@ -15,10 +15,6 @@
     "description": "TODO",
     "icon": "BUTTONS_Commerce01",
     "sounds": [
-        "gen1",
-        "gen2",
-        "gen3",
-        "gen4",
-        "gen5"
+        "other1"
     ]
 }

@@ -708,6 +708,11 @@ public class GameSession : ISession
         cutscene.PanCamera(_camera, allStructuresViewBounds, 2, Ease.CubicFastSlow);
 
         cutscene.DisplayMessage(_ui, "We built and scaled.");
+        
+        cutscene.Callback(() =>
+        {
+            ResourceAssets.Instance.PlaySound("sounds/sfx_cutscene", new SoundEffectSettings());
+        });
 
         var buildDuration = 4f;
         var totalStructures = _replayStructures.Count;

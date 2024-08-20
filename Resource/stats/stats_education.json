@@ -15,10 +15,6 @@
     "description": "Grants #Knowledge.",
     "icon": "BUTTONS_Education01",
     "sounds": [
-        "gen1",
-        "gen2",
-        "gen3",
-        "gen4",
-        "gen5"
+        "gen1"
     ]
 }

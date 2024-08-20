@@ -9,10 +9,8 @@
     "description": "Provides space and support for other structures.",
     "icon": "BUTTONS_Platform01",
     "sounds": [
-        "gen1",
-        "gen2",
-        "gen3",
-        "gen4",
-        "gen5"
+        "brick1",
+        "brick2",
+        "brick3"
     ]
 }
