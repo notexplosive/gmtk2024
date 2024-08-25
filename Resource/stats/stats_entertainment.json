@@ -1,18 +1,18 @@
 {
-    "onSecondDelta": [
+    "onConstructDelta": [
+        {
+            "resourceName": "Money",
+            "amount": 15
+        },
         {
             "resourceName": "Joy",
-            "amount": 1
+            "amount": 15
         }
     ],
     "cost": [
         {
             "resourceName": "Knowledge",
-            "amount": 15
-        },
-        {
-            "resourceName": "Money",
-            "amount": 15
+            "amount": 5
         }
     ],
     "title": "Entertainment",

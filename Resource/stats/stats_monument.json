@@ -7,6 +7,14 @@
         {
             "resourceName": "Joy",
             "amount": 100
+        },
+        {
+            "resourceName": "Money",
+            "amount": 10
+        },
+        {
+            "resourceName": "Knowledge",
+            "amount": 10
         }
     ],
     "onSecondDelta": [

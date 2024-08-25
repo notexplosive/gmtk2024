@@ -510,7 +510,7 @@ public class GameSession : ISession
     private void ShowScreenshotToast()
     {
         _isAwaitingScreenshot = true;
-        ShowToast("Press Enter to take a Screenshot", () => _isAwaitingScreenshot == false);
+        ShowToast("Press [color(ffff00)]Enter[/color] to take a Screenshot", () => _isAwaitingScreenshot == false);
     }
 
     private void ShowToast(string text, float duration)
@@ -801,7 +801,7 @@ public class GameSession : ISession
         {
             _musicPlayer.FadeIn();
             _ui?.FadeIn();
-            ShowToast("Press Space to reset camera", 5);
+            ShowToast("Press [color(ffff00)]Space[/color] to reset camera\nPress [color(ffff00)]Enter[/color] to take more screenshots", 5);
         });
 
         return cutscene;
@@ -928,7 +928,7 @@ public class GameSession : ISession
 
                     if (_currentLevelIndex == 1)
                     {
-                        ShowToast("[color(ffff00)]Scroll[/color] to Zoom",
+                        ShowToast("[color(ffff00)]Scroll[/color] to Zoom\n[color(ffff00)]Right or Middle Mouse Button[/color] to Pan",
                             () => _ui?.CurrentFtueState == FtueState.None);
                     }
                     else

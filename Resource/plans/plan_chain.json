@@ -2,6 +2,7 @@
   "settings": {
     "drawDescription": {
       "textureName": "chain",
+      "frames": null,
       "graphicsTopLeft": {
         "X": -1,
         "Y": 0

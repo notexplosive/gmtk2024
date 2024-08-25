@@ -32,19 +32,21 @@
                 },
                 {
                     "name": "blueprint_l1_platform"
+                },
+                {
+                    "name": "blueprint_l1_education"
                 }
             ],
             "completionCriteria": {
-                "getResource": {
-                    "resource": "Population",
-                    "targetQuantity": 10
+                "buildStructures": {
+                    "blueprint": "blueprint_l1_education",
+                    "targetQuantity": 1
                 }
             }
         },
         {
             "introDialogue": [
-                "We've found a way to scale up our #Food production!",
-                "Ask the scholars to show you how."
+                "The scholars have found a way to increase our #Food production!"
             ],
             "blueprints": [
                 {
@@ -64,18 +66,21 @@
                 },
                 {
                     "name": "blueprint_l1_chain"
+                },
+                {
+                    "name": "blueprint_l1_shop"
                 }
             ],
             "completionCriteria": {
-                "getResource": {
-                    "resource": "Population",
-                    "targetQuantity": 30
+                "buildStructures": {
+                    "blueprint": "blueprint_l1_shop",
+                    "targetQuantity": 1
                 }
             }
         },
         {
             "introDialogue": [
-                "Things are going well.",
+                "You're doing well!",
                 "All we need is a crown jewel.",
                 "A monument to celebrate this great city."
             ],
@@ -105,10 +110,10 @@
                     "name": "blueprint_l1_bridge"
                 },
                 {
-                    "name": "blueprint_l1_decoration"
+                    "name": "blueprint_l1_theater"
                 },
                 {
-                    "name": "blueprint_l1_theater"
+                    "name": "blueprint_l1_decoration"
                 },
                 {
                     "name": "blueprint_monument"
