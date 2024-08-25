@@ -25,7 +25,7 @@ public class StructureButton : IHoverable
 
     public static float MaxHoverTime => 0.1f; 
 
-    public TooltipContent GetTooltip()
+    public TooltipContent GetTooltip(Inventory inventory)
     {
         var costString = DisplayDelta(Blueprint.Stats().Cost);
 
@@ -38,7 +38,8 @@ public class StructureButton : IHoverable
         {
             Title = Blueprint.Stats().Title,
             Body = Blueprint.Stats().GenerateDescription(),
-            Cost = costString
+            Cost = costString,
+            CanAfford = inventory.CanAfford(Blueprint.Stats().Cost)
         };
     }
 

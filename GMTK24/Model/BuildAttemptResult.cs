@@ -6,18 +6,26 @@ namespace GMTK24.Model;
 
 public class BuildAttemptResult
 {
-    public string? FailureMessage { get; }
-
-    public bool IsSuccessful => FailureMessage == null;
-
-    private BuildAttemptResult(string? failureMessage)
+    private BuildAttemptResult(BuildAttemptResultType resultType, string? failureMessage)
     {
+        ResultType = resultType;
         FailureMessage = failureMessage;
     }
 
+    public BuildAttemptResultType ResultType { get; }
+    public string? FailureMessage { get; }
+
+    public bool IsSuccessful => ResultType == BuildAttemptResultType.Success;
+
+    public static BuildAttemptResult FailedBecauseOfFit { get; } =
+        new(BuildAttemptResultType.CannotFit, "Not Enough Space");
+
+    public static BuildAttemptResult FailedBecauseOfStructure { get; } =
+        new(BuildAttemptResultType.NoSupport, "Needs Structural Support");
+
     public static BuildAttemptResult Success()
     {
-        return new BuildAttemptResult(null);
+        return new BuildAttemptResult(BuildAttemptResultType.Success, null);
     }
 
     public static BuildAttemptResult FailedBecauseOfCost(Inventory inventory, List<ResourceDelta> costs)
@@ -33,11 +41,16 @@ public class BuildAttemptResult
             }
         }
 
-        var resources = string.Join(" ", shortResources.Select(a=> $"[color(ffffff)]{a.InlineTextIcon(2)}[/color]"));
-        
-        return new BuildAttemptResult($"Not Enough {resources}");
-    }
+        var resources = string.Join(" ", shortResources.Select(a => $"[color(ffffff)]{a.InlineTextIcon(2)}[/color]"));
 
-    public static BuildAttemptResult FailedBecauseOfFit { get; } = new("Not Enough Space");
-    public static BuildAttemptResult FailedBecauseOfStructure { get; } = new("Needs Structural Support");
+        return new BuildAttemptResult(BuildAttemptResultType.CantAfford, $"Not Enough {resources}");
+    }
+}
+
+public enum BuildAttemptResultType
+{
+    Success,
+    CannotFit,
+    NoSupport,
+    CantAfford
 }

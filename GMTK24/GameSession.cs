@@ -564,11 +564,14 @@ public class GameSession : ISession
 
                 var buildResult = _world.CanBuild(buildPosition.Value, plannedStructure, _inventory, plannedBlueprint);
 
-                var message = buildResult.FailureMessage;
-
-                if (message != null)
+                if (buildResult.ResultType == BuildAttemptResultType.NoSupport || buildResult.ResultType == BuildAttemptResultType.CannotFit)
                 {
                     defaultColor = Color.Black;
+                }
+                
+                if (buildResult.ResultType == BuildAttemptResultType.CantAfford)
+                {
+                    defaultColor = Color.Yellow;
                 }
 
                 var placingLayer = _world.MainLayer;

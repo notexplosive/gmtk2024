@@ -151,7 +151,7 @@ public class Ui
         {
             if (State.HoveredItem != null)
             {
-                var tooltipContent = State.HoveredItem.GetTooltip();
+                var tooltipContent = State.HoveredItem.GetTooltip(inventory);
 
                 var titleFont = Client.Assets.GetFont("gmtk/GameFont", 64);
                 var titleRectangleNormalized = titleFont.MeasureString(tooltipContent.Title).ToRectangleF();
@@ -164,7 +164,14 @@ public class Ui
                 var bodyTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipBodyText,
                     GameplayConstants.FormattedTextParser);
 
-                var costTextFormatted = FormattedText.FromFormatString(bodyFont, Color.White, tooltipCostText,
+                var costColor = Color.White;
+
+                if (!tooltipContent.CanAfford)
+                {
+                    costColor = Color.Yellow;
+                }
+                
+                var costTextFormatted = FormattedText.FromFormatString(bodyFont, costColor, tooltipCostText,
                     GameplayConstants.FormattedTextParser);
 
                 var tooltipCostRectangleNormalized = costTextFormatted.MaxNeededSize().ToRectangleF()
