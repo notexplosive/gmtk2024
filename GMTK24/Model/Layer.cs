@@ -4,14 +4,6 @@ using GMTK24.Config;
 
 namespace GMTK24.Model;
 
-public enum BuildResult
-{
-    Success,
-    FailedBecauseOfFit,
-    FailedBecauseOfStructure,
-    FailedBecauseOfCost
-}
-
 public class Layer
 {
     private readonly Dictionary<Cell, Structure> _cellToStructure = new();

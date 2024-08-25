@@ -2,6 +2,7 @@
 using ExplogineMonoGame;
 using ExplogineMonoGame.Data;
 using ExTween;
+using GMTK24.Model;
 using Microsoft.Xna.Framework;
 
 namespace GMTK24.UserInterface;
@@ -13,7 +14,7 @@ public class ErrorMessage
     private readonly TweenableRectangleF _ribbonRectangle = new(RectangleF.Empty);
     private readonly Vector2 _screenSize;
     private readonly SequenceTween _tween = new();
-    private string _currentDisplayedMessage = string.Empty;
+    private FormattedText? _currentDisplayedMessage;
     private readonly Font _font;
 
     public ErrorMessage(Point screenSize)
@@ -24,7 +25,7 @@ public class ErrorMessage
 
     public void Display(string message)
     {
-        _currentDisplayedMessage = message;
+        _currentDisplayedMessage = FormattedText.FromFormatString(_font, Color.White, message, GameplayConstants.FormattedTextParser);
         _tween.Clear();
 
         _opacity.Value = 0;
@@ -36,11 +37,11 @@ public class ErrorMessage
 
         _tween
             .Add(new MultiplexTween()
-                .Add(_ribbonRectangle.TweenTo(finalRectangle, 0.5f, Ease.CubicFastSlow))
-                .Add(_opacity.TweenTo(1f, 0.5f, Ease.Linear))
+                .Add(_ribbonRectangle.TweenTo(finalRectangle, 0.25f, Ease.CubicFastSlow))
+                .Add(_opacity.TweenTo(1f, 0.25f, Ease.Linear))
             )
             
-            .Add(new WaitSecondsTween(1f))
+            .Add(new WaitSecondsTween(0.75f))
             
             .Add( new MultiplexTween()
                 .Add(_ribbonRectangle.TweenTo(startingRectangle, 0.5f, Ease.CubicSlowFast))
@@ -59,12 +60,15 @@ public class ErrorMessage
         painter.BeginSpriteBatch();
 
         painter.DrawRectangle(_ribbonRectangle,
-            new DrawSettings {Color = Color.Black.WithMultipliedOpacity(0.5f * _opacity), Depth = Depth.Back});
+            new DrawSettings {Color = Color.DarkBlue.WithMultipliedOpacity(0.35f * _opacity), Depth = Depth.Back});
 
-        var messageSize = _font.MeasureString(_currentDisplayedMessage);
-        painter.DrawStringAtPosition(_font, _currentDisplayedMessage,
-            _ribbonRectangle.Value.Center - messageSize / 2f,
-            new DrawSettings {Color = Color.Yellow.WithMultipliedOpacity(_opacity)});
+        if (_currentDisplayedMessage != null)
+        {
+            var messageSize = _currentDisplayedMessage.MaxNeededSize();
+            painter.DrawFormattedStringAtPosition(_currentDisplayedMessage,
+                _ribbonRectangle.Value.Center - messageSize / 2f, Alignment.Center, 
+                new DrawSettings {Color = Color.White.WithMultipliedOpacity(_opacity)});
+        }
 
         painter.EndSpriteBatch();
     }

@@ -8,26 +8,26 @@ public class World
     public Layer DecorationLayer = new();
     public Layer MainLayer = new();
 
-    public BuildResult CanBuild(Cell centerCell, StructurePlan plan, Inventory inventory, Blueprint plannedBlueprint)
+    public BuildAttemptResult CanBuild(Cell centerCell, StructurePlan plan, Inventory inventory, Blueprint plannedBlueprint)
     {
         var placingLayer = DeducePlacingLayer(plan);
 
-        if (!inventory.CanAfford(plannedBlueprint.Stats().Cost))
-        {
-            return BuildResult.FailedBecauseOfCost;
-        }
-        
         if (!placingLayer.CanFit(centerCell, plan))
         {
-            return BuildResult.FailedBecauseOfFit;
+            return BuildAttemptResult.FailedBecauseOfFit;
         }
 
         if (!MainLayer.IsStructurallySupported(centerCell, plan))
         {
-            return BuildResult.FailedBecauseOfStructure;
+            return BuildAttemptResult.FailedBecauseOfStructure;
+        }
+        
+        if (!inventory.CanAfford(plannedBlueprint.Stats().Cost))
+        {
+            return BuildAttemptResult.FailedBecauseOfCost(inventory, plannedBlueprint.Stats().Cost);
         }
 
-        return BuildResult.Success;
+        return BuildAttemptResult.Success();
     }
 
     private Layer DeducePlacingLayer(StructurePlan plan)

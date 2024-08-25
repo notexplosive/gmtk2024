@@ -133,7 +133,7 @@ public class GameSession : ISession
             {
                 _musicPlayer.FadeIn();
             }
-            
+
             if (input.Keyboard.GetButton(Keys.U).WasPressed)
             {
                 _musicPlayer.FadeOut();
@@ -191,7 +191,7 @@ public class GameSession : ISession
                     var result = _world.CanBuild(plannedBuildPosition.Value, plannedStructure, _inventory,
                         plannedBlueprint);
 
-                    if (result == BuildResult.Success)
+                    if (result.IsSuccessful)
                     {
                         var structure = _world.AddStructure(plannedBuildPosition.Value, plannedStructure,
                             plannedBlueprint);
@@ -226,20 +226,14 @@ public class GameSession : ISession
                             }
                         }
                     }
-
-                    if (result == BuildResult.FailedBecauseOfFit)
+                    else if (result.FailureMessage != null)
                     {
-                        _errorMessage.Display("Not Enough Space");
+                        _errorMessage.Display(result.FailureMessage);
                     }
-
-                    if (result == BuildResult.FailedBecauseOfStructure)
+                    else
                     {
-                        _errorMessage.Display("Needs Structural Support");
-                    }
-
-                    if (result == BuildResult.FailedBecauseOfCost)
-                    {
-                        _errorMessage.Display("More Resources Required");
+                        // Task failed successfully? Something has gone wrong if we got here
+                        _errorMessage.Display("?? Error ??");
                     }
                 }
             }
@@ -385,13 +379,14 @@ public class GameSession : ISession
                 ambientPercentages[sound] = 0f;
             }
         }
-        
+
         foreach (var structureInView in structuresInView)
         {
             var sound = structureInView.Blueprint.Stats().AmbientSound;
             if (sound != null)
             {
-                var addedPercent = RectangleF.Intersect(structureInView.TotalRectangle(), _camera.ViewBounds).Area / _camera.ViewBounds.Area;
+                var addedPercent = RectangleF.Intersect(structureInView.TotalRectangle(), _camera.ViewBounds).Area /
+                                   _camera.ViewBounds.Area;
                 var currentPercent = ambientPercentages.GetValueOrDefault(sound);
                 ambientPercentages[sound] = currentPercent + addedPercent;
             }
@@ -483,7 +478,7 @@ public class GameSession : ISession
         var logo = ResourceAssets.Instance.Textures["ARCHITOWER_Logo"];
         var logoRect = RectangleF.FromSizeAlignedWithin(rectangle, logo.Bounds.Size.ToVector2(), Alignment.BottomRight);
         painter.DrawAsRectangle(logo, logoRect, new DrawSettings());
-        
+
         painter.EndSpriteBatch();
 
         Client.Graphics.PopCanvas();
@@ -499,7 +494,7 @@ public class GameSession : ISession
             var texture = canvas.Texture;
             texture.SaveAsPng(stream, texture.Width, texture.Height);
 
-            ShowToast($"Screenshot saved at\n{screenshotFilePath.Replace("\\","/")}", 5);
+            ShowToast($"Screenshot saved at\n{screenshotFilePath.Replace("\\", "/")}", 5);
         }
         catch
         {
@@ -546,8 +541,9 @@ public class GameSession : ISession
                 Depth = Depth.Back
             });
 
-            
-            painter.DrawFormattedStringWithinRectangle(FormattedText.FromFormatString(toastFont, Color.White, _currentToast.Text, GameplayConstants.FormattedTextParser), toastRectangle, Alignment.Center,
+            painter.DrawFormattedStringWithinRectangle(
+                FormattedText.FromFormatString(toastFont, Color.White, _currentToast.Text,
+                    GameplayConstants.FormattedTextParser), toastRectangle, Alignment.Center,
                 new DrawSettings());
             painter.EndSpriteBatch();
         }
@@ -568,17 +564,9 @@ public class GameSession : ISession
 
                 var buildResult = _world.CanBuild(buildPosition.Value, plannedStructure, _inventory, plannedBlueprint);
 
-                if (buildResult == BuildResult.FailedBecauseOfCost)
-                {
-                    defaultColor = Color.White;
-                }
+                var message = buildResult.FailureMessage;
 
-                if (buildResult == BuildResult.FailedBecauseOfFit)
-                {
-                    defaultColor = Color.Yellow;
-                }
-
-                if (buildResult == BuildResult.FailedBecauseOfStructure)
+                if (message != null)
                 {
                     defaultColor = Color.Black;
                 }
@@ -594,12 +582,16 @@ public class GameSession : ISession
                     var rectangle = Grid.CellToPixelRectangle(cell);
 
                     var color = defaultColor;
+                    
                     if (placingLayer.IsOccupiedAt(cell))
                     {
                         color = Color.OrangeRed;
                     }
 
-                    painter.DrawRectangle(rectangle, new DrawSettings {Color = color.WithMultipliedOpacity(0.5f)});
+                    painter.DrawRectangle(rectangle, new DrawSettings
+                    {
+                        Color = color.WithMultipliedOpacity(0.5f), Depth = Depth.Middle
+                    });
                 }
             }
         }
@@ -628,7 +620,7 @@ public class GameSession : ISession
         DrawClouds(painter, 0.25f, Client.Random.CleanNoise.NoiseAt(0), 30);
         DrawClouds(painter, 0.5f, Client.Random.CleanNoise.NoiseAt(1), 15);
         DrawClouds(painter, 0.6f, Client.Random.CleanNoise.NoiseAt(2), 2);
-        
+
         DrawWater(painter, Color.CornflowerBlue.DimmedBy(0.1f), new Vector2(Grid.CellSize / 2f, -Grid.CellSize),
             MathF.PI / 2f, 0.75f);
 
@@ -660,8 +652,8 @@ public class GameSession : ISession
     private void DrawClouds(Painter painter, float opacity, Noise noise, int numberOfClouds)
     {
         painter.BeginSpriteBatch();
-        
-        var cloudGraphics = new List<string>()
+
+        var cloudGraphics = new List<string>
         {
             "Clouds01",
             "Clouds02",
@@ -670,15 +662,15 @@ public class GameSession : ISession
             "Clouds05"
         };
 
-        var cloud = ResourceAssets.Instance.Textures[cloudGraphics[noise.IntAt(0,cloudGraphics.Count)]];
+        var cloud = ResourceAssets.Instance.Textures[cloudGraphics[noise.IntAt(0, cloudGraphics.Count)]];
         var width = cloud.Width;
         var height = cloud.Height;
 
-        
-        for (int i = 0; i < numberOfClouds; i++) {
+        for (var i = 0; i < numberOfClouds; i++)
+        {
             var sign = noise.BoolAt(i) ? -1 : 1;
             var startingX = noise.NoiseAt(i).IntAt(i) % _screenSize.X;
-            var speed = noise.NoiseAt(i).IntAt(i+1) % 60 + 60;
+            var speed = noise.NoiseAt(i).IntAt(i + 1) % 60 + 60;
             var x = (startingX + _elapsedTime * speed * opacity * 0.25f) % (_screenSize.X + width * 2) - width;
             var y = noise.IntAt(i, _screenSize.Y / 3) - _camera.CenterPosition.Y / 5 * opacity;
 
@@ -687,9 +679,10 @@ public class GameSession : ISession
                 x = _screenSize.X - x;
             }
 
-            painter.DrawAtPosition(cloud, new Vector2(x,y), Scale2D.One, new DrawSettings{Color = Color.White.WithMultipliedOpacity(opacity)});
+            painter.DrawAtPosition(cloud, new Vector2(x, y), Scale2D.One,
+                new DrawSettings {Color = Color.White.WithMultipliedOpacity(opacity)});
         }
-        
+
         painter.EndSpriteBatch();
     }
 
@@ -734,14 +727,11 @@ public class GameSession : ISession
                 structure.Hide();
             }
         });
-        
-        cutscene.Callback(() =>
-        {
-            _musicPlayer.FadeToVolume(0.5f);
-        });
+
+        cutscene.Callback(() => { _musicPlayer.FadeToVolume(0.5f); });
 
         cutscene.Delay(0.5f);
-        
+
         cutscene.PanCamera(_camera, _startingCamera, 2, Ease.CubicFastSlow);
         cutscene.DisplayMessage(_ui, "We've come a long way.");
 
@@ -764,12 +754,12 @@ public class GameSession : ISession
         allStructuresViewBounds = allStructuresViewBounds.InflatedMaintainAspectRatio(100);
 
         cutscene.PanCamera(_camera, allStructuresViewBounds, 2, Ease.CubicFastSlow);
-        
+
         cutscene.Delay(0.25f);
 
         cutscene.Callback(() =>
         {
-            ResourceAssets.Instance.PlaySound("sounds/sfx_cutscene", new SoundEffectSettings{Volume = 1f});
+            ResourceAssets.Instance.PlaySound("sounds/sfx_cutscene", new SoundEffectSettings {Volume = 1f});
         });
 
         var buildDuration = 4f;
@@ -801,7 +791,9 @@ public class GameSession : ISession
         {
             _musicPlayer.FadeIn();
             _ui?.FadeIn();
-            ShowToast("Press [color(ffff00)]Space[/color] to reset camera\nPress [color(ffff00)]Enter[/color] to take more screenshots", 5);
+            ShowToast(
+                "Press [color(ffff00)]Space[/color] to reset camera\nPress [color(ffff00)]Enter[/color] to take more screenshots",
+                5);
         });
 
         return cutscene;
@@ -928,14 +920,18 @@ public class GameSession : ISession
 
                     if (_currentLevelIndex == 1)
                     {
-                        ShowToast("[color(ffff00)]Scroll[/color] to Zoom\n[color(ffff00)]Right or Middle Mouse Button[/color] to Pan",
+                        ShowToast(
+                            "[color(ffff00)]Scroll[/color] to Zoom\n[color(ffff00)]Right or Middle Mouse Button[/color] to Pan",
                             () => _ui?.CurrentFtueState == FtueState.None);
                     }
                     else
                     {
                         if (_currentObjective.Criteria.RequiredResources != null)
                         {
-                            ShowToast(Ui.ApplyIcons(_inventory,$"Next milestone at {_currentObjective.Criteria.RequiredResources.TargetQuantity} #{_currentObjective.Criteria.RequiredResources.ResourceName}"), 10f);
+                            ShowToast(
+                                Ui.ApplyIcons(_inventory,
+                                    $"Next milestone at {_currentObjective.Criteria.RequiredResources.TargetQuantity} #{_currentObjective.Criteria.RequiredResources.ResourceName}"),
+                                10f);
                         }
                     }
                 }));
@@ -1018,4 +1014,3 @@ public class GameSession : ISession
         return _ui?.State.CurrentBlueprint();
     }
 }
-
