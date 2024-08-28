@@ -33,6 +33,10 @@
         {
             "resourceName": "Money",
             "amount": 2
+        },
+        {
+            "resourceName": "Joy",
+            "amount": 1
         }
     ],
     "title": "Monument",
