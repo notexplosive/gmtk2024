@@ -7,7 +7,7 @@ dotnet.publish("GMTK24", ".build")
 
 files.copy("Resource", ".build/Resource")
 
-files.copy("HelperScripts", ".build")
+-- files.copy("HelperScripts", ".build")
 
 for i, pdbFile in ipairs(files.list(".build", true, "pdb")) do
     files.delete(pdbFile)
@@ -15,4 +15,4 @@ end
 
 butler.login()
 
-butler.push(".build", "notexplosive", "architower", "main")
+butler.push(".build", "notexplosive", "architower", "post-jam")
