@@ -856,14 +856,15 @@ public class GameSession : ISession
                 var sine = new Vector2(0, MathF.Sin(phase) * waveHeight);
                 var cos = new Vector2(0, MathF.Cos(phase) * waveHeight);
 
+                var radius = Grid.CellSize + 5;
                 painter.DrawAsRectangle(
                     ResourceAssets.Instance.Textures["circle"],
-                    new RectangleF(new Vector2(pixelPosition.X, waterLevel) + sine, new Vector2(Grid.CellSize)),
+                    new RectangleF(new Vector2(pixelPosition.X, waterLevel) + sine, new Vector2(radius)),
                     new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
                 painter.DrawAsRectangle(
                     ResourceAssets.Instance.Textures["circle"],
                     new RectangleF(new Vector2(pixelPosition.X + Grid.CellSize / 2f, waterLevel) + cos,
-                        new Vector2(Grid.CellSize)),
+                        new Vector2(radius)),
                     new DrawSettings {Color = waterColor, Origin = DrawOrigin.Center});
                 currentCell += new Cell(1, 0);
             }
