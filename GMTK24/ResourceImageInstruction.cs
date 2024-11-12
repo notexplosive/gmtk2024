@@ -1,4 +1,5 @@
-﻿using ExplogineMonoGame.Data;
+﻿using ExplogineCore.Data;
+using ExplogineMonoGame.Data;
 using ExplogineMonoGame.TextFormatting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
