@@ -1,0 +1,4 @@
+local explogine = lib "explogine"
+local info = require "info"
+
+explogine.upload(info, args[1])

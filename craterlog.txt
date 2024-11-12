@@ -1,0 +1,1092 @@
+🔵🌙 Crater Version: 1.0.102
+🔵🌙 Running /Users/wyatt/Code/gmtk2024/build_release.crater
+🔵💥 Deleting file .build/.DS_Store
+🔵💥 Deleting file .build/macos-universal/.DS_Store
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/GMTK24.icns
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Knowledge.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/Clouds01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/Clouds03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PILLAR.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ftue_arrow.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/Clouds02.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Platform01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Joy.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Decor01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Commerce00.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/MONUMENT04.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PILLAR_BookEndBottom.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Commerce.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLTFRM03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLTFRM02.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Food.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/MONUMENT01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/MONUMENT03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/Clouds05.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Knowledge00.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLTFRM01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PALM01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/Clouds04.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/MONUMENT02.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Social00.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_MONUMENT.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS04.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_BIG01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/chain.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS05.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS07.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_BIG02.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_BIG03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS06.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Farm01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS02.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/circle.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Commerce01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ui_background.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_FRUIT01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Overhang01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Insp.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/chain2.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Insp00.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_House01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Road01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Education01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/OVERHANG_CHAIN03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Food00.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PLANTERS08.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_THEATER.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/foundation.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_PILLAR_BookEndTop.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Social.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_HOUSE03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_small07.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_small06.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_HOUSE02.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Garden01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_small04.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_small05.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_HOUSE01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Base1.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ARCHITOWER_Logo.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_small01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/OVERHANG_HOOK.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_HOUSE04.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/levels.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/ICONS_Joy00.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_LIBRARY01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_FARM01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Base2.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/BUTTONS_Entertainment01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_small02.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/DECOR_small03.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/LVL01_COMMERCE01.png
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_education.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_platform.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_monument.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_chain.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l0_house.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l0_garden.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_theater.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_decoration.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_bridge.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_shop.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_garden.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_farm.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/blueprints/blueprint_l1_house.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_chain.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration9.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration10.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden5.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_theater.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration5.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_house4.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration4.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden4.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration11.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration8.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden8.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden_tree.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden3.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_platform2.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_house2.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration3.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_library.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_monument.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_house3.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration2.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden2.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_platform.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_chain2.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_farm.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_house.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration7.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden7.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_garden6.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_foundation.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_decoration6.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/plans/plan_shop.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ambience_store.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/other1.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ambience_entertainment.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/house3.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/brick3.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/music_zoomout.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ambient_birds.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ambient_ocean.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/brick2.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/house2.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/groundwater.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/brick1.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/house1.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ui_button.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/music_zoomin.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/gen3.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/gen2.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/gen1.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/monument.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ambience_fountain.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/gen5.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/gen4.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/plant6.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/music_neutral.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/plant5.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/sfx_cutscene.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/sound attribution.txt
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/plant4.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ambient_house.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/chain2.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/plant1.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/ambience_farm.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/plant3.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/chain1.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/sounds/plant2.ogg
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_platform.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_entertainment.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_education.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_commerce.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_chain.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_decor.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_bridge.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_farm.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_garden.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_house.json
+🔵💥 Deleting file .build/macos-universal/GMTK24.app/Contents/Resources/Resource/stats/stats_monument.json
+🔵💥 Deleting file .build/osx-arm64/.DS_Store
+🔵💥 Deleting file .build/win-x64/.DS_Store
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Knowledge.png
+🔵💥 Deleting file .build/win-x64/Resource/Clouds01.png
+🔵💥 Deleting file .build/win-x64/Resource/Clouds03.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PILLAR.png
+🔵💥 Deleting file .build/win-x64/Resource/ftue_arrow.png
+🔵💥 Deleting file .build/win-x64/Resource/Clouds02.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Platform01.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Joy.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Decor01.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Commerce00.png
+🔵💥 Deleting file .build/win-x64/Resource/MONUMENT04.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PILLAR_BookEndBottom.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Commerce.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLTFRM03.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLTFRM02.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Food.png
+🔵💥 Deleting file .build/win-x64/Resource/MONUMENT01.png
+🔵💥 Deleting file .build/win-x64/Resource/MONUMENT03.png
+🔵💥 Deleting file .build/win-x64/Resource/Clouds05.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Knowledge00.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLTFRM01.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PALM01.png
+🔵💥 Deleting file .build/win-x64/Resource/Clouds04.png
+🔵💥 Deleting file .build/win-x64/Resource/MONUMENT02.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Social00.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_MONUMENT.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS04.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_BIG01.png
+🔵💥 Deleting file .build/win-x64/Resource/chain.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS05.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS07.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_BIG02.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_BIG03.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS06.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Farm01.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS02.png
+🔵💥 Deleting file .build/win-x64/Resource/circle.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Commerce01.png
+🔵💥 Deleting file .build/win-x64/Resource/ui_background.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS03.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_FRUIT01.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS01.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Overhang01.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Insp.png
+🔵💥 Deleting file .build/win-x64/Resource/chain2.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Insp00.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_House01.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Road01.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Education01.png
+🔵💥 Deleting file .build/win-x64/Resource/OVERHANG_CHAIN03.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Food00.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PLANTERS08.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_THEATER.png
+🔵💥 Deleting file .build/win-x64/Resource/foundation.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_PILLAR_BookEndTop.png
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Social.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_HOUSE03.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_small07.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_small06.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_HOUSE02.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Garden01.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_small04.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_small05.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_HOUSE01.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Base1.png
+🔵💥 Deleting file .build/win-x64/Resource/ARCHITOWER_Logo.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_small01.png
+🔵💥 Deleting file .build/win-x64/Resource/OVERHANG_HOOK.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_HOUSE04.png
+🔵💥 Deleting file .build/win-x64/Resource/levels.json
+🔵💥 Deleting file .build/win-x64/Resource/ICONS_Joy00.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_LIBRARY01.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_FARM01.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Base2.png
+🔵💥 Deleting file .build/win-x64/Resource/BUTTONS_Entertainment01.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_small02.png
+🔵💥 Deleting file .build/win-x64/Resource/DECOR_small03.png
+🔵💥 Deleting file .build/win-x64/Resource/LVL01_COMMERCE01.png
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_education.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_platform.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_monument.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_chain.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l0_house.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l0_garden.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_theater.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_decoration.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_bridge.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_shop.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_garden.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_farm.json
+🔵💥 Deleting file .build/win-x64/Resource/blueprints/blueprint_l1_house.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_chain.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration9.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration10.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden5.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_theater.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration5.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_house4.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration4.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden4.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration11.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration8.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden8.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden_tree.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden3.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_platform2.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_house2.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration3.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_library.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_monument.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_house3.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration2.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden2.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_platform.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_chain2.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_farm.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_house.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration7.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden7.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_garden6.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_foundation.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_decoration6.json
+🔵💥 Deleting file .build/win-x64/Resource/plans/plan_shop.json
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ambience_store.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/other1.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ambience_entertainment.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/house3.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/brick3.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/music_zoomout.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ambient_birds.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ambient_ocean.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/brick2.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/house2.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/groundwater.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/brick1.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/house1.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ui_button.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/music_zoomin.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/gen3.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/gen2.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/gen1.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/monument.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ambience_fountain.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/gen5.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/gen4.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/plant6.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/music_neutral.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/plant5.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/sfx_cutscene.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/sound attribution.txt
+🔵💥 Deleting file .build/win-x64/Resource/sounds/plant4.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ambient_house.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/chain2.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/plant1.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/ambience_farm.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/plant3.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/chain1.ogg
+🔵💥 Deleting file .build/win-x64/Resource/sounds/plant2.ogg
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_platform.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_entertainment.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_education.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_commerce.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_chain.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_decor.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_bridge.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_farm.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_garden.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_house.json
+🔵💥 Deleting file .build/win-x64/Resource/stats/stats_monument.json
+🔵💥 Deleting file .build/linux-x64/.DS_Store
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Knowledge.png
+🔵💥 Deleting file .build/linux-x64/Resource/Clouds01.png
+🔵💥 Deleting file .build/linux-x64/Resource/Clouds03.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PILLAR.png
+🔵💥 Deleting file .build/linux-x64/Resource/ftue_arrow.png
+🔵💥 Deleting file .build/linux-x64/Resource/Clouds02.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Platform01.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Joy.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Decor01.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Commerce00.png
+🔵💥 Deleting file .build/linux-x64/Resource/MONUMENT04.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PILLAR_BookEndBottom.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Commerce.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLTFRM03.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLTFRM02.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Food.png
+🔵💥 Deleting file .build/linux-x64/Resource/MONUMENT01.png
+🔵💥 Deleting file .build/linux-x64/Resource/MONUMENT03.png
+🔵💥 Deleting file .build/linux-x64/Resource/Clouds05.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Knowledge00.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLTFRM01.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PALM01.png
+🔵💥 Deleting file .build/linux-x64/Resource/Clouds04.png
+🔵💥 Deleting file .build/linux-x64/Resource/MONUMENT02.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Social00.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_MONUMENT.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS04.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_BIG01.png
+🔵💥 Deleting file .build/linux-x64/Resource/chain.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS05.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS07.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_BIG02.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_BIG03.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS06.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Farm01.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS02.png
+🔵💥 Deleting file .build/linux-x64/Resource/circle.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Commerce01.png
+🔵💥 Deleting file .build/linux-x64/Resource/ui_background.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS03.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_FRUIT01.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS01.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Overhang01.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Insp.png
+🔵💥 Deleting file .build/linux-x64/Resource/chain2.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Insp00.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_House01.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Road01.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Education01.png
+🔵💥 Deleting file .build/linux-x64/Resource/OVERHANG_CHAIN03.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Food00.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PLANTERS08.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_THEATER.png
+🔵💥 Deleting file .build/linux-x64/Resource/foundation.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_PILLAR_BookEndTop.png
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Social.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_HOUSE03.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_small07.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_small06.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_HOUSE02.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Garden01.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_small04.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_small05.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_HOUSE01.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Base1.png
+🔵💥 Deleting file .build/linux-x64/Resource/ARCHITOWER_Logo.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_small01.png
+🔵💥 Deleting file .build/linux-x64/Resource/OVERHANG_HOOK.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_HOUSE04.png
+🔵💥 Deleting file .build/linux-x64/Resource/levels.json
+🔵💥 Deleting file .build/linux-x64/Resource/ICONS_Joy00.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_LIBRARY01.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_FARM01.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Base2.png
+🔵💥 Deleting file .build/linux-x64/Resource/BUTTONS_Entertainment01.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_small02.png
+🔵💥 Deleting file .build/linux-x64/Resource/DECOR_small03.png
+🔵💥 Deleting file .build/linux-x64/Resource/LVL01_COMMERCE01.png
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_education.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_platform.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_monument.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_chain.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l0_house.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l0_garden.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_theater.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_decoration.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_bridge.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_shop.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_garden.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_farm.json
+🔵💥 Deleting file .build/linux-x64/Resource/blueprints/blueprint_l1_house.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_chain.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration9.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration10.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden5.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_theater.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration5.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_house4.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration4.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden4.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration11.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration8.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden8.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden_tree.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden3.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_platform2.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_house2.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration3.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_library.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_monument.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_house3.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration2.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden2.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_platform.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_chain2.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_farm.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_house.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration7.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden7.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_garden6.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_foundation.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_decoration6.json
+🔵💥 Deleting file .build/linux-x64/Resource/plans/plan_shop.json
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ambience_store.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/other1.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ambience_entertainment.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/house3.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/brick3.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/music_zoomout.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ambient_birds.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ambient_ocean.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/brick2.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/house2.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/groundwater.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/brick1.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/house1.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ui_button.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/music_zoomin.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/gen3.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/gen2.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/gen1.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/monument.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ambience_fountain.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/gen5.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/gen4.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/plant6.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/music_neutral.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/plant5.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/sfx_cutscene.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/sound attribution.txt
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/plant4.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ambient_house.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/chain2.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/plant1.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/ambience_farm.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/plant3.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/chain1.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/sounds/plant2.ogg
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_platform.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_entertainment.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_education.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_commerce.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_chain.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_decor.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_bridge.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_farm.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_garden.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_house.json
+🔵💥 Deleting file .build/linux-x64/Resource/stats/stats_monument.json
+🔵💥 Deleting directory .build
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_32x32@2x.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_128x128.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/Icon.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_256x256@2x.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_32x32.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_512x512.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_16x16.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_16x16@2x.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_128x128@2x.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_512x512@2x.png
+🔵💥 Deleting file .iconset/GMTK24.iconset/icon_256x256.png
+🔵💥 Deleting directory .iconset/GMTK24.iconset
+🔵📂 Created directory .build/macos-universal/GMTK24.app/Contents
+🔵📂 Created directory .build/macos-universal/GMTK24.app/Contents/Resources
+🔵📂 Created directory .build/macos-universal/GMTK24.app/Contents/MacOS
+🔵💻 [Silent] dotnet publish GMTK24 -c Release -r osx-arm64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained --output .build/osx-arm64
+🔵💻 [Silent] dotnet publish GMTK24 -c Release -r osx-x64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained --output .build/osx-x64
+🔵💻 lipo -create .build/osx-arm64/GMTK24 .build/osx-x64/GMTK24 -output .build/macos-universal/GMTK24.app/Contents/MacOS/GMTK24
+🔵🐲 Copying Content
+🔵🐲 Copying Dylibs
+🔵📂 Created directory .iconset/GMTK24.iconset
+🔵💻 sips -s format png GMTK24/Icon.bmp --out .iconset/GMTK24.iconset/Icon.png
+/Users/wyatt/Code/gmtk2024/GMTK24/Icon.bmp
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+🔵💻 sips -z 32 32 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_16x16@2x.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_16x16@2x.png
+🔵💻 sips -z 16 16 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_16x16.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_16x16.png
+🔵💻 sips -z 64 64 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_32x32@2x.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_32x32@2x.png
+🔵💻 sips -z 32 32 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_32x32.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_32x32.png
+🔵💻 sips -z 256 256 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_128x128@2x.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_128x128@2x.png
+🔵💻 sips -z 128 128 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_128x128.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_128x128.png
+🔵💻 sips -z 512 512 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_256x256@2x.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_256x256@2x.png
+🔵💻 sips -z 256 256 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_256x256.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_256x256.png
+🔵💻 sips -z 1024 1024 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_512x512@2x.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_512x512@2x.png
+🔵💻 sips -z 512 512 .iconset/GMTK24.iconset/Icon.png --out .iconset/GMTK24.iconset/icon_512x512.png
+/Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/Icon.png
+  /Users/wyatt/Code/gmtk2024/.iconset/GMTK24.iconset/icon_512x512.png
+🔵💻 iconutil -c icns .iconset/GMTK24.iconset --output .build/macos-universal/GMTK24.app/Contents/Resources/GMTK24.icns
+🔵🔄 Copying file ICONS_Knowledge.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file Clouds01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file Clouds03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PILLAR.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ftue_arrow.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file Clouds02.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Platform01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Joy.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Decor01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Commerce00.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file MONUMENT04.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PILLAR_BookEndBottom.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Commerce.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLTFRM03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLTFRM02.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Food.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file MONUMENT01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file MONUMENT03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file Clouds05.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Knowledge00.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLTFRM01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PALM01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file Clouds04.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file MONUMENT02.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Social00.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_MONUMENT.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS04.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_BIG01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file chain.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS05.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS07.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_BIG02.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_BIG03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS06.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Farm01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS02.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file circle.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Commerce01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ui_background.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_FRUIT01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Overhang01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Insp.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file chain2.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Insp00.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_House01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Road01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Education01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file OVERHANG_CHAIN03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Food00.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PLANTERS08.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_THEATER.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file foundation.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_PILLAR_BookEndTop.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Social.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_HOUSE03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_small07.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_small06.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_HOUSE02.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Garden01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_small04.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_small05.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_HOUSE01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Base1.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ARCHITOWER_Logo.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_small01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file OVERHANG_HOOK.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_HOUSE04.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file levels.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file ICONS_Joy00.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_LIBRARY01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_FARM01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Base2.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file BUTTONS_Entertainment01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_small02.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file DECOR_small03.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file LVL01_COMMERCE01.png to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_education.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_platform.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_monument.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_chain.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l0_house.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l0_garden.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_theater.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_decoration.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_bridge.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_shop.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_garden.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_farm.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_house.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_chain.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration9.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration10.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden5.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_theater.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration5.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_house4.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration4.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden4.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration11.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration8.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden8.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden_tree.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden3.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_platform2.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_house2.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration3.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_library.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_monument.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_house3.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration2.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden2.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_platform.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_chain2.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_farm.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_house.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration7.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden7.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_garden6.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_foundation.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_decoration6.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file plans/plan_shop.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ambience_store.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/other1.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ambience_entertainment.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/house3.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/brick3.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/music_zoomout.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ambient_birds.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ambient_ocean.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/brick2.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/house2.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/groundwater.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/brick1.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/house1.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ui_button.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/music_zoomin.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/gen3.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/gen2.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/gen1.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/monument.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ambience_fountain.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/gen5.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/gen4.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/plant6.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/music_neutral.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/plant5.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/sfx_cutscene.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/sound attribution.txt to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/plant4.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ambient_house.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/chain2.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/plant1.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/ambience_farm.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/plant3.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/chain1.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file sounds/plant2.ogg to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_platform.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_entertainment.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_education.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_commerce.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_chain.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_decor.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_bridge.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_farm.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_garden.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_house.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵🔄 Copying file stats/stats_monument.json to directory .build/macos-universal/GMTK24.app/Contents/Resources/Resource
+🔵💻 [Silent] dotnet publish GMTK24 -c Release -r win-x64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained --output .build/win-x64
+🔵🔄 Copying file ICONS_Knowledge.png to directory .build/win-x64/Resource
+🔵🔄 Copying file Clouds01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file Clouds03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PILLAR.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ftue_arrow.png to directory .build/win-x64/Resource
+🔵🔄 Copying file Clouds02.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Platform01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Joy.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Decor01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Commerce00.png to directory .build/win-x64/Resource
+🔵🔄 Copying file MONUMENT04.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PILLAR_BookEndBottom.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Commerce.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLTFRM03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLTFRM02.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Food.png to directory .build/win-x64/Resource
+🔵🔄 Copying file MONUMENT01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file MONUMENT03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file Clouds05.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Knowledge00.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLTFRM01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PALM01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file Clouds04.png to directory .build/win-x64/Resource
+🔵🔄 Copying file MONUMENT02.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Social00.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_MONUMENT.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS04.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_BIG01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file chain.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS05.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS07.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_BIG02.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_BIG03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS06.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Farm01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS02.png to directory .build/win-x64/Resource
+🔵🔄 Copying file circle.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Commerce01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ui_background.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_FRUIT01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Overhang01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Insp.png to directory .build/win-x64/Resource
+🔵🔄 Copying file chain2.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Insp00.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_House01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Road01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Education01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file OVERHANG_CHAIN03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Food00.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS08.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_THEATER.png to directory .build/win-x64/Resource
+🔵🔄 Copying file foundation.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_PILLAR_BookEndTop.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Social.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_small07.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_small06.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE02.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Garden01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_small04.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_small05.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Base1.png to directory .build/win-x64/Resource
+🔵🔄 Copying file ARCHITOWER_Logo.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_small01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file OVERHANG_HOOK.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE04.png to directory .build/win-x64/Resource
+🔵🔄 Copying file levels.json to directory .build/win-x64/Resource
+🔵🔄 Copying file ICONS_Joy00.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_LIBRARY01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_FARM01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Base2.png to directory .build/win-x64/Resource
+🔵🔄 Copying file BUTTONS_Entertainment01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_small02.png to directory .build/win-x64/Resource
+🔵🔄 Copying file DECOR_small03.png to directory .build/win-x64/Resource
+🔵🔄 Copying file LVL01_COMMERCE01.png to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_education.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_platform.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_monument.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_chain.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l0_house.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l0_garden.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_theater.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_decoration.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_bridge.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_shop.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_garden.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_farm.json to directory .build/win-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_house.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_chain.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration9.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration10.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden5.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_theater.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration5.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_house4.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration4.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden4.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration11.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration8.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden8.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden_tree.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden3.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_platform2.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_house2.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration3.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_library.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_monument.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_house3.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration2.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden2.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_platform.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_chain2.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_farm.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_house.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration7.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden7.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_garden6.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_foundation.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_decoration6.json to directory .build/win-x64/Resource
+🔵🔄 Copying file plans/plan_shop.json to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ambience_store.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/other1.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ambience_entertainment.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/house3.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/brick3.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/music_zoomout.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ambient_birds.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ambient_ocean.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/brick2.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/house2.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/groundwater.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/brick1.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/house1.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ui_button.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/music_zoomin.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/gen3.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/gen2.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/gen1.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/monument.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ambience_fountain.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/gen5.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/gen4.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/plant6.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/music_neutral.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/plant5.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/sfx_cutscene.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/sound attribution.txt to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/plant4.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ambient_house.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/chain2.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/plant1.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/ambience_farm.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/plant3.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/chain1.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file sounds/plant2.ogg to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_platform.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_entertainment.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_education.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_commerce.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_chain.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_decor.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_bridge.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_farm.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_garden.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_house.json to directory .build/win-x64/Resource
+🔵🔄 Copying file stats/stats_monument.json to directory .build/win-x64/Resource
+🔵💻 [Silent] dotnet publish GMTK24 -c Release -r linux-x64 /p:PublishReadyToRun=false /p:TieredCompilation=false --self-contained --output .build/linux-x64
+🔵🔄 Copying file ICONS_Knowledge.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file Clouds01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file Clouds03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PILLAR.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ftue_arrow.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file Clouds02.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Platform01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Joy.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Decor01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Commerce00.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file MONUMENT04.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PILLAR_BookEndBottom.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Commerce.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLTFRM03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLTFRM02.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Food.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file MONUMENT01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file MONUMENT03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file Clouds05.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Knowledge00.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLTFRM01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PALM01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file Clouds04.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file MONUMENT02.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Social00.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_MONUMENT.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS04.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_BIG01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file chain.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS05.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS07.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_BIG02.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_BIG03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS06.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Farm01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS02.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file circle.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Commerce01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ui_background.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_FRUIT01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Overhang01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Insp.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file chain2.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Insp00.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_House01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Road01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Education01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file OVERHANG_CHAIN03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Food00.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PLANTERS08.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_THEATER.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file foundation.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_PILLAR_BookEndTop.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Social.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_small07.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_small06.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE02.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Garden01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_small04.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_small05.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Base1.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file ARCHITOWER_Logo.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_small01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file OVERHANG_HOOK.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_HOUSE04.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file levels.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file ICONS_Joy00.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_LIBRARY01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_FARM01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Base2.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file BUTTONS_Entertainment01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_small02.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file DECOR_small03.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file LVL01_COMMERCE01.png to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_education.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_platform.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_monument.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_chain.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l0_house.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l0_garden.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_theater.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_decoration.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_bridge.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_shop.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_garden.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_farm.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file blueprints/blueprint_l1_house.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_chain.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration9.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration10.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden5.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_theater.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration5.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_house4.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration4.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden4.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration11.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration8.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden8.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden_tree.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden3.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_platform2.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_house2.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration3.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_library.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_monument.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_house3.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration2.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden2.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_platform.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_chain2.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_farm.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_house.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration7.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden7.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_garden6.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_foundation.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_decoration6.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file plans/plan_shop.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ambience_store.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/other1.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ambience_entertainment.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/house3.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/brick3.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/music_zoomout.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ambient_birds.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ambient_ocean.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/brick2.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/house2.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/groundwater.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/brick1.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/house1.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ui_button.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/music_zoomin.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/gen3.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/gen2.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/gen1.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/monument.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ambience_fountain.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/gen5.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/gen4.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/plant6.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/music_neutral.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/plant5.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/sfx_cutscene.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/sound attribution.txt to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/plant4.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ambient_house.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/chain2.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/plant1.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/ambience_farm.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/plant3.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/chain1.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file sounds/plant2.ogg to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_platform.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_entertainment.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_education.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_commerce.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_chain.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_decor.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_bridge.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_farm.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_garden.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_house.json to directory .build/linux-x64/Resource
+🔵🔄 Copying file stats/stats_monument.json to directory .build/linux-x64/Resource

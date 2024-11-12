@@ -1,0 +1,22 @@
+local info = require "info"
+local dotnet = lib "dotnet"
+local explogine = lib "explogine"
+
+local function platformBuild(csproj, platform)
+    local platformBuildDirectory = info.buildDirectoryForPlatform(platform)
+    dotnet.publish(csproj, platformBuildDirectory, platform)
+    for _, file in ipairs(files.list(platformBuildDirectory, true, "pdb")) do
+        files.delete(file)
+    end
+
+    return platformBuildDirectory
+end
+
+local function copyExtraFiles(resourceDirectory, finalOutputDirectory)
+    files.copy("Resource", resourceDirectory .. "/" .. "Resource")
+end
+
+files.deleteDirectory(info.buildDirectory)
+
+explogine.publish(info.appName, platformBuild, copyExtraFiles, info.iconPath, info.platformToProject,
+    info.buildDirectoryForPlatform)
