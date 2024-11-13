@@ -6,10 +6,10 @@
         <string>en</string>
 
         <key>CFBundleExecutable</key>
-        <string>GMTK24</string>
+        <string>Architower</string>
 
         <key>CFBundleIconFile</key>
-        <string>GMTK24</string>
+        <string>Architower</string>
 
         <key>CFBundleIdentifier</key>
         <string>net.notexplosive.Architower</string>
@@ -18,7 +18,7 @@
         <string>6.0</string>
 
         <key>CFBundleName</key>
-        <string>GMTK24</string>
+        <string>Architower</string>
 
         <key>CFBundlePackageType</key>
         <string>APPL</string>

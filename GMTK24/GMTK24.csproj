@@ -7,6 +7,7 @@
         <PublishSingleFile>true</PublishSingleFile>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>Nullable</WarningsAsErrors>
+        <AssemblyName>Architower</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>

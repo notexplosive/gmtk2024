@@ -1,7 +1,7 @@
 local buildDirectory = ".build"
 
 local info = {
-    appName = "GMTK24",
+    appName = "Architower",
     itchUrl = "architower",
     iconPath = "GMTK24/Icon.bmp",
     buildDirectory = buildDirectory,
