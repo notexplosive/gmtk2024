@@ -1,0 +1,17 @@
+If you double-click `Architower.app`, macOS will tell you the app is "damaged" -- it's not! I promise!
+
+This is a security measure on Apple's part, any software that isn't certified by Apple 
+(a process that involves developers paying Apple every year) is considered "broken" and/or "unsafe".
+
+To run the game on macOS you need to do the following:
+
+1. Right click `Architower.app`
+2. Select `New Terminal At Folder` in the context menu
+3. This will open a terminal, type the following command:
+
+xattr -cr .
+
+4. You may now close the Terminal
+5. Double click `Architower.app` -- it should now work!
+
+Thank you for checking out Architower! I hope you enjoy it!

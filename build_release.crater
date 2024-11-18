@@ -20,3 +20,5 @@ files.deleteDirectory(info.buildDirectory)
 
 explogine.publish(info.appName, platformBuild, copyExtraFiles, info.iconPath, info.platformToProject,
     info.buildDirectoryForPlatform)
+
+files.copy("mac-users-read-this.txt", info.buildDirectoryForPlatform("macos-universal"))
