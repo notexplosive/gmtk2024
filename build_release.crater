@@ -12,7 +12,7 @@ local function platformBuild(csproj, platform)
     return platformBuildDirectory
 end
 
-local function copyExtraFiles(resourceDirectory, finalOutputDirectory)
+local function copyExtraFiles(platform, resourceDirectory, finalOutputDirectory)
     files.copy("Resource", resourceDirectory .. "/" .. "Resource")
 end
 
